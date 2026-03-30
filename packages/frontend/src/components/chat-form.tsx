@@ -59,7 +59,11 @@ const TEMPERATURES = [
   },
 ];
 
-export default function ChatForm() {
+interface ChatFormProps {
+  handleSendMessage: (message: string) => Promise<void>;
+}
+
+export default function ChatForm({ handleSendMessage }: ChatFormProps) {
   const [inputValue, setInputValue] = useState('');
   const [selectedTemperature, setSelectedTemperature] = useState(
     TEMPERATURES[0],
@@ -79,6 +83,13 @@ export default function ChatForm() {
     if (temperature) {
       setSelectedTemperature(temperature);
     }
+  };
+
+  const handleSend = async () => {
+    if (inputValue.trim() === '') return;
+
+    handleSendMessage(inputValue);
+    setInputValue('');
   };
 
   return (
@@ -142,6 +153,7 @@ export default function ChatForm() {
               )}
               disabled={!inputValue}
               aria-label="Send message"
+              onClick={handleSend}
             >
               <ArrowUpIcon className="h-4 w-4 text-primary-foreground" />
             </Button>

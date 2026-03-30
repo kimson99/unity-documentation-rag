@@ -8,7 +8,6 @@ import { ConfigService } from 'src/config/config.service';
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => {
         const pg = configService.pg;
-        console.log(pg);
         return {
           url: pg.url,
           type: 'postgres',

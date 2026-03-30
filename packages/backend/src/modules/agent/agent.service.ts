@@ -1,5 +1,7 @@
+import { toBaseMessages, toUIMessageStream } from '@ai-sdk/langchain';
 import { ChatGoogle } from '@langchain/google';
 import { Injectable } from '@nestjs/common';
+import { UIMessage } from 'ai';
 import { createAgent } from 'langchain';
 import { ConfigService } from 'src/config/config.service';
 import { z } from 'zod';
@@ -28,19 +30,15 @@ export class AgentService {
     });
   }
 
-  public async streamChat(message: string): Promise<void> {
-    const aiMsg = (await this.agent.invoke({
-      messages: [
-        {
-          role: 'user',
-          content: message,
-        },
-      ],
-      config: {
-        configurable: { thread_id: 1 },
-        context: { user_id: 1 },
+  public async streamChat(messages: UIMessage[]) {
+    const convertedMessages = await toBaseMessages(messages);
+    const stream = await this.agent.stream(
+      {
+        messages: convertedMessages,
       },
-    })) as z.infer<typeof this.responseSchema>;
-    console.log(aiMsg);
+      { streamMode: ['values', 'messages'] },
+    );
+
+    return toUIMessageStream(stream);
   }
 }

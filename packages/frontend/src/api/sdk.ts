@@ -22,6 +22,10 @@ export interface RegisterDto {
   email: string;
 }
 
+export interface ChatStreamDto {
+  messages: string[];
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -333,10 +337,12 @@ export class Api<
      * @name ChatControllerChat
      * @request POST:/api/chat/stream
      */
-    chatControllerChat: (params: RequestParams = {}) =>
+    chatControllerChat: (data: ChatStreamDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/chat/stream`,
         method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

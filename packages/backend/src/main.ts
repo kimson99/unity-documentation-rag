@@ -1,5 +1,6 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import helmet from 'helmet';
@@ -9,12 +10,15 @@ import { generateApi } from 'swagger-typescript-api';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    bufferLogs: true,
+  });
   // Logger
   app.useLogger(app.get(Logger));
 
   // Settings
   app.setGlobalPrefix('api');
+  app.enableCors({ credentials: true, origin: true });
 
   // Docs
   const config = new DocumentBuilder()

@@ -14,6 +14,9 @@ importers:
 
   packages/backend:
     dependencies:
+      '@ai-sdk/langchain':
+        specifier: ^2.0.144
+        version: 2.0.144(@langchain/core@1.1.36(@opentelemetry/api@1.9.0))(@langchain/langgraph@1.2.5(@langchain/core@1.1.36(@opentelemetry/api@1.9.0))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod-to-json-schema@3.25.1(zod@4.3.6))(zod@4.3.6))(zod@4.3.6)
       '@langchain/core':
         specifier: ^1.1.36
         version: 1.1.36(@opentelemetry/api@1.9.0)
@@ -50,6 +53,9 @@ importers:
       '@nestjs/typeorm':
         specifier: ^11.0.0
         version: 11.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.28(ioredis@5.9.3)(pg@8.20.0)(ts-node@10.9.2(@types/node@22.19.15)(typescript@5.9.3)))
+      ai:
+        specifier: ^6.0.138
+        version: 6.0.138(zod@4.3.6)
       axios:
         specifier: ^1.13.6
         version: 1.13.6

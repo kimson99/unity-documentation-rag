@@ -235,6 +235,16 @@
       "post": {
         "operationId": "ChatController_chat",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatStreamDto"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": ""
@@ -292,6 +302,20 @@
           "password",
           "displayName",
           "email"
+        ]
+      },
+      "ChatStreamDto": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "messages"
         ]
       }
     }
