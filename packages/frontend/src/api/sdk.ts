@@ -11,15 +11,14 @@
  */
 
 export interface LoginDto {
-  username: string;
+  email: string;
   password: string;
 }
 
 export interface RegisterDto {
-  username: string;
+  email: string;
   password: string;
   displayName: string;
-  email: string;
 }
 
 export interface ChatStreamDto {

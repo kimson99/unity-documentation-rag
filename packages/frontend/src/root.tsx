@@ -1,6 +1,7 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import { Toaster } from './components/ui/sonner';
 import queryClient from './queries/client';
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -27,6 +28,7 @@ export default function Root() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Outlet />
+        <Toaster position="top-center" visibleToasts={3} />
       </TooltipProvider>
     </QueryClientProvider>
   );

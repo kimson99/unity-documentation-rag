@@ -15,9 +15,6 @@ export class User extends BaseModel {
   id: string;
 
   @Column()
-  username: string;
-
-  @Column()
   hashedPassword: string;
 
   @Column()

@@ -19,11 +19,11 @@ export class AuthService {
   ) {}
 
   public async signIn(dto: LoginDto): Promise<{ accessToken: string }> {
-    const { username, password } = dto;
-    const user = await this.validateUser(username, password);
+    const { email, password } = dto;
+    const user = await this.validateUser(email, password);
 
     const payload: AuthUser = {
-      username: user.username,
+      email: user.email,
       id: user.id,
       role: user.role,
     };
@@ -32,8 +32,8 @@ export class AuthService {
     return { accessToken };
   }
 
-  private async validateUser(username: string, password: string) {
-    const user = await this.userService.findByUsername(username);
+  private async validateUser(email: string, password: string) {
+    const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new UnauthorizedException('Invalid user');
     }
@@ -46,8 +46,8 @@ export class AuthService {
   }
 
   public async register(dto: RegisterDto): Promise<void> {
-    const { username, password, email, displayName } = dto;
-    const existingUser = await this.userService.findByUsername(username);
+    const { password, email, displayName } = dto;
+    const existingUser = await this.userService.findByEmail(email);
     if (existingUser) {
       throw new BadRequestException('Username already exists');
     }
@@ -55,7 +55,6 @@ export class AuthService {
     const salt = await bcrypt.genSalt(this.configService.passwordSalt);
     const hashedPassword = await bcrypt.hash(password, salt);
     await this.userService.createUser({
-      username,
       hashedPassword,
       email,
       displayName,

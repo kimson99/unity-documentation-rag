@@ -4,7 +4,7 @@ import { IsEmail, IsString, IsStrongPassword } from 'class-validator';
 export class LoginDto {
   @ApiProperty()
   @IsString()
-  username: string;
+  email: string;
 
   @ApiProperty()
   password: string;
@@ -12,8 +12,8 @@ export class LoginDto {
 
 export class RegisterDto {
   @ApiProperty()
-  @IsString()
-  username: string;
+  @IsEmail()
+  email: string;
 
   @ApiProperty()
   @IsStrongPassword()
@@ -22,10 +22,6 @@ export class RegisterDto {
   @ApiProperty()
   @IsString()
   displayName: string;
-
-  @ApiProperty()
-  @IsEmail()
-  email: string;
 }
 
 export class LoginResponseDto {

@@ -9,14 +9,13 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  public async findByUsername(username: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { username } });
+  public async findByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { email } });
   }
 
   public async createUser(user: Partial<User>): Promise<User> {
-    const { username, hashedPassword, email, displayName, role } = user;
+    const { hashedPassword, email, displayName, role } = user;
     const newUser = this.userRepository.create({
-      username,
       hashedPassword,
       email,
       displayName,

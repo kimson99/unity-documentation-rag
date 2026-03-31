@@ -269,7 +269,7 @@
       "LoginDto": {
         "type": "object",
         "properties": {
-          "username": {
+          "email": {
             "type": "string"
           },
           "password": {
@@ -277,14 +277,14 @@
           }
         },
         "required": [
-          "username",
+          "email",
           "password"
         ]
       },
       "RegisterDto": {
         "type": "object",
         "properties": {
-          "username": {
+          "email": {
             "type": "string"
           },
           "password": {
@@ -292,16 +292,12 @@
           },
           "displayName": {
             "type": "string"
-          },
-          "email": {
-            "type": "string"
           }
         },
         "required": [
-          "username",
+          "email",
           "password",
-          "displayName",
-          "email"
+          "displayName"
         ]
       },
       "ChatStreamDto": {
