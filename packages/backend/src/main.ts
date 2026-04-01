@@ -24,6 +24,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Unity Documentation RAG API')
     .setDescription('API documentation for Unity Documentation RAG')
+    .addBearerAuth()
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

@@ -1,26 +1,71 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import type { LoginDto } from '@/api/sdk';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card';
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import useAuth from '@/hooks/use-auth';
+import { cn } from '@/lib/utils';
+import { emailRegex } from '@/utils/regex';
+import { AxiosError } from 'axios';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 export function LoginForm({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<'div'>) {
+  const { mutateLogin, user } = useAuth();
+
+  const { register, handleSubmit, formState } = useForm<LoginDto>({
+    disabled: mutateLogin.isPending,
+  });
+
+  const { errors } = formState;
+
+  useEffect(() => {
+    if (mutateLogin.error instanceof AxiosError) {
+      toast.error(mutateLogin.error.response?.data?.message);
+      return;
+    }
+
+    toast.error(
+      mutateLogin.error?.message || 'An error occurred while logging in',
+    );
+  }, [mutateLogin.error]);
+
+  const navigate = useNavigate();
+
+  const onSubmit = (data: LoginDto) => {
+    console.log('Submitting login form with data:', data);
+    mutateLogin.mutate(data);
+  };
+
+  useEffect(() => {
+    if (mutateLogin.isSuccess && user) {
+      navigate({
+        pathname: '/',
+      });
+      setTimeout(() => {
+        toast.success('Login successful!');
+      }, 500);
+    }
+  }, [mutateLogin.isSuccess, navigate]);
+
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
@@ -29,7 +74,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -38,6 +83,13 @@ export function LoginForm({
                   type="email"
                   placeholder="m@example.com"
                   required
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: emailRegex,
+                      message: 'Invalid email address',
+                    },
+                  })}
                 />
               </Field>
               <Field>
@@ -50,7 +102,23 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  {...register('password', {
+                    required: 'Password is required',
+                    minLength: {
+                      value: 8,
+                      message: 'Password must be at least 8 characters',
+                    },
+                  })}
+                />
+                {errors.password && (
+                  <FieldDescription className="text-red-500">
+                    {errors.password.message}
+                  </FieldDescription>
+                )}
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
@@ -66,5 +134,5 @@ export function LoginForm({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

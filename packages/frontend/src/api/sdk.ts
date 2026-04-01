@@ -15,10 +15,21 @@ export interface LoginDto {
   password: string;
 }
 
+export interface LoginResponseDto {
+  accessToken: string;
+}
+
 export interface RegisterDto {
   email: string;
   password: string;
   displayName: string;
+}
+
+export interface UserDto {
+  id: string;
+  email: string;
+  displayName: string;
+  role: string;
 }
 
 export interface ChatStreamDto {
@@ -219,11 +230,12 @@ export class Api<
      * @request POST:/api/auth/signin
      */
     authControllerSignIn: (data: LoginDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<LoginResponseDto, any>({
         path: `/api/auth/signin`,
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -326,6 +338,23 @@ export class Api<
       this.request<void, any>({
         path: `/api/health/ping`,
         method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserControllerGetMe
+     * @request GET:/api/users/me
+     * @secure
+     */
+    userControllerGetMe: (params: RequestParams = {}) =>
+      this.request<UserDto, any>({
+        path: `/api/users/me`,
+        method: "GET",
+        secure: true,
+        format: "json",
         ...params,
       }),
 

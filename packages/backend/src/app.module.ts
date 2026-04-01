@@ -42,7 +42,7 @@ import { UserModule } from './modules/user/user.module';
     }),
     RoleModule,
     HealthModule.http(),
-    UserModule,
+    UserModule.http(),
     ChatModule.http(),
   ],
 })

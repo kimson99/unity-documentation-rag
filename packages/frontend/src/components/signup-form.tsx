@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import useAuth from '@/hooks/use-auth';
+import { emailRegex } from '@/utils/regex';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
@@ -87,7 +88,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 {...register('email', {
                   required: 'Email is required',
                   pattern: {
-                    value: /^\S+@\S+$/i,
+                    value: emailRegex,
                     message: 'Invalid email address',
                   },
                 })}
