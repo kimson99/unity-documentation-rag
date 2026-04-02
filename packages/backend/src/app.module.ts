@@ -6,6 +6,7 @@ import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ChatSessionModule } from './modules/chat-session/chat-session.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { HealthModule } from './modules/health/health.module';
 import { RoleModule } from './modules/role/role.module';
@@ -44,6 +45,7 @@ import { UserModule } from './modules/user/user.module';
     HealthModule.http(),
     UserModule.http(),
     ChatModule.http(),
+    ChatSessionModule.http(),
   ],
 })
 export class AppModule {}

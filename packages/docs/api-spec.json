@@ -287,6 +287,27 @@
           "Chat"
         ]
       }
+    },
+    "/api/chat-session/create": {
+      "post": {
+        "operationId": "ChatSessionController_createSession",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "The chat session has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatSessionDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "ChatSession"
+        ]
+      }
     }
   },
   "info": {
@@ -386,6 +407,26 @@
         },
         "required": [
           "messages"
+        ]
+      },
+      "ChatSessionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "createdAt"
         ]
       }
     }

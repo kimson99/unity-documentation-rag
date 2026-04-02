@@ -36,6 +36,13 @@ export interface ChatStreamDto {
   messages: string[];
 }
 
+export interface ChatSessionDto {
+  id: string;
+  title: string;
+  /** @format date-time */
+  createdAt: string;
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -371,6 +378,21 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ChatSession
+     * @name ChatSessionControllerCreateSession
+     * @request POST:/api/chat-session/create
+     */
+    chatSessionControllerCreateSession: (params: RequestParams = {}) =>
+      this.request<ChatSessionDto, any>({
+        path: `/api/chat-session/create`,
+        method: "POST",
+        format: "json",
         ...params,
       }),
   };

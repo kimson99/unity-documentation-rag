@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseModel } from './base.model';
-import { Session } from './session.model';
+import { ChatSession } from './chat-session.model';
 
 export const Role = {
   Admin: 'admin',
@@ -26,6 +26,6 @@ export class User extends BaseModel {
   @Column()
   role: Role;
 
-  @OneToMany(() => Session, (session) => session.user)
-  sessions: Session[];
+  @OneToMany(() => ChatSession, (session) => session.user)
+  sessions: ChatSession[];
 }

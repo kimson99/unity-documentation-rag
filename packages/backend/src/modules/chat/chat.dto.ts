@@ -5,3 +5,7 @@ export class ChatStreamDto {
   @ApiProperty()
   messages: UIMessage[];
 }
+
+export type ChatMessageMetadata = {
+  sessionId?: string;
+};

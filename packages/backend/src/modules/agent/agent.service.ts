@@ -30,13 +30,29 @@ export class AgentService {
     });
   }
 
-  public async streamChat(messages: UIMessage[]) {
+  public async streamChat(
+    messages: UIMessage[],
+    onFinish: (content: string) => Promise<void>,
+  ) {
     const convertedMessages = await toBaseMessages(messages);
+    let accumulatedContent = '';
     const stream = await this.agent.stream(
       {
         messages: convertedMessages,
       },
-      { streamMode: ['values', 'messages'] },
+      {
+        streamMode: ['values', 'messages'],
+        callbacks: [
+          {
+            handleLLMNewToken(token) {
+              accumulatedContent += token;
+            },
+            async handleLLMEnd() {
+              await onFinish(accumulatedContent);
+            },
+          },
+        ],
+      },
     );
 
     return toUIMessageStream(stream);
