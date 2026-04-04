@@ -15,9 +15,7 @@ export class ChatService {
 
   public async streamChat({ messages }: { messages: UIMessage[] }) {
     await this.saveMessage({
-      content:
-        messages[messages.length - 1].parts.find((part) => part.type === 'text')
-          ?.text || '',
+      content: JSON.stringify(messages) || '',
       role: 'user',
       sessionId: (messages[messages.length - 1].metadata as ChatMessageMetadata)
         ?.sessionId,

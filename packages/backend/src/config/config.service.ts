@@ -8,6 +8,11 @@ interface GoogleChatConfig {
   apiKey: string;
 }
 
+interface IndexingConfig {
+  chunkSize: number;
+  chunkOverlap: number;
+}
+
 const ConfigKey = {
   NODE_ENV: 'NODE_ENV',
   DATABASE_URL: 'DATABASE_URL',
@@ -51,6 +56,13 @@ export class ConfigService {
   public get googleChatConfig(): GoogleChatConfig {
     return {
       apiKey: this.get(ConfigKey.GOOGLE_API_KEY),
+    };
+  }
+
+  public get indexingConfig(): IndexingConfig {
+    return {
+      chunkSize: 200,
+      chunkOverlap: 10,
     };
   }
 }
