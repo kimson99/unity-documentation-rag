@@ -34,6 +34,10 @@ export class IndexingService {
     return this.vectorStore;
   }
 
+  public async getVectorStore() {
+    return this.initVectorStore();
+  }
+
   public async testIndexing(filePath: string) {
     await this.initVectorStore();
     this.initTextSplitter('html');
