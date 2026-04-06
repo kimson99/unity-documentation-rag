@@ -4,8 +4,10 @@ import { PGVectorStore } from '@langchain/community/vectorstores/pgvector';
 import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
 import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';
 import { Injectable, Logger } from '@nestjs/common';
+import * as cheerio from 'cheerio';
 import { Document } from 'langchain';
 import { ConfigService } from 'src/config/config.service';
+import TurndownService from 'turndown';
 
 @Injectable()
 export class IndexingService {
@@ -75,8 +77,30 @@ export class IndexingService {
   }
 
   private async loadDocument(filePath: string) {
+    const ext = filePath.split('.').pop()?.toLowerCase();
+    if (!ext || !['txt', 'html', 'md'].includes(ext)) {
+      throw new Error(
+        'Unsupported file type. Only .txt, .html, and .md are supported.',
+      );
+    }
     const loader = new TextLoader(filePath);
     const docs = await loader.load();
+
+    if (ext === 'html') {
+      this.logger.debug(`Extracting text from HTML document`);
+      const turndownService = new TurndownService({
+        codeBlockStyle: 'fenced',
+        headingStyle: 'atx',
+      });
+
+      const rawHtml = docs[0].pageContent;
+      const $ = cheerio.load(rawHtml);
+      $('script, style, noscript').remove();
+      const cleanedHtml = $('body').html() ?? '';
+
+      docs[0].pageContent = turndownService.turndown(cleanedHtml);
+    }
+
     return docs;
   }
 }
