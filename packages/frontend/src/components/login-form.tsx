@@ -14,8 +14,8 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import useAuth from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
+import { useAuthContext } from '@/providers/auth-provider';
 import { emailRegex } from '@/utils/regex';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
@@ -27,7 +27,10 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
-  const { mutateLogin, user } = useAuth();
+  const { mutateLogin, user, isAuthenticated } = useAuthContext();
+  if (!mutateLogin) {
+    return null;
+  }
 
   const { register, handleSubmit, formState } = useForm<LoginDto>({
     disabled: mutateLogin.isPending,
@@ -54,7 +57,8 @@ export function LoginForm({
   };
 
   useEffect(() => {
-    if (mutateLogin.isSuccess && user) {
+    if (mutateLogin.isSuccess && user && isAuthenticated) {
+      console.log('Login successful, navigating to home page');
       navigate({
         pathname: '/',
       });
@@ -126,7 +130,7 @@ export function LoginForm({
                   Login with Google
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
+                  Don&apos;t have an account? <a href="/signup">Sign up</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>

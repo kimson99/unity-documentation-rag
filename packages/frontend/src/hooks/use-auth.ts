@@ -21,9 +21,9 @@ const useAuth = () => {
     mutationFn: async (dto: LoginDto) => {
       return client.api.authControllerSignIn(dto);
     },
-    onSuccess: () => {
-      if (mutateLogin.data) {
-        setAccessToken(mutateLogin.data.data.accessToken);
+    onSuccess: ({ data }) => {
+      if (data) {
+        setAccessToken(data.accessToken);
         setIsAuthenticated(true);
       }
     },
@@ -41,14 +41,20 @@ const useAuth = () => {
     retryDelay: 1000,
   });
 
+  const logout = () => {
+    setAccessToken(null);
+    setUser(null);
+    setIsAuthenticated(false);
+  };
+
   useEffect(() => {
     if (accessToken) {
     }
   }, [accessToken]);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    setIsAuthenticated(!!token);
+    console.log(accessToken);
+    setIsAuthenticated(!!accessToken);
   }, []);
 
   return {
@@ -60,6 +66,7 @@ const useAuth = () => {
     user,
     refetchUser: userQuery.refetch,
     isPendingUser: userQuery.isPending,
+    logout,
   };
 };
 
