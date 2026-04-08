@@ -1,13 +1,12 @@
 import { client } from '@/api/client';
 import type { LoginDto, RegisterDto } from '@/api/sdk';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { AxiosError } from 'axios';
+import { useEffect } from 'react';
 import useAuthToken from './stores/use-auth-token';
 import useUser from './stores/use-user';
 
 const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const { accessToken, setAccessToken } = useAuthToken();
   const { user, setUser } = useUser();
 
@@ -24,7 +23,6 @@ const useAuth = () => {
     onSuccess: ({ data }) => {
       if (data) {
         setAccessToken(data.accessToken);
-        setIsAuthenticated(true);
       }
     },
   });
@@ -44,21 +42,20 @@ const useAuth = () => {
   const logout = () => {
     setAccessToken(null);
     setUser(null);
-    setIsAuthenticated(false);
   };
 
   useEffect(() => {
-    if (accessToken) {
+    const error = userQuery.error;
+    if (error && error instanceof AxiosError) {
+      if (error.status === 401) {
+        console.log('Unauthorized, logging out');
+        logout();
+      }
     }
-  }, [accessToken]);
-
-  useEffect(() => {
-    console.log(accessToken);
-    setIsAuthenticated(!!accessToken);
-  }, []);
+  }, [userQuery.error]);
 
   return {
-    isAuthenticated,
+    isAuthenticated: !!accessToken,
     mutateRegister,
     mutateLogin,
     accessToken,

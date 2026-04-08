@@ -28,6 +28,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<'div'>) {
   const { mutateLogin, user, isAuthenticated } = useAuthContext();
+
   if (!mutateLogin) {
     return null;
   }
@@ -52,7 +53,10 @@ export function LoginForm({
   const navigate = useNavigate();
 
   const onSubmit = (data: LoginDto) => {
-    console.log('Submitting login form with data:', data);
+    console.log('Submitting login form with data:', {
+      email: data.email,
+      password: '*'.repeat(data.password.length),
+    });
     mutateLogin.mutate(data);
   };
 
@@ -66,7 +70,7 @@ export function LoginForm({
         toast.success('Login successful!');
       }, 500);
     }
-  }, [mutateLogin.isSuccess, navigate]);
+  }, [mutateLogin.isSuccess, navigate, isAuthenticated, user]);
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>

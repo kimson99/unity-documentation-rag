@@ -65,9 +65,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (contextVal.isAuthenticated) {
+    if (!contextVal.isAuthenticated) {
+      console.log('User is not authenticated, redirecting to login page');
       navigate({
-        pathname: '/',
+        pathname: '/login',
       });
     }
   }, [contextVal.isAuthenticated]);

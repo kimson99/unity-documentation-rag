@@ -11,6 +11,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '@/components/ui/sidebar';
+import { useAuthContext } from '@/providers/auth-provider';
 import {
   AudioLinesIcon,
   GalleryVerticalEndIcon,
@@ -92,6 +93,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useAuthContext();
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -101,7 +103,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser
+          user={
+            user
+              ? user
+              : {
+                  displayName: 'N/A',
+                  email: 'N/A',
+                  id: 'N/A',
+                  role: 'N/A',
+                }
+          }
+        />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
