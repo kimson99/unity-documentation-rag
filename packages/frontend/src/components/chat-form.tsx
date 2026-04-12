@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import useMessaging, { type ChatMessageMetadata } from '@/hooks/use-messaging';
 import { cn } from '@/lib/utils';
 import {
   AlertTriangleIcon,
@@ -60,7 +61,10 @@ const TEMPERATURES = [
 ];
 
 interface ChatFormProps {
-  handleSendMessage: (message: string) => Promise<void>;
+  handleSendMessage: (
+    message: string,
+    metadata: ChatMessageMetadata,
+  ) => Promise<void>;
 }
 
 export default function ChatForm({ handleSendMessage }: ChatFormProps) {
@@ -68,6 +72,8 @@ export default function ChatForm({ handleSendMessage }: ChatFormProps) {
   const [selectedTemperature, setSelectedTemperature] = useState(
     TEMPERATURES[0],
   );
+  const { sessionId, mutateSession } = useMessaging();
+
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const handlePromptClick = (prompt: string) => {
@@ -87,9 +93,23 @@ export default function ChatForm({ handleSendMessage }: ChatFormProps) {
 
   const handleSend = async () => {
     if (inputValue.trim() === '') return;
-
-    handleSendMessage(inputValue);
+    let _sessionId = sessionId;
+    if (!_sessionId) {
+      const result = await mutateSession.mutateAsync();
+      _sessionId = result.id;
+    }
+    console.log('Sending message with session ID:', _sessionId);
+    handleSendMessage(inputValue, { sessionId: _sessionId });
     setInputValue('');
+  };
+
+  const handleInputKeyDown = async (
+    e: React.KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      await handleSend();
+    }
   };
 
   return (
@@ -102,6 +122,7 @@ export default function ChatForm({ handleSendMessage }: ChatFormProps) {
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Ask anything"
             className="w-full border-0 p-3 transition-[padding] duration-200 ease-in-out min-h-[48.4px] outline-none text-[16px] text-foreground resize-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent! whitespace-pre-wrap break-words"
+            onKeyDown={handleInputKeyDown}
           />
         </div>
 

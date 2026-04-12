@@ -1,5 +1,6 @@
 import ChatForm from '@/components/chat-form';
 import { BASE_CHAT_API } from '@/config/constant';
+import type { ChatMessageMetadata } from '@/hooks/use-messaging';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 
@@ -11,9 +12,13 @@ export default function Chat() {
     }),
   });
 
-  const handleSendMessage = async (message: string) => {
+  const handleSendMessage = async (
+    message: string,
+    metadata: ChatMessageMetadata,
+  ) => {
     await sendMessage({
       text: message,
+      metadata,
     });
   };
 
