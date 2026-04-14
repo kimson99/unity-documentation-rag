@@ -13,12 +13,17 @@ interface IndexingConfig {
   chunkOverlap: number;
 }
 
+interface RedisConfig {
+  url: string;
+}
+
 const ConfigKey = {
   NODE_ENV: 'NODE_ENV',
   DATABASE_URL: 'DATABASE_URL',
   PASSWORD_SALT: 'PASSWORD_SALT',
   JWT_SECRET: 'JWT_SECRET',
   GOOGLE_API_KEY: 'GOOGLE_API_KEY',
+  REDIS_URL: 'REDIS_URL',
 };
 
 type ConfigKey = keyof typeof ConfigKey;
@@ -63,6 +68,12 @@ export class ConfigService {
     return {
       chunkSize: 200,
       chunkOverlap: 10,
+    };
+  }
+
+  public get redisConfig(): RedisConfig {
+    return {
+      url: this.get(ConfigKey.REDIS_URL),
     };
   }
 }

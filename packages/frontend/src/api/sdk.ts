@@ -43,6 +43,16 @@ export interface ChatSessionDto {
   createdAt: string;
 }
 
+export interface FileDto {
+  id: string;
+  key: string;
+  filename: string;
+}
+
+export interface FileUploadResponseDto {
+  files: FileDto[];
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -392,6 +402,30 @@ export class Api<
       this.request<ChatSessionDto, any>({
         path: `/api/chat-session/create`,
         method: "POST",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags File
+     * @name FileControllerUploadFile
+     * @request POST:/api/files/upload
+     * @secure
+     */
+    fileControllerUploadFile: (
+      data: {
+        files?: File[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FileUploadResponseDto, any>({
+        path: `/api/files/upload`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
         format: "json",
         ...params,
       }),
