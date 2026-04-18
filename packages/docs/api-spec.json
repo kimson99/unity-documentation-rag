@@ -353,6 +353,70 @@
           "File"
         ]
       }
+    },
+    "/api/indexing": {
+      "post": {
+        "operationId": "IndexingController_index",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IndexDocumentsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Files have been queued for indexing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexDocumentResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Indexing"
+        ]
+      }
+    },
+    "/api/indexing/{documentIndexingId}": {
+      "get": {
+        "operationId": "IndexingController_getDocumentIndexing",
+        "parameters": [
+          {
+            "name": "documentIndexingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Indexing"
+        ]
+      }
     }
   },
   "info": {
@@ -368,7 +432,8 @@
       "bearer": {
         "scheme": "bearer",
         "bearerFormat": "JWT",
-        "type": "http"
+        "type": "http",
+        "description": "Account Token"
       }
     },
     "schemas": {
@@ -505,6 +570,35 @@
         },
         "required": [
           "files"
+        ]
+      },
+      "IndexDocumentsDto": {
+        "type": "object",
+        "properties": {
+          "fileIds": {
+            "description": "Array of file IDs to be indexed",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "fileIds"
+        ]
+      },
+      "IndexDocumentResponseDto": {
+        "type": "object",
+        "properties": {
+          "fileIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "fileIds"
         ]
       }
     }

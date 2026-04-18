@@ -53,6 +53,15 @@ export interface FileUploadResponseDto {
   files: FileDto[];
 }
 
+export interface IndexDocumentsDto {
+  /** Array of file IDs to be indexed */
+  fileIds: string[];
+}
+
+export interface IndexDocumentResponseDto {
+  fileIds: string[];
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -427,6 +436,47 @@ export class Api<
         secure: true,
         type: ContentType.FormData,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Indexing
+     * @name IndexingControllerIndex
+     * @request POST:/api/indexing
+     * @secure
+     */
+    indexingControllerIndex: (
+      data: IndexDocumentsDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<IndexDocumentResponseDto, any>({
+        path: `/api/indexing`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Indexing
+     * @name IndexingControllerGetDocumentIndexing
+     * @request GET:/api/indexing/{documentIndexingId}
+     * @secure
+     */
+    indexingControllerGetDocumentIndexing: (
+      documentIndexingId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/indexing/${documentIndexingId}`,
+        method: "GET",
+        secure: true,
         ...params,
       }),
   };

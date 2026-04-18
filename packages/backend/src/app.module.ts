@@ -11,6 +11,7 @@ import { ChatSessionModule } from './modules/chat-session/chat-session.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { FileModule } from './modules/file/file.module';
 import { HealthModule } from './modules/health/health.module';
+import { IndexingModule } from './modules/indexing/indexing.module';
 import { RoleModule } from './modules/role/role.module';
 import { UserModule } from './modules/user/user.module';
 
@@ -50,6 +51,7 @@ import { UserModule } from './modules/user/user.module';
     ChatSessionModule.http(),
     QueueModule,
     FileModule.http(),
+    IndexingModule.http(),
   ],
 })
 export class AppModule {}

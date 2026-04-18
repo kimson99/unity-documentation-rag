@@ -24,11 +24,22 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Unity Documentation RAG API')
     .setDescription('API documentation for Unity Documentation RAG')
-    .addBearerAuth()
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      description: 'Account Token',
+    })
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/api', app, document);
+  SwaggerModule.setup('/api', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      defaultModelsExpandDepth: -1, // no models shown
+      defaultModelExpandDepth: -1, // no model properties shown,
+    },
+  });
 
   // SDK
   if (process.env.NODE_ENV === 'local') {
