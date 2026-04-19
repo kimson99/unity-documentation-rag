@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 
+import { client } from '@/api/client';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -12,95 +13,76 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 import { useAuthContext } from '@/providers/auth-provider';
-import {
-  AudioLinesIcon,
-  GalleryVerticalEndIcon,
-  MessageCircleMore,
-  TerminalIcon,
-  TerminalSquareIcon,
-} from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { MessageCircleMore, TerminalSquareIcon } from 'lucide-react';
+import { useMemo } from 'react';
 
-// This is sample data.
-const data = {
+const STATIC_DATA = {
   user: {
     name: 'shadcn',
     email: 'm@example.com',
     avatar: '/avatars/shadcn.jpg',
   },
-  teams: [
-    {
-      name: 'Acme Inc',
-      logo: <GalleryVerticalEndIcon />,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: <AudioLinesIcon />,
-      plan: 'Startup',
-    },
-    {
-      name: 'Evil Corp.',
-      logo: <TerminalIcon />,
-      plan: 'Free',
-    },
-  ],
   navMain: [
     {
       title: 'Functions',
       url: '#',
       icon: <TerminalSquareIcon />,
       isActive: true,
-      items: [
-        {
-          title: 'F1',
-          url: '#',
-        },
-        {
-          title: 'F2',
-          url: '#',
-        },
-        {
-          title: 'F3',
-          url: '#',
-        },
-      ],
+      items: [],
     },
     {
       title: 'Chats',
       url: '#',
       icon: <MessageCircleMore />,
       isActive: true,
-      items: [
-        {
-          title: 'How ',
-          url: '#',
-        },
-        {
-          title: 'Team',
-          url: '#',
-        },
-        {
-          title: 'Billing',
-          url: '#',
-        },
-        {
-          title: 'Limits',
-          url: '#',
-        },
-      ],
+      items: [],
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuthContext();
+  const { data: chatSessions } = useQuery({
+    queryKey: ['chatSessions'],
+    queryFn: async () => {
+      const data = await client.api.chatSessionControllerGetSessionsByUserId({
+        take: 50,
+        skip: 0,
+      });
+      return data;
+    },
+  });
+
+  const navigationData = useMemo(() => {
+    return {
+      ...STATIC_DATA,
+      navMain: STATIC_DATA.navMain.map((navGroup) => {
+        // Find the specific group you want to inject data into
+        if (navGroup.title === 'Chats') {
+          return {
+            ...navGroup,
+            items:
+              chatSessions?.data?.sessions?.map((session) => ({
+                id: session.id,
+                title: session.title || 'Untitled Chat',
+                url: `/chat?sessionId=${session.id}`,
+              })) || [], // Defaults to empty array while loading
+          };
+        }
+        return navGroup;
+      }),
+    };
+  }, [chatSessions]);
+  // console.log('navigationData', navigationData);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <div>Something here?</div>
+        <div className="font-semibold text-lg">Unity RAG</div>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navigationData.navMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser

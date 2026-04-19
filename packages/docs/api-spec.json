@@ -288,6 +288,52 @@
         ]
       }
     },
+    "/api/chat/sessions/{sessionId}/messages": {
+      "get": {
+        "operationId": "ChatController_getMessagesBySessionId",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "skip",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMessagesBySessionIdResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Chat"
+        ]
+      }
+    },
     "/api/chat-session/create": {
       "post": {
         "operationId": "ChatSessionController_createSession",
@@ -299,6 +345,44 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ChatSessionDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "ChatSession"
+        ]
+      }
+    },
+    "/api/chat-session": {
+      "get": {
+        "operationId": "ChatSessionController_getSessionsByUserId",
+        "parameters": [
+          {
+            "name": "take",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "skip",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of chat sessions for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChatSessionsResponseDto"
                 }
               }
             }
@@ -519,6 +603,86 @@
           "messages"
         ]
       },
+      "MessageTextPartDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "text",
+            "enum": [
+              "text"
+            ],
+            "description": "The type of the message part"
+          },
+          "text": {
+            "type": "string",
+            "example": "Here is the information you requested...",
+            "description": "The actual text content"
+          }
+        },
+        "required": [
+          "type",
+          "text"
+        ]
+      },
+      "ChatMessageDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "system",
+              "user",
+              "assistant",
+              "data",
+              "tool"
+            ],
+            "example": "assistant",
+            "description": "The role of the message author"
+          },
+          "parts": {
+            "description": "Array of message parts (required by AI SDK v5+)",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageTextPartDto"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2026-04-19T10:30:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "parts",
+          "createdAt"
+        ]
+      },
+      "GetMessagesBySessionIdResponseDto": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMessageDto"
+            }
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "messages",
+          "total"
+        ]
+      },
       "ChatSessionDto": {
         "type": "object",
         "properties": {
@@ -537,6 +701,24 @@
           "id",
           "title",
           "createdAt"
+        ]
+      },
+      "GetChatSessionsResponseDto": {
+        "type": "object",
+        "properties": {
+          "sessions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatSessionDto"
+            }
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "sessions",
+          "total"
         ]
       },
       "FileDto": {

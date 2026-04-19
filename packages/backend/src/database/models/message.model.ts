@@ -6,6 +6,7 @@ const MessageRole = {
   User: 'user',
   Assistant: 'assistant',
   System: 'system',
+  Data: 'data',
   Tool: 'tool',
 } as const;
 
@@ -16,8 +17,8 @@ export class Message extends BaseModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'text' })
-  content: string;
+  @Column({ type: 'jsonb', default: [] })
+  parts: any[];
 
   @ManyToOne(() => ChatSession, (session) => session.messages, {
     onDelete: 'CASCADE',

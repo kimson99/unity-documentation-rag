@@ -10,3 +10,19 @@ export class ChatSessionDto {
   @ApiProperty()
   createdAt: Date;
 }
+
+export class GetChatSessionsRequestDto {
+  @ApiProperty()
+  take: number;
+
+  @ApiProperty()
+  skip: number;
+}
+
+export class GetChatSessionsResponseDto {
+  @ApiProperty({ type: [ChatSessionDto] })
+  sessions: ChatSessionDto[];
+
+  @ApiProperty()
+  total: number;
+}

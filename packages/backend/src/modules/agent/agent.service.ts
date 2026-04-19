@@ -50,7 +50,7 @@ export class AgentService {
 
   public async streamChat(
     messages: UIMessage[],
-    onFinish: (content: string) => Promise<void>,
+    onFinish: (parts: any[]) => Promise<void>,
   ) {
     const convertedMessages = await toBaseMessages(messages);
     let accumulatedContent = '';
@@ -66,7 +66,8 @@ export class AgentService {
               accumulatedContent += token;
             },
             async handleLLMEnd() {
-              await onFinish(accumulatedContent);
+              const finalParts = [{ type: 'text', text: accumulatedContent }];
+              await onFinish(finalParts);
             },
           },
         ],

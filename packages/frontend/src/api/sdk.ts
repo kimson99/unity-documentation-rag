@@ -36,11 +36,54 @@ export interface ChatStreamDto {
   messages: string[];
 }
 
+export interface MessageTextPartDto {
+  /**
+   * The type of the message part
+   * @example "text"
+   */
+  type: "text";
+  /**
+   * The actual text content
+   * @example "Here is the information you requested..."
+   */
+  text: string;
+}
+
+export interface ChatMessageDto {
+  /**
+   * @format uuid
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id: string;
+  /**
+   * The role of the message author
+   * @example "assistant"
+   */
+  role: "system" | "user" | "assistant" | "data" | "tool";
+  /** Array of message parts (required by AI SDK v5+) */
+  parts: MessageTextPartDto[];
+  /**
+   * @format date-time
+   * @example "2026-04-19T10:30:00Z"
+   */
+  createdAt: string;
+}
+
+export interface GetMessagesBySessionIdResponseDto {
+  messages: ChatMessageDto[];
+  total: number;
+}
+
 export interface ChatSessionDto {
   id: string;
   title: string;
   /** @format date-time */
   createdAt: string;
+}
+
+export interface GetChatSessionsResponseDto {
+  sessions: ChatSessionDto[];
+  total: number;
 }
 
 export interface FileDto {
@@ -403,6 +446,29 @@ export class Api<
     /**
      * No description
      *
+     * @tags Chat
+     * @name ChatControllerGetMessagesBySessionId
+     * @request GET:/api/chat/sessions/{sessionId}/messages
+     */
+    chatControllerGetMessagesBySessionId: (
+      sessionId: string,
+      query: {
+        skip: number;
+        take: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<GetMessagesBySessionIdResponseDto, any>({
+        path: `/api/chat/sessions/${sessionId}/messages`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags ChatSession
      * @name ChatSessionControllerCreateSession
      * @request POST:/api/chat-session/create
@@ -411,6 +477,28 @@ export class Api<
       this.request<ChatSessionDto, any>({
         path: `/api/chat-session/create`,
         method: "POST",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ChatSession
+     * @name ChatSessionControllerGetSessionsByUserId
+     * @request GET:/api/chat-session
+     */
+    chatSessionControllerGetSessionsByUserId: (
+      query: {
+        take: number;
+        skip: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<GetChatSessionsResponseDto, any>({
+        path: `/api/chat-session`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
