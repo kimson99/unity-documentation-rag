@@ -113,7 +113,7 @@ export default function ChatForm({ handleSendMessage }: ChatFormProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-[calc(42rem-5rem)]">
+    <div className="flex flex-col gap-4 w-full max-w-3xl">
       <div className="flex min-h-[120px] flex-col rounded-2xl cursor-text bg-card border border-border shadow-lg">
         <div className="flex-1 relative overflow-y-auto max-h-[258px]">
           <Textarea

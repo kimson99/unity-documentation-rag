@@ -4,6 +4,8 @@ export default [
   layout('app/layouts/main-layout.tsx', [
     route('/', './pages/home.tsx', { index: true }),
     route('/chat', './pages/chat.tsx'),
+    route('/files', './pages/files.tsx'),
+    route('/indexing', './pages/indexing.tsx'),
   ]),
   route('/about', './pages/about.tsx'),
   route('/login', './pages/login.tsx'),

@@ -13,94 +13,50 @@ import {
 } from '@/components/ui/sidebar';
 import { useAuthContext } from '@/providers/auth-provider';
 import {
-  AudioLinesIcon,
-  GalleryVerticalEndIcon,
-  MessageCircleMore,
-  TerminalIcon,
-  TerminalSquareIcon,
+  HomeIcon,
+  MessageCircleIcon,
+  FileTextIcon,
+  DatabaseIcon,
 } from 'lucide-react';
 
-// This is sample data.
-const data = {
-  user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
+const navItems = [
+  {
+    title: 'Home',
+    url: '/',
+    icon: <HomeIcon />,
+    isActive: true,
   },
-  teams: [
-    {
-      name: 'Acme Inc',
-      logo: <GalleryVerticalEndIcon />,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: <AudioLinesIcon />,
-      plan: 'Startup',
-    },
-    {
-      name: 'Evil Corp.',
-      logo: <TerminalIcon />,
-      plan: 'Free',
-    },
-  ],
-  navMain: [
-    {
-      title: 'Functions',
-      url: '#',
-      icon: <TerminalSquareIcon />,
-      isActive: true,
-      items: [
-        {
-          title: 'F1',
-          url: '#',
-        },
-        {
-          title: 'F2',
-          url: '#',
-        },
-        {
-          title: 'F3',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Chats',
-      url: '#',
-      icon: <MessageCircleMore />,
-      isActive: true,
-      items: [
-        {
-          title: 'How ',
-          url: '#',
-        },
-        {
-          title: 'Team',
-          url: '#',
-        },
-        {
-          title: 'Billing',
-          url: '#',
-        },
-        {
-          title: 'Limits',
-          url: '#',
-        },
-      ],
-    },
-  ],
-};
+  {
+    title: 'Chat',
+    url: '/chat',
+    icon: <MessageCircleIcon />,
+    isActive: true,
+  },
+  {
+    title: 'Files',
+    url: '/files',
+    icon: <FileTextIcon />,
+    isActive: true,
+  },
+  {
+    title: 'Indexing',
+    url: '/indexing',
+    icon: <DatabaseIcon />,
+    isActive: true,
+  },
+];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuthContext();
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <div>Something here?</div>
+        <div className="px-4 py-2">
+          <h2 className="text-lg font-semibold">Unity RAG</h2>
+        </div>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navItems} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser
