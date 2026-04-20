@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ChatSession } from 'src/database/models/chat-session.model';
 import { Repository } from 'typeorm';
@@ -22,6 +23,25 @@ export class ChatSessionService {
       where: { userId },
       skip: dto.skip,
       take: dto.take,
+      order: {
+        updatedAt: {
+          direction: 'desc',
+        },
+      },
     });
+  }
+
+  public async getSessionById(userId: string, sessionId: string) {
+    const session = await this.chatSessionRepo.findOne({
+      where: {
+        id: sessionId,
+        userId,
+      },
+    });
+    if (!session) {
+      throw new NotFoundException('Session not found');
+    }
+
+    return session;
   }
 }

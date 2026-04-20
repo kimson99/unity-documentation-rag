@@ -506,6 +506,24 @@ export class Api<
     /**
      * No description
      *
+     * @tags ChatSession
+     * @name ChatSessionControllerGetSessionById
+     * @request GET:/api/chat-session/{sessionId}
+     */
+    chatSessionControllerGetSessionById: (
+      sessionId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<ChatSessionDto, any>({
+        path: `/api/chat-session/${sessionId}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags File
      * @name FileControllerUploadFile
      * @request POST:/api/files/upload

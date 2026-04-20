@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query, Req } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { type Request } from 'express';
 import {
@@ -41,5 +41,21 @@ export class ChatSessionController {
       sessions,
       total,
     };
+  }
+
+  @Get('/:sessionId')
+  @ApiResponse({
+    status: 200,
+    type: () => ChatSessionDto,
+  })
+  public async getSessionById(
+    @Param('sessionId') sessionId: string,
+    @Req() req: Request,
+  ): Promise<ChatSessionDto> {
+    const session = await this.chatSessionService.getSessionById(
+      req.user.id,
+      sessionId,
+    );
+    return session;
   }
 }

@@ -4,9 +4,11 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { useLayoutStore } from '@/hooks/stores/use-layout-store';
 import { Outlet } from 'react-router';
 
 export default function MainLayout() {
+  const headerTitle = useLayoutStore((state) => state.headerTitle);
   return (
     <SidebarProvider>
       <AppSidebar side="left" />
@@ -15,6 +17,7 @@ export default function MainLayout() {
           <div>
             <SidebarTrigger className="-ml-1" />
           </div>
+          <div className="text-sm font-medium truncate">{headerTitle}</div>
         </header>
         <Outlet />
       </SidebarInset>

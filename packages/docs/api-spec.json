@@ -393,6 +393,36 @@
         ]
       }
     },
+    "/api/chat-session/{sessionId}": {
+      "get": {
+        "operationId": "ChatSessionController_getSessionById",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatSessionDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "ChatSession"
+        ]
+      }
+    },
     "/api/files/upload": {
       "post": {
         "operationId": "FileController_uploadFile",

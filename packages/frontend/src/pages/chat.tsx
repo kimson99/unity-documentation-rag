@@ -1,12 +1,15 @@
 import { client } from '@/api/client';
 import ChatForm from '@/components/chat-form';
 import { BASE_CHAT_API } from '@/config/constant';
-import type { ChatMessageMetadata } from '@/hooks/use-messaging';
+import { useLayoutStore } from '@/hooks/stores/use-layout-store';
+import { useMessaging, type ChatMessageMetadata } from '@/hooks/use-messaging';
 import { useChat } from '@ai-sdk/react';
 import { useQuery } from '@tanstack/react-query';
 import { DefaultChatTransport, type UIMessage } from 'ai';
 import { useEffect, useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { useSearchParams } from 'react-router';
+import remarkGfm from 'remark-gfm';
 
 const extractAgentResponse = (rawText: string) => {
   try {
@@ -26,7 +29,7 @@ const extractAgentResponse = (rawText: string) => {
 
 const TypewriterText = ({
   text,
-  speed = 20,
+  speed = 100,
   animate = true,
 }: {
   text: string;
@@ -35,6 +38,7 @@ const TypewriterText = ({
 }) => {
   const [displayedText, setDisplayedText] = useState(animate ? '' : text);
   const isAnimating = useRef(animate);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isAnimating.current) {
@@ -59,12 +63,27 @@ const TypewriterText = ({
     return () => clearInterval(timer);
   }, [text, speed, displayedText.length]);
 
-  return <span className="whitespace-pre-wrap">{displayedText}</span>;
+  useEffect(() => {
+    if (isAnimating.current) {
+      containerRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
+    }
+  }, [displayedText]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="prose dark:prose-invert max-w-none w-full"
+    >
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{displayedText}</ReactMarkdown>
+    </div>
+  );
 };
 
 export default function Chat() {
   const [searchParams, setSearchParams] = useSearchParams();
   const sessionId = searchParams.get('sessionId');
+  const { setChatSession } = useMessaging();
+  const setHeaderTitle = useLayoutStore((state) => state.setHeaderTitle);
 
   const startNewSession = (newId: string) => {
     setSearchParams((prev) => {
@@ -86,6 +105,17 @@ export default function Chat() {
     });
   };
 
+  const { data: chatSession } = useQuery({
+    queryKey: ['chatSessionId', sessionId],
+    queryFn: async () => {
+      if (!sessionId) return null;
+      const session =
+        await client.api.chatSessionControllerGetSessionById(sessionId);
+      return session;
+    },
+    enabled: !!sessionId,
+  });
+
   const { data: historicalMessages, isLoading } = useQuery({
     queryKey: ['chatSessionMessages', sessionId],
     queryFn: async () => {
@@ -106,57 +136,104 @@ export default function Chat() {
     messages: (historicalMessages?.data?.messages as UIMessage[]) ?? [],
   });
 
-  // Track only the initial count of messages
   const initialMessageCount = useRef<number | null>(null);
-
-  // Set it once when messages first load
   if (initialMessageCount.current === null && messages.length > 0) {
     initialMessageCount.current = messages.length;
   }
 
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+  };
+
   useEffect(() => {
     if (historicalMessages?.data?.messages) {
-      console.log('Setting', historicalMessages?.data?.messages);
       setMessages(historicalMessages.data.messages as UIMessage[]);
     }
   }, [historicalMessages, setMessages]);
+
+  // Set chat session on nav
+  useEffect(() => {
+    if (!sessionId) return;
+    setChatSession(sessionId);
+  }, [sessionId, setChatSession]);
+
+  // Set count to prevent effect re-render
+  useEffect(() => {
+    if (initialMessageCount.current === null && messages.length > 0) {
+      initialMessageCount.current = messages.length;
+    }
+    scrollToBottom();
+  }, [messages]);
+
+  // Sync the fetched title to the global layout store
+  useEffect(() => {
+    if (chatSession?.data.title) {
+      setHeaderTitle(chatSession.data.title);
+    }
+
+    return () => setHeaderTitle(null);
+  }, [chatSession?.data.title, setHeaderTitle]);
 
   if (isLoading) {
     return <div>Loading messages...</div>;
   }
 
   return (
-    <div className="flex flex-col h-full justify-end items-center p-4">
-      <div className="flex flex-col-reverse w-full overflow-x-hidden overflow-y-auto">
+    <div className="flex flex-col h-full bg-background">
+      {/* Messages */}
+      <div className="flex flex-col flex-1 overflow-y-auto p-4 gap-4">
         {messages.map((m, index) => {
           const isHistory =
             initialMessageCount.current !== null &&
             index < initialMessageCount.current;
 
           return (
-            <div key={m.id} className="mb-4">
+            <div key={m.id} className="flex flex-col gap-1">
               {m.parts.map((part, i) => {
                 if (part.type !== 'text') return null;
 
                 if (m.role === 'user') {
-                  return <span key={i}>{part.text}</span>;
+                  return (
+                    <div
+                      key={i}
+                      className="flex flex-row-reverse items-end gap-2"
+                    >
+                      {/* Bubble */}
+                      <div className="max-w-[72%] bg-blue-100 text-blue-900 dark:bg-blue-950 dark:text-blue-100 px-4 py-2.5 rounded-2xl rounded-br-sm text-sm leading-relaxed">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {part.text}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
+                  );
                 }
 
                 const cleanText = extractAgentResponse(part.text);
                 return (
-                  <TypewriterText
-                    key={i}
-                    text={cleanText}
-                    speed={15}
-                    animate={!isHistory}
-                  />
+                  <div key={i} className="flex items-end gap-2">
+                    {/* Bubble */}
+                    <div className="max-w-[72%] bg-muted/60 border border-border/20 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm leading-relaxed">
+                      <TypewriterText
+                        text={cleanText}
+                        speed={15}
+                        animate={!isHistory}
+                      />
+                    </div>
+                  </div>
                 );
               })}
             </div>
           );
         })}
+        <div ref={messagesEndRef} />
       </div>
-      <ChatForm handleSendMessage={handleSendMessage} />
+
+      {/* Input area */}
+      <div className="flex px-4 py-3 border-t border-border/20 justify-center">
+        <ChatForm handleSendMessage={handleSendMessage} />
+      </div>
     </div>
   );
 }

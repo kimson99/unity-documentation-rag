@@ -79,7 +79,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <div className="font-semibold text-lg">Unity RAG</div>
+        {/* <div className="font-semibold text-lg">Unity RAG</div> */}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navigationData.navMain} />
