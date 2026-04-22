@@ -36,6 +36,7 @@ export class AgentService {
         model: 'gemini-2.5-flash',
         apiKey: this.configService.googleChatConfig.apiKey,
         temperature: 0.5,
+        platformType: 'gcp',
       }),
     );
 

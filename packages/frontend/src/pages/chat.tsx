@@ -31,14 +31,15 @@ const TypewriterText = ({
   text,
   speed = 100,
   animate = true,
+  onUpdate,
 }: {
   text: string;
   speed?: number;
   animate?: boolean;
+  onUpdate?: () => void;
 }) => {
   const [displayedText, setDisplayedText] = useState(animate ? '' : text);
   const isAnimating = useRef(animate);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isAnimating.current) {
@@ -64,16 +65,13 @@ const TypewriterText = ({
   }, [text, speed, displayedText.length]);
 
   useEffect(() => {
-    if (isAnimating.current) {
-      containerRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
+    if (isAnimating.current && onUpdate) {
+      onUpdate();
     }
-  }, [displayedText]);
+  }, [displayedText, onUpdate]);
 
   return (
-    <div
-      ref={containerRef}
-      className="prose dark:prose-invert max-w-none w-full"
-    >
+    <div className="prose dark:prose-invert max-w-none w-full">
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{displayedText}</ReactMarkdown>
     </div>
   );
@@ -119,16 +117,17 @@ export default function Chat() {
   const { data: historicalMessages, isLoading } = useQuery({
     queryKey: ['chatSessionMessages', sessionId],
     queryFn: async () => {
+      // Too lazy for infinite load
       const data = await client.api.chatControllerGetMessagesBySessionId(
         sessionId as string,
-        { skip: 0, take: 10 },
+        { skip: 0, take: 500 },
       );
       return data;
     },
     enabled: !!sessionId,
   });
 
-  const { messages, sendMessage, setMessages } = useChat({
+  const { messages, sendMessage, setMessages, status } = useChat({
     transport: new DefaultChatTransport({
       api: BASE_CHAT_API,
       credentials: 'include',
@@ -219,6 +218,7 @@ export default function Chat() {
                         text={cleanText}
                         speed={15}
                         animate={!isHistory}
+                        onUpdate={scrollToBottom}
                       />
                     </div>
                   </div>
@@ -230,8 +230,17 @@ export default function Chat() {
         <div ref={messagesEndRef} />
       </div>
 
+      {status === 'submitted' && (
+        <div className="flex px-4">
+          <div className="font-semibold max-w-[72%] bg-muted/40 border border-border/20 px-4 py-2 rounded-2xl rounded-bl-sm text-sm leading-relaxed text-muted-foreground animate-pulse">
+            Thinking...
+          </div>
+        </div>
+      )}
+
       {/* Input area */}
-      <div className="flex px-4 py-3 border-t border-border/20 justify-center">
+
+      <div className="flex flex-col px-4 py-3 border-t border-border/20 justify-center items-center">
         <ChatForm handleSendMessage={handleSendMessage} />
       </div>
     </div>
