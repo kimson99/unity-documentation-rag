@@ -4,6 +4,7 @@ import { ChatGoogle } from '@langchain/google';
 import { Injectable } from '@nestjs/common';
 import { UIMessage } from 'ai';
 import { createAgent, SystemMessage } from 'langchain';
+import { wrapSDK } from 'langsmith/wrappers';
 import { ConfigService } from 'src/config/config.service';
 import { z } from 'zod';
 import { IndexingService } from '../indexing/indexing.service';
@@ -30,11 +31,13 @@ export class AgentService {
     private readonly configService: ConfigService,
     private readonly indexingService: IndexingService,
   ) {
-    this.model = new ChatGoogle({
-      model: 'gemini-2.5-flash',
-      apiKey: this.configService.googleChatConfig.apiKey,
-      temperature: 0.5,
-    });
+    this.model = wrapSDK(
+      new ChatGoogle({
+        model: 'gemini-2.5-flash',
+        apiKey: this.configService.googleChatConfig.apiKey,
+        temperature: 0.5,
+      }),
+    );
 
     this.addTools();
     if (this.tools.length > 0) {
@@ -75,6 +78,16 @@ export class AgentService {
     );
 
     return toUIMessageStream(stream);
+  }
+
+  public async evaluateChat(question: string): Promise<string> {
+    const response = await this.agent.invoke({
+      messages: [{ role: 'user', content: question }],
+    });
+
+    const finalMessage = response.messages[response.messages.length - 1];
+    console.log(finalMessage);
+    return finalMessage.content as string;
   }
 
   private addTools() {

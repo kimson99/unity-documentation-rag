@@ -1,0 +1,124 @@
+[
+  {
+    "inputs": {
+      "question": "What is the base class for all entities in Unity scenes?"
+    },
+    "outputs": { "expected": "GameObject" }
+  },
+  {
+    "inputs": {
+      "question": "Which component determines the position, rotation, and scale of a GameObject?"
+    },
+    "outputs": { "expected": "Transform" }
+  },
+  {
+    "inputs": {
+      "question": "In a C# script, what method is called exactly once before the first frame update?"
+    },
+    "outputs": { "expected": "Start()" }
+  },
+  {
+    "inputs": {
+      "question": "What method is called immediately when a script instance is loaded, before the Start method?"
+    },
+    "outputs": { "expected": "Awake()" }
+  },
+  {
+    "inputs": {
+      "question": "How do you print a message to the Unity Console from a script?"
+    },
+    "outputs": { "expected": "Debug.Log()" }
+  },
+  {
+    "inputs": {
+      "question": "What component do you need to add to a GameObject to make it emit light?"
+    },
+    "outputs": { "expected": "Light component" }
+  },
+  {
+    "inputs": {
+      "question": "What component is required in a scene for the player to hear audio?"
+    },
+    "outputs": { "expected": "AudioListener" }
+  },
+  {
+    "inputs": {
+      "question": "What component is used to play back sound effects and music in a scene?"
+    },
+    "outputs": { "expected": "AudioSource" }
+  },
+  {
+    "inputs": {
+      "question": "What system is used to bake navigation data so AI characters can move around obstacles?"
+    },
+    "outputs": { "expected": "NavMesh" }
+  },
+  {
+    "inputs": {
+      "question": "What is the built-in 3D physics engine used by Unity?"
+    },
+    "outputs": { "expected": "PhysX" }
+  },
+  {
+    "inputs": {
+      "question": "What is the built-in 2D physics engine used by Unity?"
+    },
+    "outputs": { "expected": "Box2D" }
+  },
+  {
+    "inputs": {
+      "question": "What component applies a physical boundary to a GameObject to allow for collisions?"
+    },
+    "outputs": { "expected": "Collider (e.g., BoxCollider, SphereCollider)" }
+  },
+  {
+    "inputs": {
+      "question": "How do you access the Transform component of the GameObject your script is attached to?"
+    },
+    "outputs": { "expected": "By using the lowercase 'transform' property." }
+  },
+  {
+    "inputs": {
+      "question": "What type of asset is used to define the visual appearance and surface properties of a 3D model?"
+    },
+    "outputs": { "expected": "Material" }
+  },
+  {
+    "inputs": {
+      "question": "What UI component automatically arranges its child elements into a list or grid?"
+    },
+    "outputs": {
+      "expected": "Layout Group (Vertical, Horizontal, or Grid Layout Group)"
+    }
+  },
+  {
+    "inputs": {
+      "question": "Which Unity class is primarily used to read input from the keyboard, mouse, or controller?"
+    },
+    "outputs": { "expected": "The Input class" }
+  },
+  {
+    "inputs": {
+      "question": "Which window in the Unity Editor displays a list of all GameObjects currently in the active scene?"
+    },
+    "outputs": { "expected": "Hierarchy window" }
+  },
+  {
+    "inputs": {
+      "question": "Which window in the Unity Editor allows you to view and edit the properties and components of a selected GameObject?"
+    },
+    "outputs": { "expected": "Inspector window" }
+  },
+  {
+    "inputs": { "question": "What is a 'Tag' used for in Unity?" },
+    "outputs": {
+      "expected": "Tags are reference strings assigned to GameObjects to help identify them or group them together."
+    }
+  },
+  {
+    "inputs": { "question": "What is the purpose of Time.deltaTime?" },
+    "outputs": {
+      "expected": "It represents the time elapsed since the last frame, used to make movement and changes frame-rate independent."
+    }
+  }
+]
