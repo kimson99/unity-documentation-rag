@@ -58,23 +58,21 @@ const AuthContext = createContext<AuthContextValue>({
 
 export const useAuthContext = () => useContext(AuthContext);
 
+const PUBLIC_PATHS = ['/login', '/signup', '/about'];
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const contextVal = useAuth();
   const navigate = useNavigate();
+  const currentPath = window.location.pathname;
+  const isPublic = PUBLIC_PATHS.includes(currentPath);
 
   useEffect(() => {
-    const currentPath = window.location.pathname;
-    const publicPaths = ['/login', '/signup'];
-    
-    if (!contextVal.isAuthenticated && !publicPaths.includes(currentPath)) {
-      console.log('User is not authenticated, redirecting to login page');
-      navigate({
-        pathname: '/login',
-      });
+    if (!contextVal.isAuthenticated && !isPublic) {
+      navigate('/login', { replace: true });
     }
-  }, [contextVal.isAuthenticated, navigate]);
+  }, [contextVal.isAuthenticated, isPublic, navigate]);
 
   return (
     <AuthContext.Provider value={contextVal}>{children}</AuthContext.Provider>

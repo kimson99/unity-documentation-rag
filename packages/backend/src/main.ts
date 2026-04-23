@@ -64,7 +64,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // Security
-  app.use(helmet());
+  app.use(helmet({ crossOriginResourcePolicy: false }));
 
   await app.listen(process.env.PORT ?? 5500);
 }

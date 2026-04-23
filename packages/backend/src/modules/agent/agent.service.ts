@@ -41,12 +41,10 @@ export class AgentService {
     );
 
     this.addTools();
-    if (this.tools.length > 0) {
-      this.model.bindTools(this.tools);
-    }
 
     this.agent = createAgent({
       model: this.model,
+      tools: this.tools,
       systemPrompt: this.systemPrompt,
       responseFormat: this.responseSchema,
     });

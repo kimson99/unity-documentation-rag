@@ -111,12 +111,6 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                     value: 8,
                     message: 'Password must be at least 8 characters',
                   },
-                  pattern: {
-                    value:
-                      /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-                    message:
-                      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
-                  },
                 })}
               />
               {errors.password && (
@@ -154,7 +148,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                   Sign up with Google
                 </Button>
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="#">Sign in</a>
+                  Already have an account? <a href="/login">Sign in</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>

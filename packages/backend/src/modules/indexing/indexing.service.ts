@@ -10,6 +10,7 @@ import { Queue } from 'bullmq';
 import * as cheerio from 'cheerio';
 import { Document } from 'langchain';
 import path from 'path';
+import * as fs from 'fs';
 import { ConfigService } from 'src/config/config.service';
 import { DocumentIndexing } from 'src/database/models/document-indexing.model';
 import {
@@ -21,11 +22,14 @@ import TurndownService from 'turndown';
 import { In, Repository } from 'typeorm';
 import { IndexDocumentsDto } from './indexing.dto';
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const pdfParse = require('pdf-parse');
+
 @Injectable()
 export class IndexingService {
   private vectorStore: PGVectorStore;
   private textSplitter: RecursiveCharacterTextSplitter;
-  private supportedMimetypes = ['text/plain', 'text/html', 'text/markdown'];
+  private supportedMimetypes = ['text/plain', 'text/html', 'text/markdown', 'application/pdf'];
 
   private logger = new Logger(IndexingService.name);
 
@@ -64,20 +68,15 @@ export class IndexingService {
   public async indexFile(filePath: string) {
     await this.initVectorStore();
     this.initTextSplitter('html');
-    const resolvedPath = path.join(process.cwd(), '.', filePath);
+    const resolvedPath = path.resolve(process.cwd(), filePath);
     console.log(resolvedPath);
     const docs = await this.loadDocument(resolvedPath);
     const splitDocs = await this.splitDocument(docs);
     this.logger.log(
       `Loaded ${docs.length} documents, split into ${splitDocs.length} chunks.`,
     );
-    this.logger.debug(
-      `Empty chunks: ${splitDocs.filter((doc) => doc.pageContent.trim() === '').length}`,
-    );
-    const testDocs = splitDocs
-      .filter((doc) => doc.pageContent.trim().length > 0)
-      .slice(0, 1);
-    await this.storeVectors(testDocs);
+    const filteredDocs = splitDocs.filter((doc) => doc.pageContent.trim().length > 0);
+    await this.storeVectors(filteredDocs);
   }
 
   public async queueIndexDocuments(dto: IndexDocumentsDto) {
@@ -124,10 +123,7 @@ export class IndexingService {
   }) {
     const { fileId, documentIndexingId, status } = dto;
     return await this.fileIndexingRepository.update(
-      {
-        fileId,
-        documentIndexingId,
-      },
+      { fileId, documentIndexingId },
       { status },
     );
   }
@@ -150,7 +146,6 @@ export class IndexingService {
         ? RecursiveCharacterTextSplitter.fromLanguage(language, indexingConfig)
         : new RecursiveCharacterTextSplitter(indexingConfig);
     }
-
     return this.textSplitter;
   }
 
@@ -164,11 +159,24 @@ export class IndexingService {
 
   private async loadDocument(filePath: string) {
     const ext = filePath.split('.').pop()?.toLowerCase();
-    if (!ext || !['txt', 'html', 'md'].includes(ext)) {
+    if (!ext || !['txt', 'html', 'md', 'pdf'].includes(ext)) {
       throw new Error(
-        'Unsupported file type. Only .txt, .html, and .md are supported.',
+        'Unsupported file type. Only .txt, .html, .md, and .pdf are supported.',
       );
     }
+
+    if (ext === 'pdf') {
+      this.logger.debug(`Extracting text from PDF document`);
+      const dataBuffer = fs.readFileSync(filePath);
+      const pdfData = await pdfParse(dataBuffer);
+      return [
+        new Document({
+          pageContent: pdfData.text,
+          metadata: { source: filePath, pages: pdfData.numpages },
+        }),
+      ];
+    }
+
     const loader = new TextLoader(filePath);
     const docs = await loader.load();
 
@@ -178,12 +186,10 @@ export class IndexingService {
         codeBlockStyle: 'fenced',
         headingStyle: 'atx',
       });
-
       const rawHtml = docs[0].pageContent;
       const $ = cheerio.load(rawHtml);
       $('script, style, noscript').remove();
       const cleanedHtml = $('body').html() ?? '';
-
       docs[0].pageContent = turndownService.turndown(cleanedHtml);
     }
 

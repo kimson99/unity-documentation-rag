@@ -39,6 +39,6 @@ export class IndexingProcessor extends WorkerHost {
       documentIndexingId: job.data.documentIndexingId,
       status: 'failed',
     });
-    this.logger.error('Job id %s failed: %o', job.id, error);
+    this.logger.error('Job id %s failed: %s', job.id, error?.message ?? JSON.stringify(error), error?.stack);
   }
 }

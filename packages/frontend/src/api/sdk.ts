@@ -102,6 +102,7 @@ export interface IndexDocumentsDto {
 }
 
 export interface IndexDocumentResponseDto {
+  /** Document indexing job ID */
   documentIndexingId: string;
   fileIds: string[];
 }
@@ -110,6 +111,7 @@ export interface FileIndexingDto {
   id: string;
   fileId: string;
   documentIndexingId: string;
+  /** in-progress | completed | failed */
   status: string;
 }
 

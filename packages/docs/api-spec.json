@@ -519,7 +519,14 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentIndexingDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -802,6 +809,10 @@
       "IndexDocumentResponseDto": {
         "type": "object",
         "properties": {
+          "documentIndexingId": {
+            "type": "string",
+            "description": "Document indexing job ID"
+          },
           "fileIds": {
             "type": "array",
             "items": {
@@ -810,7 +821,50 @@
           }
         },
         "required": [
+          "documentIndexingId",
           "fileIds"
+        ]
+      },
+      "FileIndexingDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "fileId": {
+            "type": "string"
+          },
+          "documentIndexingId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "description": "in-progress | completed | failed"
+          }
+        },
+        "required": [
+          "id",
+          "fileId",
+          "documentIndexingId",
+          "status"
+        ]
+      },
+      "DocumentIndexingDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "fileIndexings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileIndexingDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "fileIndexings"
         ]
       }
     }
