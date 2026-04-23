@@ -126,6 +126,12 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+# JetBrains IDE
+.idea/
+
+# VS Code
+.vscode/
+
 # pnpm
 .pnpm-store
 
