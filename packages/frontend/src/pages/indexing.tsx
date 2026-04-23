@@ -16,9 +16,8 @@ export default function Indexing() {
     },
     onSuccess: (response) => {
       toast.success('Indexing job queued successfully!');
-      if (response.data?.documentIndexingId) {
-        setDocumentIndexingId(response.data.documentIndexingId);
-      }
+      const id = response.data?.documentIndexingId;
+      if (id) setDocumentIndexingId(id);
     },
     onError: (error) => {
       toast.error(`Indexing failed: ${error.message}`);
@@ -46,11 +45,11 @@ export default function Indexing() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'COMPLETED':
+      case 'completed':
         return 'text-green-600';
-      case 'FAILED':
+      case 'failed':
         return 'text-red-600';
-      case 'IN_PROGRESS':
+      case 'in-progress':
         return 'text-yellow-600';
       default:
         return 'text-gray-600';
@@ -108,7 +107,7 @@ export default function Indexing() {
                 {indexingStatus.data.fileIndexings && indexingStatus.data.fileIndexings.length > 0 ? (
                   <div className="space-y-2">
                     <h3 className="font-medium">File Indexing Progress:</h3>
-                    {indexingStatus.data.fileIndexings.map((fileIndexing: any) => (
+                    {indexingStatus.data.fileIndexings.map((fileIndexing) => (
                       <div
                         key={fileIndexing.id}
                         className="flex items-center justify-between p-3 border rounded-lg"

@@ -1,7 +1,11 @@
-import { Controller, Post, Req } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { type Request } from 'express';
-import { ChatSessionDto } from './chat-session.dto';
+import {
+  ChatSessionDto,
+  GetChatSessionsRequestDto,
+  GetChatSessionsResponseDto,
+} from './chat-session.dto';
 import { ChatSessionService } from './chat-session.service';
 
 @Controller('/chat-session')
@@ -16,6 +20,42 @@ export class ChatSessionController {
   })
   public async createSession(@Req() req: Request): Promise<ChatSessionDto> {
     const session = await this.chatSessionService.createSession(req.user.id);
+    return session;
+  }
+
+  @Get('/')
+  @ApiResponse({
+    status: 200,
+    description: 'List of chat sessions for the user.',
+    type: () => GetChatSessionsResponseDto,
+  })
+  public async getSessionsByUserId(
+    @Req() req: Request,
+    @Query() dto: GetChatSessionsRequestDto,
+  ): Promise<GetChatSessionsResponseDto> {
+    const [sessions, total] = await this.chatSessionService.getSessionsByUserId(
+      req.user.id,
+      dto,
+    );
+    return {
+      sessions,
+      total,
+    };
+  }
+
+  @Get('/:sessionId')
+  @ApiResponse({
+    status: 200,
+    type: () => ChatSessionDto,
+  })
+  public async getSessionById(
+    @Param('sessionId') sessionId: string,
+    @Req() req: Request,
+  ): Promise<ChatSessionDto> {
+    const session = await this.chatSessionService.getSessionById(
+      req.user.id,
+      sessionId,
+    );
     return session;
   }
 }

@@ -1,6 +1,10 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
-import { IndexDocumentResponseDto, IndexDocumentsDto } from './indexing.dto';
+import {
+  DocumentIndexingDto,
+  IndexDocumentResponseDto,
+  IndexDocumentsDto,
+} from './indexing.dto';
 import { IndexingService } from './indexing.service';
 
 @Controller('/indexing')
@@ -19,6 +23,7 @@ export class IndexingController {
   }
 
   @Get('/:documentIndexingId')
+  @ApiResponse({ status: 200, type: DocumentIndexingDto })
   public async getDocumentIndexing(
     @Param('documentIndexingId') documentIndexingId: string,
   ) {

@@ -8,21 +8,19 @@ import { toast } from 'sonner';
 
 export default function Files() {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
-  const [uploadedFiles, setUploadedFiles] = useState<Array<{ id: string; name: string }>>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<
+    Array<{ id: string; filename: string; key: string }>
+  >([]);
 
   const uploadMutation = useMutation({
     mutationFn: async (files: FileList) => {
-      const formData = new FormData();
-      Array.from(files).forEach((file) => {
-        formData.append('files', file);
-      });
-      return client.api.fileControllerUploadFile(formData);
+      const fileArray = Array.from(files);
+      return client.api.fileControllerUploadFile({ files: fileArray });
     },
     onSuccess: (response) => {
       toast.success('Files uploaded successfully!');
-      if (response.data) {
-        setUploadedFiles((prev) => [...prev, ...response.data]);
-      }
+      const newFiles = response.data?.files ?? [];
+      setUploadedFiles((prev) => [...prev, ...newFiles]);
       setSelectedFiles(null);
     },
     onError: (error) => {
@@ -95,7 +93,7 @@ export default function Files() {
                   key={file.id}
                   className="flex items-center justify-between p-3 border rounded-lg"
                 >
-                  <span className="text-sm">{file.name}</span>
+                  <span className="text-sm">{file.filename}</span>
                   <span className="text-xs text-muted-foreground">ID: {file.id}</span>
                 </div>
               ))}

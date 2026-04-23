@@ -13,8 +13,8 @@ class AppModule {}
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
-  const service = await app.get(IndexingService);
+  const service = app.get(IndexingService);
   await service.indexFile(path.resolve(__dirname, '../UnityManual.html'));
   await app.close();
 }
-bootstrap();
+void bootstrap();

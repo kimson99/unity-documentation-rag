@@ -29,17 +29,15 @@ export function LoginForm({
 }: React.ComponentProps<'div'>) {
   const { mutateLogin, user, isAuthenticated } = useAuthContext();
 
-  if (!mutateLogin) {
-    return null;
-  }
-
   const { register, handleSubmit, formState } = useForm<LoginDto>({
-    disabled: mutateLogin.isPending,
+    disabled: mutateLogin?.isPending ?? false,
   });
 
   const { errors } = formState;
 
   useEffect(() => {
+    if (!mutateLogin?.error) return;
+
     if (mutateLogin.error instanceof AxiosError) {
       toast.error(mutateLogin.error.response?.data?.message);
       return;
@@ -48,7 +46,7 @@ export function LoginForm({
     toast.error(
       mutateLogin.error?.message || 'An error occurred while logging in',
     );
-  }, [mutateLogin.error]);
+  }, [mutateLogin?.error]);
 
   const navigate = useNavigate();
 
@@ -57,11 +55,11 @@ export function LoginForm({
       email: data.email,
       password: '*'.repeat(data.password.length),
     });
-    mutateLogin.mutate(data);
+    mutateLogin?.mutate(data);
   };
 
   useEffect(() => {
-    if (mutateLogin.isSuccess && user && isAuthenticated) {
+    if (mutateLogin?.isSuccess && user && isAuthenticated) {
       console.log('Login successful, navigating to home page');
       navigate({
         pathname: '/',
@@ -70,7 +68,11 @@ export function LoginForm({
         toast.success('Login successful!');
       }, 500);
     }
-  }, [mutateLogin.isSuccess, navigate, isAuthenticated, user]);
+  }, [mutateLogin?.isSuccess, navigate, isAuthenticated, user]);
+
+  if (!mutateLogin) {
+    return null;
+  }
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>

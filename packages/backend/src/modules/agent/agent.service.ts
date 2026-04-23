@@ -4,6 +4,7 @@ import { ChatGoogle } from '@langchain/google';
 import { Injectable } from '@nestjs/common';
 import { UIMessage } from 'ai';
 import { createAgent, SystemMessage } from 'langchain';
+import { wrapSDK } from 'langsmith/wrappers';
 import { ConfigService } from 'src/config/config.service';
 import { z } from 'zod';
 import { IndexingService } from '../indexing/indexing.service';
@@ -30,11 +31,14 @@ export class AgentService {
     private readonly configService: ConfigService,
     private readonly indexingService: IndexingService,
   ) {
-    this.model = new ChatGoogle({
-      model: 'gemini-2.5-flash',
-      apiKey: this.configService.googleChatConfig.apiKey,
-      temperature: 0.5,
-    });
+    this.model = wrapSDK(
+      new ChatGoogle({
+        model: 'gemini-2.5-flash',
+        apiKey: this.configService.googleChatConfig.apiKey,
+        temperature: 0.5,
+        platformType: 'gcp',
+      }),
+    );
 
     this.addTools();
     if (this.tools.length > 0) {
@@ -50,7 +54,7 @@ export class AgentService {
 
   public async streamChat(
     messages: UIMessage[],
-    onFinish: (content: string) => Promise<void>,
+    onFinish: (parts: any[]) => Promise<void>,
   ) {
     const convertedMessages = await toBaseMessages(messages);
     let accumulatedContent = '';
@@ -66,7 +70,8 @@ export class AgentService {
               accumulatedContent += token;
             },
             async handleLLMEnd() {
-              await onFinish(accumulatedContent);
+              const finalParts = [{ type: 'text', text: accumulatedContent }];
+              await onFinish(finalParts);
             },
           },
         ],
@@ -74,6 +79,33 @@ export class AgentService {
     );
 
     return toUIMessageStream(stream);
+  }
+
+  public async evaluateChat(question: string): Promise<string> {
+    const response = (await this.agent.invoke({
+      messages: [{ role: 'user', content: question }],
+    })) as unknown as { messages: Array<{ content: unknown }> };
+
+    const finalMessage = response.messages[response.messages.length - 1];
+    const content = finalMessage?.content;
+    if (content === null || content === undefined) return '';
+
+    switch (typeof content) {
+      case 'string':
+        return content;
+      case 'number':
+      case 'boolean':
+      case 'bigint':
+        return content.toString();
+      case 'symbol':
+        return (content.description ?? content.toString()).toString();
+      case 'function':
+        return content.name ? `[function ${content.name}]` : '[function]';
+      case 'object':
+        return JSON.stringify(content);
+      default:
+        return '';
+    }
   }
 
   private addTools() {

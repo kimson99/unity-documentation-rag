@@ -113,7 +113,7 @@ export class IndexingService {
     );
     return {
       documentIndexingId: documentIndexing.id,
-      fileIds: files.map((file) => ({ id: file.id })),
+      fileIds: files.map((file) => file.id),
     };
   }
 

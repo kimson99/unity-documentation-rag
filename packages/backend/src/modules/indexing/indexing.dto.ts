@@ -10,7 +10,38 @@ export class IndexDocumentsDto {
 
 export class IndexDocumentResponseDto {
   @ApiProperty({
+    type: String,
+    description: 'Document indexing job ID',
+  })
+  documentIndexingId: string;
+
+  @ApiProperty({
     type: [String],
   })
   fileIds: string[];
+}
+
+export class FileIndexingDto {
+  @ApiProperty({ type: String })
+  id: string;
+
+  @ApiProperty({ type: String })
+  fileId: string;
+
+  @ApiProperty({ type: String })
+  documentIndexingId: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'in-progress | completed | failed',
+  })
+  status: string;
+}
+
+export class DocumentIndexingDto {
+  @ApiProperty({ type: String })
+  id: string;
+
+  @ApiProperty({ type: [FileIndexingDto] })
+  fileIndexings: FileIndexingDto[];
 }

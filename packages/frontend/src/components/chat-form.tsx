@@ -121,12 +121,12 @@ export default function ChatForm({ handleSendMessage }: ChatFormProps) {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Ask anything"
-            className="w-full border-0 p-3 transition-[padding] duration-200 ease-in-out min-h-[48.4px] outline-none text-[16px] text-foreground resize-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent! whitespace-pre-wrap break-words"
+            className="w-full border-0 p-3 transition-[padding] duration-200 ease-in-out min-h-[48.4px] outline-none text-[16px] text-foreground resize-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent! whitespace-pre-wrap wrap-break-word"
             onKeyDown={handleInputKeyDown}
           />
         </div>
 
-        <div className="flex min-h-[40px] items-center gap-2 p-2 pb-1">
+        <div className="flex min-h-10 items-center gap-2 p-2 pb-1">
           <div className="flex aspect-1 items-center gap-1 rounded-full bg-muted p-1.5 text-xs">
             <Zap className="h-4 w-4 text-muted-foreground" />
           </div>
