@@ -21,7 +21,7 @@ describe('AuthService', () => {
         {
           provide: JwtService,
           useValue: {
-            signAsync: jest.fn(async () => 'test-token'),
+            signAsync: jest.fn(() => Promise.resolve('test-token')),
           },
         },
         {
