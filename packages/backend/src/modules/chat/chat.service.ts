@@ -48,6 +48,9 @@ export class ChatService {
       where: { sessionId },
       skip: dto.skip,
       take: dto.take,
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 }

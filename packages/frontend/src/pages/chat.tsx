@@ -166,7 +166,8 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col h-full bg-background">
-      <div className="flex flex-col flex-1 overflow-y-auto p-4 gap-4">
+      <div className="flex flex-col-reverse flex-1 overflow-y-auto p-4 gap-4">
+        <div ref={messagesEndRef} />
         {messages.map((m, index) => {
           const isHistory =
             initialMessageCount.current !== null &&
@@ -209,7 +210,6 @@ export default function Chat() {
             </div>
           );
         })}
-        <div ref={messagesEndRef} />
       </div>
 
       {status === 'submitted' && (
