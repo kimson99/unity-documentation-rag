@@ -20,8 +20,10 @@ import {
   DatabaseIcon,
   HomeIcon,
   MessageCircleIcon,
+  SquarePenIcon,
 } from 'lucide-react';
 import { useLocation } from 'react-router';
+import { Separator } from './ui/separator';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuthContext();
@@ -57,6 +59,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         isActive: pathname.startsWith('/indexing'),
       },
       {
+        title: 'New Chat',
+        url: '/chat',
+        icon: <SquarePenIcon className="h-4 w-4" />,
+        isActive: pathname === '/chat',
+      },
+      {
         title: 'Chat',
         url: '/chat',
         icon: <MessageCircleIcon className="h-4 w-4" />,
@@ -82,6 +90,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           )}
         </div>
       </SidebarHeader>
+      <Separator orientation="horizontal" />
       <SidebarContent>
         <NavMain items={navItems} />
       </SidebarContent>

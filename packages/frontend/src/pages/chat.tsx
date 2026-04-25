@@ -6,7 +6,7 @@ import { useMessaging, type ChatMessageMetadata } from '@/hooks/use-messaging';
 import { useChat } from '@ai-sdk/react';
 import { useQuery } from '@tanstack/react-query';
 import { DefaultChatTransport, type UIMessage } from 'ai';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useSearchParams } from 'react-router';
 import remarkGfm from 'remark-gfm';
@@ -83,7 +83,7 @@ export default function Chat() {
     });
   };
 
-  const { data: chatSession } = useQuery({
+  const { data: chatSession, refetch: refetchChatSession } = useQuery({
     queryKey: ['chatSessionId', sessionId],
     queryFn: async () => {
       if (!sessionId) return null;
@@ -112,7 +112,19 @@ export default function Chat() {
     messages: (historicalMessages?.data?.messages as UIMessage[]) ?? [],
   });
 
-  const initialMessageCount = useRef<number | null>(null);
+  const historicalMessageIds = useMemo(() => {
+    if (!historicalMessages?.data?.messages) return new Set<string>();
+    return new Set(
+      (historicalMessages.data.messages as UIMessage[]).map((m) => m.id),
+    );
+  }, [historicalMessages?.data?.messages]);
+
+  const sortedMessages = useMemo(() => {
+    const live = messages.filter((m) => !historicalMessageIds.has(m.id));
+    const historical = messages.filter((m) => historicalMessageIds.has(m.id));
+    return [...live.reverse(), ...historical];
+  }, [messages, historicalMessageIds]);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -120,20 +132,20 @@ export default function Chat() {
   };
 
   useEffect(() => {
+    if (!sessionId) {
+      setMessages([]);
+      return;
+    }
     if (historicalMessages?.data?.messages) {
       setMessages(historicalMessages.data.messages as UIMessage[]);
     }
-  }, [historicalMessages?.data?.messages, setMessages]);
+  }, [sessionId, historicalMessages?.data?.messages, setMessages]);
 
   useEffect(() => {
-    if (!sessionId) return;
     setChatSession(sessionId);
   }, [sessionId, setChatSession]);
 
   useEffect(() => {
-    if (initialMessageCount.current === null && messages.length > 0) {
-      initialMessageCount.current = messages.length;
-    }
     scrollToBottom();
   }, [messages]);
 
@@ -146,6 +158,18 @@ export default function Chat() {
 
     return () => setHeaderTitle(null);
   }, [chatSession?.data?.title, setHeaderTitle]);
+
+  const prevStatusRef = useRef(status);
+  useEffect(() => {
+    if (
+      prevStatusRef.current === 'streaming' &&
+      status === 'ready' &&
+      sessionId
+    ) {
+      refetchChatSession();
+    }
+    prevStatusRef.current = status;
+  }, [status, sessionId, refetchChatSession]);
 
   const handleSendMessage = async (
     message: string,
@@ -164,14 +188,25 @@ export default function Chat() {
     return <div className="p-4">Loading messages...</div>;
   }
 
+  if (messages.length === 0) {
+    return (
+      <div className="flex flex-col h-full bg-background items-center justify-center px-4">
+        <div className="flex flex-col items-center gap-6 w-full max-w-3xl -mt-16">
+          <div className="text-4xl font-semibold text-foreground">
+            What do you want to know about Unity?
+          </div>
+          <ChatForm handleSendMessage={handleSendMessage} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col h-full bg-background">
       <div className="flex flex-col-reverse flex-1 overflow-y-auto p-4 gap-4">
         <div ref={messagesEndRef} />
-        {messages.map((m, index) => {
-          const isHistory =
-            initialMessageCount.current !== null &&
-            index < initialMessageCount.current;
+        {sortedMessages.map((m) => {
+          const isHistory = historicalMessageIds.has(m.id);
 
           return (
             <div key={m.id} className="flex flex-col gap-1">

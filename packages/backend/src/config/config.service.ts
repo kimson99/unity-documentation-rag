@@ -30,6 +30,10 @@ const ConfigKey = {
 
 type ConfigKey = keyof typeof ConfigKey;
 
+export const EMBEDDING_MODEL = {
+  GEMINI_EMBEDDING_001: 'gemini-embedding-001',
+} as const;
+
 @Injectable()
 export class ConfigService {
   public get(key: string, defVal?: string): string {
@@ -67,11 +71,14 @@ export class ConfigService {
     };
   }
 
-  public get indexingConfig(): IndexingConfig {
-    return {
-      chunkSize: 200,
-      chunkOverlap: 10,
+  public get indexingConfig() {
+    const configMap: Record<string, IndexingConfig> = {
+      [EMBEDDING_MODEL.GEMINI_EMBEDDING_001]: {
+        chunkSize: 2000,
+        chunkOverlap: 250,
+      },
     };
+    return configMap;
   }
 
   public get redisConfig(): RedisConfig {

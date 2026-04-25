@@ -1,5 +1,5 @@
 import { client } from '@/api/client';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useChatSession from './stores/use-chat-session';
 
 export interface ChatMessageMetadata {
@@ -8,6 +8,7 @@ export interface ChatMessageMetadata {
 
 export const useMessaging = () => {
   const { sessionId, setChatSession } = useChatSession();
+  const queryClient = useQueryClient();
 
   const mutateSession = useMutation({
     mutationFn: async () => {
@@ -16,6 +17,7 @@ export const useMessaging = () => {
     },
     onSuccess: (data) => {
       setChatSession(data.id);
+      queryClient.invalidateQueries({ queryKey: ['chatSessions'] });
     },
   });
 

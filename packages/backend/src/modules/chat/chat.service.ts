@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UIMessage } from 'ai';
+import { ChatSession } from 'src/database/models/chat-session.model';
 import { Message } from 'src/database/models/message.model';
 import { Repository } from 'typeorm';
 import { AgentService } from '../agent/agent.service';
@@ -14,7 +15,11 @@ export class ChatService {
   constructor(
     private readonly agentService: AgentService,
     @InjectRepository(Message) private messageRepo: Repository<Message>,
+    @InjectRepository(ChatSession)
+    private chatSessionRepo: Repository<ChatSession>,
   ) {}
+
+  private logger = new Logger(ChatService.name);
 
   public async streamChat({ messages }: { messages: UIMessage[] }) {
     const latestUserMessage = messages[messages.length - 1];
@@ -27,12 +32,33 @@ export class ChatService {
       sessionId,
     });
 
+    const isFirstMessage = messages.length === 1;
+
     return this.agentService.streamChat(messages, async (finalParts: any[]) => {
       await this.saveMessage({
         parts: finalParts,
         role: 'assistant',
         sessionId,
       });
+
+      if (isFirstMessage) {
+        const userText = latestUserMessage.parts
+          .filter((p) => p.type === 'text')
+          .map((p) => (p as { type: 'text'; text: string }).text)
+          .join(' ');
+        this.agentService
+          .generateTitle(userText)
+          .then((title) =>
+            this.chatSessionRepo.update({ id: sessionId }, { title }),
+          )
+          .catch((error) =>
+            this.logger.error(
+              'Failed to update session %s title: %o',
+              sessionId,
+              error,
+            ),
+          );
+      }
     });
   }
 

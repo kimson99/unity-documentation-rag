@@ -13,7 +13,7 @@ import * as fs from 'fs';
 import { Document } from 'langchain';
 import path from 'path';
 import { PDFParse } from 'pdf-parse';
-import { ConfigService } from 'src/config/config.service';
+import { ConfigService, EMBEDDING_MODEL } from 'src/config/config.service';
 import { DocumentIndexing } from 'src/database/models/document-indexing.model';
 import {
   FileIndexing,
@@ -56,12 +56,12 @@ export class IndexingService {
       const config = this.configService.googleChatConfig;
       const embeddings = config.useVertex
         ? new VertexAIEmbeddings({
-            model: 'gemini-embedding-001',
+            model: EMBEDDING_MODEL.GEMINI_EMBEDDING_001,
             apiKey: config.apiKey,
             vertexai: true,
           })
         : new GoogleGenerativeAIEmbeddings({
-            model: 'gemini-embedding-001',
+            model: EMBEDDING_MODEL.GEMINI_EMBEDDING_001,
             taskType: TaskType.RETRIEVAL_DOCUMENT,
             apiKey: config.apiKey,
             maxConcurrency: 1,
@@ -90,9 +90,9 @@ export class IndexingService {
     this.logger.log(
       `Loaded ${docs.length} documents, split into ${splitDocs.length} chunks.`,
     );
-    const filteredDocs = splitDocs
-      .filter((doc) => doc.pageContent.trim().length > 0)
-      .slice(0, 1);
+    const filteredDocs = splitDocs.filter(
+      (doc) => doc.pageContent.trim().length > 0,
+    );
     await this.storeVectors(filteredDocs);
   }
 
@@ -201,7 +201,8 @@ export class IndexingService {
 
   private initTextSplitter(language?: 'html' | 'markdown') {
     if (!this.textSplitter) {
-      const indexingConfig = this.configService.indexingConfig;
+      const indexingConfig =
+        this.configService.indexingConfig[EMBEDDING_MODEL.GEMINI_EMBEDDING_001];
       this.textSplitter = language
         ? RecursiveCharacterTextSplitter.fromLanguage(language, indexingConfig)
         : new RecursiveCharacterTextSplitter(indexingConfig);
@@ -248,14 +249,22 @@ export class IndexingService {
 
     if (ext === 'html') {
       this.logger.debug(`Extracting text from HTML document`);
+
+      const rawHtml = docs[0].pageContent;
+      const $ = cheerio.load(rawHtml);
+      $('script, style, noscript').remove();
+      $('header, footer, nav, aside, iframe').remove();
+      $('img, picture, svg, canvas, video, audio').remove();
+      const cleanedHtml = $('body').html() ?? '';
+
       const turndownService = new TurndownService({
         codeBlockStyle: 'fenced',
         headingStyle: 'atx',
       });
-      const rawHtml = docs[0].pageContent;
-      const $ = cheerio.load(rawHtml);
-      $('script, style, noscript').remove();
-      const cleanedHtml = $('body').html() ?? '';
+      turndownService.addRule('strip-link-urls', {
+        filter: 'a',
+        replacement: (content) => content,
+      });
       docs[0].pageContent = turndownService.turndown(cleanedHtml);
     }
 

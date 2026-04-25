@@ -79,6 +79,16 @@ export class AgentService {
     return toUIMessageStream(stream);
   }
 
+  public async generateTitle(firstUserMessage: string): Promise<string> {
+    const response = await this.model.invoke([
+      {
+        role: 'user',
+        content: `Generate a short, descriptive title (max 6 words) for a conversation that starts with: "${firstUserMessage}". Respond with only the title, no quotes or extra punctuation.`,
+      },
+    ]);
+    return (response.content as string).trim().substring(0, 100);
+  }
+
   public async evaluateChat(question: string): Promise<string> {
     const response = (await this.agent.invoke({
       messages: [{ role: 'user', content: question }],
