@@ -10,6 +10,12 @@
  * ---------------------------------------------------------------
  */
 
+export enum FileIndexingStatus {
+  InProgress = "in-progress",
+  Completed = "completed",
+  Failed = "failed",
+}
+
 export interface LoginDto {
   email: string;
   password: string;
@@ -107,17 +113,30 @@ export interface IndexDocumentResponseDto {
   fileIds: string[];
 }
 
-export interface FileIndexingDto {
-  id: string;
-  fileId: string;
-  documentIndexingId: string;
-  /** in-progress | completed | failed */
-  status: string;
-}
-
 export interface DocumentIndexingDto {
   id: string;
+  fileCount: number;
+  /** @format date-time */
+  createdAt: string;
+}
+
+export interface GetDocumentIndexingsResponseDto {
+  documentIndexings: DocumentIndexingDto[];
+  total: number;
+}
+
+export interface FileIndexingDto {
+  id: string;
+  file: FileDto;
+  status: FileIndexingStatus;
+  error: object | null;
+  /** @format date-time */
+  createdAt: string;
+}
+
+export interface GetFileIndexingsResponseDto {
   fileIndexings: FileIndexingDto[];
+  total: number;
 }
 
 import type {
@@ -586,6 +605,30 @@ export class Api<
      * No description
      *
      * @tags Indexing
+     * @name IndexingControllerGetDocumentIndexings
+     * @request GET:/api/indexing
+     * @secure
+     */
+    indexingControllerGetDocumentIndexings: (
+      query: {
+        skip: number;
+        take: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<GetDocumentIndexingsResponseDto, any>({
+        path: `/api/indexing`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Indexing
      * @name IndexingControllerGetDocumentIndexing
      * @request GET:/api/indexing/{documentIndexingId}
      * @secure
@@ -597,6 +640,31 @@ export class Api<
       this.request<DocumentIndexingDto, any>({
         path: `/api/indexing/${documentIndexingId}`,
         method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Indexing
+     * @name IndexingControllerGetIndexingFiles
+     * @request GET:/api/indexing/{documentIndexingId}/files
+     * @secure
+     */
+    indexingControllerGetIndexingFiles: (
+      documentIndexingId: string,
+      query: {
+        skip: number;
+        take: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<GetFileIndexingsResponseDto, any>({
+        path: `/api/indexing/${documentIndexingId}/files`,
+        method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,

@@ -6,6 +6,7 @@ interface PgConfig {
 
 interface GoogleChatConfig {
   apiKey: string;
+  useVertex?: boolean;
 }
 
 interface IndexingConfig {
@@ -23,6 +24,7 @@ const ConfigKey = {
   PASSWORD_SALT: 'PASSWORD_SALT',
   JWT_SECRET: 'JWT_SECRET',
   GOOGLE_API_KEY: 'GOOGLE_API_KEY',
+  USE_VERTEX: 'USE_VERTEX',
   REDIS_URL: 'REDIS_URL',
 };
 
@@ -61,6 +63,7 @@ export class ConfigService {
   public get googleChatConfig(): GoogleChatConfig {
     return {
       apiKey: this.get(ConfigKey.GOOGLE_API_KEY),
+      useVertex: this.get(ConfigKey.USE_VERTEX) === 'true',
     };
   }
 

@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { FileIndexingStatus } from 'src/database/models/file-indexing.model';
+import { FileDto } from '../file/file.dto';
 
 export class IndexDocumentsDto {
   @ApiProperty({
@@ -21,27 +23,62 @@ export class IndexDocumentResponseDto {
   fileIds: string[];
 }
 
-export class FileIndexingDto {
-  @ApiProperty({ type: String })
-  id: string;
-
-  @ApiProperty({ type: String })
-  fileId: string;
-
-  @ApiProperty({ type: String })
-  documentIndexingId: string;
-
-  @ApiProperty({
-    type: String,
-    description: 'in-progress | completed | failed',
-  })
-  status: string;
-}
-
 export class DocumentIndexingDto {
   @ApiProperty({ type: String })
   id: string;
 
-  @ApiProperty({ type: [FileIndexingDto] })
+  @ApiProperty()
+  fileCount: number;
+
+  @ApiProperty()
+  createdAt: Date;
+}
+
+export class GetDocumentIndexingsDto {
+  @ApiProperty()
+  skip: number;
+
+  @ApiProperty()
+  take: number;
+}
+
+export class GetDocumentIndexingsResponseDto {
+  @ApiProperty({ type: () => [DocumentIndexingDto] })
+  documentIndexings: DocumentIndexingDto[];
+
+  @ApiProperty()
+  total: number;
+}
+
+export class GetFileIndexingsDto {
+  @ApiProperty()
+  skip: number;
+
+  @ApiProperty()
+  take: number;
+}
+
+export class FileIndexingDto {
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty({ type: () => FileDto })
+  file: FileDto;
+
+  @ApiProperty({ enumName: 'FileIndexingStatus', enum: FileIndexingStatus })
+  status: FileIndexingStatus;
+
+  @ApiProperty({ nullable: true })
+  error: string | null;
+
+  @ApiProperty()
+  createdAt: Date;
+}
+
+export class GetFileIndexingsResponseDto {
+  @ApiProperty({ type: () => [FileIndexingDto] })
   fileIndexings: FileIndexingDto[];
+
+  @ApiProperty()
+  total: number;
 }

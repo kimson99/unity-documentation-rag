@@ -502,6 +502,47 @@
         "tags": [
           "Indexing"
         ]
+      },
+      "get": {
+        "operationId": "IndexingController_getDocumentIndexings",
+        "parameters": [
+          {
+            "name": "skip",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDocumentIndexingsResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Indexing"
+        ]
       }
     },
     "/api/indexing/{documentIndexingId}": {
@@ -524,6 +565,57 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DocumentIndexingDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Indexing"
+        ]
+      }
+    },
+    "/api/indexing/{documentIndexingId}/files": {
+      "get": {
+        "operationId": "IndexingController_getIndexingFiles",
+        "parameters": [
+          {
+            "name": "documentIndexingId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "skip",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetFileIndexingsResponseDto"
                 }
               }
             }
@@ -825,46 +917,101 @@
           "fileIds"
         ]
       },
-      "FileIndexingDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "fileId": {
-            "type": "string"
-          },
-          "documentIndexingId": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "description": "in-progress | completed | failed"
-          }
-        },
-        "required": [
-          "id",
-          "fileId",
-          "documentIndexingId",
-          "status"
-        ]
-      },
       "DocumentIndexingDto": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string"
           },
+          "fileCount": {
+            "type": "number"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "fileCount",
+          "createdAt"
+        ]
+      },
+      "GetDocumentIndexingsResponseDto": {
+        "type": "object",
+        "properties": {
+          "documentIndexings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentIndexingDto"
+            }
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "documentIndexings",
+          "total"
+        ]
+      },
+      "FileIndexingStatus": {
+        "type": "string",
+        "enum": [
+          "in-progress",
+          "completed",
+          "failed"
+        ]
+      },
+      "FileIndexingDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "file": {
+            "$ref": "#/components/schemas/FileDto"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileIndexingStatus"
+              }
+            ]
+          },
+          "error": {
+            "type": "object",
+            "nullable": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "file",
+          "status",
+          "error",
+          "createdAt"
+        ]
+      },
+      "GetFileIndexingsResponseDto": {
+        "type": "object",
+        "properties": {
           "fileIndexings": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FileIndexingDto"
             }
+          },
+          "total": {
+            "type": "number"
           }
         },
         "required": [
-          "id",
-          "fileIndexings"
+          "fileIndexings",
+          "total"
         ]
       }
     }

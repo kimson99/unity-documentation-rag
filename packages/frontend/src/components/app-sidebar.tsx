@@ -11,12 +11,13 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import { useAuthContext } from '@/providers/auth-provider';
 import { useQuery } from '@tanstack/react-query';
 import {
+  BrainCogIcon,
   DatabaseIcon,
-  FileTextIcon,
   HomeIcon,
   MessageCircleIcon,
 } from 'lucide-react';
@@ -25,6 +26,8 @@ import { useLocation } from 'react-router';
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuthContext();
   const location = useLocation();
+  const { open } = useSidebar();
+
   const { data: chatSessions } = useQuery({
     queryKey: ['chatSessions'],
     queryFn: async () => {
@@ -48,6 +51,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         isActive: pathname === '/',
       },
       {
+        title: 'Indexing',
+        url: '/indexing',
+        icon: <DatabaseIcon className="h-4 w-4" />,
+        isActive: pathname.startsWith('/indexing'),
+      },
+      {
         title: 'Chat',
         url: '/chat',
         icon: <MessageCircleIcon className="h-4 w-4" />,
@@ -58,18 +67,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           url: `/chat?sessionId=${session.id}`,
         })),
       },
-      {
-        title: 'Files',
-        url: '/files',
-        icon: <FileTextIcon className="h-4 w-4" />,
-        isActive: pathname.startsWith('/files'),
-      },
-      {
-        title: 'Indexing',
-        url: '/indexing',
-        icon: <DatabaseIcon className="h-4 w-4" />,
-        isActive: pathname.startsWith('/indexing'),
-      },
     ];
   }, [chatSessions?.data?.sessions, location.pathname]);
 
@@ -77,7 +74,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <div className="px-4 py-2">
-          <h2 className="text-lg font-semibold">Unity RAG</h2>
+          {open && (
+            <h2 className="text-lg font-semibold flex gap-2 items-center">
+              <BrainCogIcon />
+              <span>Unity RAG</span>
+            </h2>
+          )}
         </div>
       </SidebarHeader>
       <SidebarContent>

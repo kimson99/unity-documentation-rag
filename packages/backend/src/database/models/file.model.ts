@@ -1,14 +1,9 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseModel } from './base.model';
 import { FileIndexing } from './file-indexing.model';
 
 @Entity()
-export class File extends BaseEntity {
+export class File extends BaseModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

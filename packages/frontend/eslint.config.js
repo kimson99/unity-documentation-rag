@@ -23,6 +23,9 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+      parserOptions: {
+        tsconfigRootDir: __dirname,
+      },
     },
     rules: {
       // Generated/3rd-party patterns we don't control (or are noisy in this codebase)

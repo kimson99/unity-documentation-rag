@@ -1,10 +1,5 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseModel } from './base.model';
 import { DocumentIndexing } from './document-indexing.model';
 import { File } from './file.model';
 
@@ -18,7 +13,7 @@ export type FileIndexingStatus =
   (typeof FileIndexingStatus)[keyof typeof FileIndexingStatus];
 
 @Entity()
-export class FileIndexing extends BaseEntity {
+export class FileIndexing extends BaseModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -40,4 +35,7 @@ export class FileIndexing extends BaseEntity {
 
   @Column()
   status: FileIndexingStatus;
+
+  @Column({ type: 'text', nullable: true })
+  error: string | null;
 }
