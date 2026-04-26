@@ -13,6 +13,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "ts": "pnpm node -r ts-node/register -r tsconfig-paths/register",
+    "seed": "pnpm ts src/scripts/seed-unity-docs.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",

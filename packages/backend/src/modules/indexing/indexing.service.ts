@@ -31,7 +31,6 @@ import {
 @Injectable()
 export class IndexingService {
   private vectorStore: PGVectorStore;
-  private textSplitter: RecursiveCharacterTextSplitter;
   private supportedMimetypes = [
     'text/plain',
     'text/html',
@@ -59,12 +58,13 @@ export class IndexingService {
             model: EMBEDDING_MODEL.GEMINI_EMBEDDING_001,
             apiKey: config.apiKey,
             vertexai: true,
+            maxConcurrency: 5,
           })
         : new GoogleGenerativeAIEmbeddings({
             model: EMBEDDING_MODEL.GEMINI_EMBEDDING_001,
             taskType: TaskType.RETRIEVAL_DOCUMENT,
             apiKey: config.apiKey,
-            maxConcurrency: 1,
+            maxConcurrency: 5,
           });
 
       this.vectorStore = await PGVectorStore.initialize(embeddings, {
@@ -81,19 +81,36 @@ export class IndexingService {
     return this.initVectorStore();
   }
 
-  public async indexFile(filePath: string) {
+  public async indexFile(
+    fileKey: string,
+    fileId: string,
+    documentIndexingId: string,
+  ) {
     await this.initVectorStore();
-    this.initTextSplitter('html');
-    const resolvedPath = path.resolve(process.cwd(), filePath);
+    const resolvedPath = path.resolve(process.cwd(), fileKey);
+    const ext = fileKey.split('.').pop()?.toLowerCase();
+
+    const splitterLanguage =
+      ext === 'html' ? 'html' : ext === 'md' ? 'markdown' : undefined;
+    const textSplitter = this.createTextSplitter(splitterLanguage);
+
     const docs = await this.loadDocument(resolvedPath);
-    const splitDocs = await this.splitDocument(docs);
+
+    for (const doc of docs) {
+      doc.metadata = { ...doc.metadata, fileId, documentIndexingId };
+    }
+
+    const splitDocs = await textSplitter.splitDocuments(docs);
     this.logger.log(
       `Loaded ${docs.length} documents, split into ${splitDocs.length} chunks.`,
     );
+
     const filteredDocs = splitDocs.filter(
       (doc) => doc.pageContent.trim().length > 0,
     );
-    await this.storeVectors(filteredDocs);
+
+    await this.vectorStore.delete({ filter: { fileId } });
+    await this.vectorStore.addDocuments(filteredDocs);
   }
 
   public async queueIndexDocuments(dto: IndexDocumentsDto) {
@@ -199,23 +216,12 @@ export class IndexingService {
     };
   }
 
-  private initTextSplitter(language?: 'html' | 'markdown') {
-    if (!this.textSplitter) {
-      const indexingConfig =
-        this.configService.indexingConfig[EMBEDDING_MODEL.GEMINI_EMBEDDING_001];
-      this.textSplitter = language
-        ? RecursiveCharacterTextSplitter.fromLanguage(language, indexingConfig)
-        : new RecursiveCharacterTextSplitter(indexingConfig);
-    }
-    return this.textSplitter;
-  }
-
-  private async splitDocument(docs: Document[]) {
-    return this.textSplitter.splitDocuments(docs);
-  }
-
-  private async storeVectors(vectors: Document[]) {
-    return this.vectorStore.addDocuments(vectors);
+  private createTextSplitter(language?: 'html' | 'markdown') {
+    const indexingConfig =
+      this.configService.indexingConfig[EMBEDDING_MODEL.GEMINI_EMBEDDING_001];
+    return language
+      ? RecursiveCharacterTextSplitter.fromLanguage(language, indexingConfig)
+      : new RecursiveCharacterTextSplitter(indexingConfig);
   }
 
   private async loadDocument(filePath: string) {
@@ -229,16 +235,14 @@ export class IndexingService {
     if (ext === 'pdf') {
       this.logger.debug(`Extracting text from PDF document`);
       const dataBuffer = fs.readFileSync(filePath);
-      const parser = new PDFParse({
-        data: dataBuffer,
-      });
-      const textResult = await parser.getText();
+      const parser = new PDFParse({ data: dataBuffer });
+      const result = await parser.getText();
       return [
         new Document({
-          pageContent: textResult.text,
+          pageContent: result.text,
           metadata: {
             source: filePath,
-            pages: textResult.pages.length,
+            pages: result.pages.length,
           },
         }),
       ];

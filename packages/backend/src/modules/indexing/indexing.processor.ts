@@ -19,7 +19,11 @@ export class IndexingProcessor extends WorkerHost {
 
   public async process(job: Job<IndexingJobData, void, string>) {
     this.logger.log('Processing job id %s: %o', job.id, job.data);
-    await this.indexingService.indexFile(job.data.fileKey);
+    await this.indexingService.indexFile(
+      job.data.fileKey,
+      job.data.fileId,
+      job.data.documentIndexingId,
+    );
   }
 
   @OnWorkerEvent('completed')

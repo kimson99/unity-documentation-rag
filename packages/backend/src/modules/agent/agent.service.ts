@@ -124,7 +124,10 @@ export class AgentService {
     const retrieve = tool(
       async ({ query }: { query: string }) => {
         const vectorStore = await this.indexingService.getVectorStore();
-        const retrievedDocs = await vectorStore.similaritySearch(query, 5);
+        const retrievedDocs = await vectorStore.maxMarginalRelevanceSearch(
+          query,
+          { k: 6, fetchK: 20 },
+        );
         const serialized = retrievedDocs
           .map(
             (doc) =>
