@@ -83,10 +83,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <div className="px-4 py-2">
           {open && (
-            <h2 className="text-lg font-semibold flex gap-2 items-center">
+            <div className="text-lg font-semibold flex gap-2 items-center text-sidebar-foreground">
               <BrainCogIcon />
               <span>Unity RAG</span>
-            </h2>
+            </div>
           )}
         </div>
       </SidebarHeader>

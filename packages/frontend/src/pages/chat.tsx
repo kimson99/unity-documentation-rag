@@ -11,26 +11,10 @@ import ReactMarkdown from 'react-markdown';
 import { useSearchParams } from 'react-router';
 import remarkGfm from 'remark-gfm';
 
-const extractAgentResponse = (rawText: string) => {
-  try {
-    const parsed = JSON.parse(rawText);
-    return parsed.agentResponse || rawText;
-  } catch {
-    // Fallback for partial JSON streamed as text
-    const match = rawText.match(/"agentResponse"\s*:\s*"([\s\S]*)/);
-    if (match) {
-      let partial = match[1];
-      partial = partial.replace(/["}\s]*$/, '');
-      partial = partial.replace(/\\n/g, '\n');
-      return partial;
-    }
-    return rawText;
-  }
-};
 
 const TypewriterText = ({
   text,
-  speed = 100,
+  speed = 15,
   animate = true,
   onUpdate,
 }: {
@@ -40,28 +24,30 @@ const TypewriterText = ({
   onUpdate?: () => void;
 }) => {
   const [displayedText, setDisplayedText] = useState(animate ? '' : text);
-  const isAnimating = useRef(animate);
+  const textRef = useRef(text);
+  textRef.current = text;
 
   useEffect(() => {
-    isAnimating.current = animate;
-    setDisplayedText(animate ? '' : text);
-  }, [text, animate]);
+    if (!animate) setDisplayedText(text);
+  }, [animate, text]);
 
   useEffect(() => {
-    if (!isAnimating.current) return;
+    if (!animate) return;
 
-    if (displayedText.length >= text.length) return;
-
-    const timer: ReturnType<typeof setInterval> = setInterval(() => {
-      setDisplayedText((prev) => text.substring(0, prev.length + 1));
+    const timer = setInterval(() => {
+      setDisplayedText((prev) => {
+        const full = textRef.current;
+        if (prev.length >= full.length) return prev;
+        return full.substring(0, prev.length + 1);
+      });
     }, speed);
 
     return () => clearInterval(timer);
-  }, [text, speed, displayedText]);
+  }, [animate, speed]);
 
   useEffect(() => {
-    if (isAnimating.current && onUpdate) onUpdate();
-  }, [displayedText, onUpdate]);
+    if (animate && onUpdate) onUpdate();
+  }, [displayedText, onUpdate, animate]);
 
   return (
     <div className="prose dark:prose-invert max-w-none w-full">
@@ -126,9 +112,18 @@ export default function Chat() {
   }, [messages, historicalMessageIds]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+  const isNearBottom = () => {
+    const el = scrollContainerRef.current;
+    if (!el) return true;
+    // flex-col-reverse: scrollTop=0 is visual bottom, increases as user scrolls up
+    return el.scrollTop < 150;
+  };
+
+  const scrollToBottom = (force = false) => {
+    if (!force && !isNearBottom()) return;
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -178,6 +173,7 @@ export default function Chat() {
     if (!sessionId) {
       startNewSession(metadata.sessionId);
     }
+    scrollToBottom(true);
     await sendMessage({
       text: message,
       metadata,
@@ -203,7 +199,7 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col h-full bg-background">
-      <div className="flex flex-col-reverse flex-1 overflow-y-auto p-4 gap-4">
+      <div ref={scrollContainerRef} className="flex flex-col-reverse flex-1 overflow-y-auto p-4 gap-4">
         <div ref={messagesEndRef} />
         {sortedMessages.map((m) => {
           const isHistory = historicalMessageIds.has(m.id);
@@ -228,15 +224,13 @@ export default function Chat() {
                   );
                 }
 
-                const cleanText = extractAgentResponse(part.text);
                 return (
                   <div key={i} className="flex items-end gap-2">
                     <div className="max-w-[72%] bg-muted/60 border border-border/20 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm leading-relaxed">
                       <TypewriterText
-                        text={cleanText}
+                        text={part.text}
                         speed={15}
                         animate={!isHistory}
-                        onUpdate={scrollToBottom}
                       />
                     </div>
                   </div>

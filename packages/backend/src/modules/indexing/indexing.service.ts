@@ -8,11 +8,11 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Queue } from 'bullmq';
-import * as cheerio from 'cheerio';
 import * as fs from 'fs';
 import { Document } from 'langchain';
 import path from 'path';
 import { PDFParse } from 'pdf-parse';
+import { extractHtmlToMarkdown } from 'src/common/html-extractor';
 import { ConfigService, EMBEDDING_MODEL } from 'src/config/config.service';
 import { DocumentIndexing } from 'src/database/models/document-indexing.model';
 import {
@@ -20,7 +20,6 @@ import {
   FileIndexingStatus,
 } from 'src/database/models/file-indexing.model';
 import { File } from 'src/database/models/file.model';
-import TurndownService from 'turndown';
 import { In, Repository } from 'typeorm';
 import {
   GetDocumentIndexingsDto,
@@ -253,23 +252,7 @@ export class IndexingService {
 
     if (ext === 'html') {
       this.logger.debug(`Extracting text from HTML document`);
-
-      const rawHtml = docs[0].pageContent;
-      const $ = cheerio.load(rawHtml);
-      $('script, style, noscript').remove();
-      $('header, footer, nav, aside, iframe').remove();
-      $('img, picture, svg, canvas, video, audio').remove();
-      const cleanedHtml = $('body').html() ?? '';
-
-      const turndownService = new TurndownService({
-        codeBlockStyle: 'fenced',
-        headingStyle: 'atx',
-      });
-      turndownService.addRule('strip-link-urls', {
-        filter: 'a',
-        replacement: (content) => content,
-      });
-      docs[0].pageContent = turndownService.turndown(cleanedHtml);
+      docs[0].pageContent = extractHtmlToMarkdown(docs[0].pageContent);
     }
 
     return docs;
