@@ -62,6 +62,10 @@ export class ChatService {
     });
   }
 
+  public async evaluateChat(question: string) {
+    return this.agentService.evaluateChatWithContext(question);
+  }
+
   public async saveMessage(message: Partial<Message>) {
     return this.messageRepo.save(message);
   }

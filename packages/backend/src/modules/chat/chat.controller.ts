@@ -5,6 +5,8 @@ import { type Response } from 'express';
 import { SkipAuth } from '../auth/auth.decorator';
 import {
   ChatStreamDto,
+  EvaluateChatRequestDto,
+  EvaluateChatResponseDto,
   GetMessagesBySessionIdRequestDto,
   GetMessagesBySessionIdResponseDto,
 } from './chat.dto';
@@ -21,6 +23,15 @@ export class ChatController {
       stream: await this.chatService.streamChat(dto),
       response: res,
     });
+  }
+
+  @Post('/evaluate')
+  @SkipAuth()
+  @ApiResponse({ status: 200, type: () => EvaluateChatResponseDto })
+  public async evaluate(
+    @Body() dto: EvaluateChatRequestDto,
+  ): Promise<EvaluateChatResponseDto> {
+    return this.chatService.evaluateChat(dto.question);
   }
 
   @Get('/sessions/:sessionId/messages')

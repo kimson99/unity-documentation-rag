@@ -26,6 +26,10 @@ const ConfigKey = {
   GOOGLE_API_KEY: 'GOOGLE_API_KEY',
   USE_VERTEX: 'USE_VERTEX',
   REDIS_URL: 'REDIS_URL',
+  CHUNK_SIZE: 'CHUNK_SIZE',
+  CHUNK_OVERLAP: 'CHUNK_OVERLAP',
+  TOP_K: 'TOP_K',
+  RETRIEVAL_MODE: 'RETRIEVAL_MODE',
 };
 
 type ConfigKey = keyof typeof ConfigKey;
@@ -72,13 +76,22 @@ export class ConfigService {
   }
 
   public get indexingConfig() {
+    const chunkSize = parseInt(this.get(ConfigKey.CHUNK_SIZE, '2000'));
+    const chunkOverlap = parseInt(this.get(ConfigKey.CHUNK_OVERLAP, '250'));
     const configMap: Record<string, IndexingConfig> = {
-      [EMBEDDING_MODEL.GEMINI_EMBEDDING_001]: {
-        chunkSize: 2000,
-        chunkOverlap: 250,
-      },
+      [EMBEDDING_MODEL.GEMINI_EMBEDDING_001]: { chunkSize, chunkOverlap },
     };
     return configMap;
+  }
+
+  public get topK(): number {
+    return parseInt(this.get(ConfigKey.TOP_K, '6')) || 6;
+  }
+
+  public get retrievalMode(): 'similarity' | 'mmr' | 'hybrid' {
+    const mode = this.get(ConfigKey.RETRIEVAL_MODE, 'similarity');
+    if (mode === 'mmr' || mode === 'hybrid') return mode;
+    return 'similarity';
   }
 
   public get redisConfig(): RedisConfig {

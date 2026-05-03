@@ -60,6 +60,19 @@ export class ChatMessageDto {
   createdAt: Date;
 }
 
+export class EvaluateChatRequestDto {
+  @ApiProperty()
+  question: string;
+}
+
+export class EvaluateChatResponseDto {
+  @ApiProperty()
+  answer: string;
+
+  @ApiProperty({ type: [String] })
+  contexts: string[];
+}
+
 export class GetMessagesBySessionIdResponseDto {
   @ApiProperty({ type: () => [ChatMessageDto] })
   messages: ChatMessageDto[];

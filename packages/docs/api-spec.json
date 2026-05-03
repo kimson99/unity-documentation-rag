@@ -288,6 +288,37 @@
         ]
       }
     },
+    "/api/chat/evaluate": {
+      "post": {
+        "operationId": "ChatController_evaluate",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluateChatRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluateChatResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Chat"
+        ]
+      }
+    },
     "/api/chat/sessions/{sessionId}/messages": {
       "get": {
         "operationId": "ChatController_getMessagesBySessionId",
@@ -730,6 +761,35 @@
         },
         "required": [
           "messages"
+        ]
+      },
+      "EvaluateChatRequestDto": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "question"
+        ]
+      },
+      "EvaluateChatResponseDto": {
+        "type": "object",
+        "properties": {
+          "answer": {
+            "type": "string"
+          },
+          "contexts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "answer",
+          "contexts"
         ]
       },
       "MessageTextPartDto": {

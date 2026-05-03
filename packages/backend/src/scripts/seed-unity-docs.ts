@@ -40,12 +40,26 @@ class SeedService {
     return results;
   }
 
-  async run(docsDir: string, limit?: number, batchSize = 500) {
-    const resolvedDir = path.resolve(docsDir);
-    console.log(`Scanning ${resolvedDir}...`);
+  async run(
+    docsDir: string | undefined,
+    limit?: number,
+    batchSize = 500,
+    evalFilesPath?: string,
+  ) {
+    let filePaths: string[];
 
-    let filePaths = this.findHtmlFiles(resolvedDir);
-    console.log(`Found ${filePaths.length} HTML files`);
+    if (evalFilesPath) {
+      const resolved = path.resolve(evalFilesPath);
+      console.log(`Loading eval file list from ${resolved}...`);
+      filePaths = JSON.parse(fs.readFileSync(resolved, 'utf-8')) as string[];
+      console.log(`Found ${filePaths.length} files in eval dataset`);
+    } else {
+      if (!docsDir) throw new Error('--dir is required when --eval-files is not provided');
+      const resolvedDir = path.resolve(docsDir);
+      console.log(`Scanning ${resolvedDir}...`);
+      filePaths = this.findHtmlFiles(resolvedDir);
+      console.log(`Found ${filePaths.length} HTML files`);
+    }
 
     if (limit) {
       filePaths = filePaths.slice(0, limit);
@@ -154,9 +168,12 @@ async function bootstrap() {
   };
 
   const docsDir = get('--dir');
-  if (!docsDir) {
+  const evalFiles = get('--eval-files');
+
+  if (!docsDir && !evalFiles) {
     console.error(
-      'Usage: pnpm ts src/scripts/seed-unity-docs.ts --dir <path> [--limit <n>] [--batch-size <n>]',
+      'Usage: pnpm ts src/scripts/seed-unity-docs.ts --dir <path> [--limit <n>] [--batch-size <n>]\n' +
+      '       pnpm ts src/scripts/seed-unity-docs.ts --eval-files <path-to-unity_dataset-files.json> [--batch-size <n>]',
     );
     process.exit(1);
   }
@@ -170,7 +187,7 @@ async function bootstrap() {
 
   try {
     const service = app.get(SeedService);
-    await service.run(docsDir, limit, batchSize);
+    await service.run(docsDir, limit, batchSize, evalFiles);
   } finally {
     await app.close();
   }

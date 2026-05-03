@@ -42,6 +42,15 @@ export interface ChatStreamDto {
   messages: string[];
 }
 
+export interface EvaluateChatRequestDto {
+  question: string;
+}
+
+export interface EvaluateChatResponseDto {
+  answer: string;
+  contexts: string[];
+}
+
 export interface MessageTextPartDto {
   /**
    * The type of the message part
@@ -474,6 +483,26 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Chat
+     * @name ChatControllerEvaluate
+     * @request POST:/api/chat/evaluate
+     */
+    chatControllerEvaluate: (
+      data: EvaluateChatRequestDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<EvaluateChatResponseDto, any>({
+        path: `/api/chat/evaluate`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
