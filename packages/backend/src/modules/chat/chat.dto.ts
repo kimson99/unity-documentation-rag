@@ -8,6 +8,7 @@ export class ChatStreamDto {
 
 export type ChatMessageMetadata = {
   sessionId?: string;
+  temperature?: number;
 };
 
 export class GetMessagesBySessionIdRequestDto {

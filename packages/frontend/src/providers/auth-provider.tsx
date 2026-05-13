@@ -11,6 +11,7 @@ import type {
   UseMutationResult,
 } from '@tanstack/react-query';
 import type { AxiosResponse } from 'axios';
+import { LoadingOverlay } from '@/components/loading-overlay';
 import { createContext, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -73,6 +74,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       navigate('/login', { replace: true });
     }
   }, [contextVal.isAuthenticated, isPublic, navigate]);
+
+  if (contextVal.isAuthenticated && contextVal.isPendingUser) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <AuthContext.Provider value={contextVal}>{children}</AuthContext.Provider>

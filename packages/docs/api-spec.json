@@ -881,6 +881,9 @@
           "title": {
             "type": "string"
           },
+          "temperature": {
+            "type": "number"
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string"
@@ -889,6 +892,7 @@
         "required": [
           "id",
           "title",
+          "temperature",
           "createdAt"
         ]
       },

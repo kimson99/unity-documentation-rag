@@ -54,10 +54,25 @@ export class AgentService {
   public async streamChat(
     messages: UIMessage[],
     onFinish: (parts: any[]) => Promise<void>,
+    temperature = 0.5,
   ) {
+    const model = new ChatGoogle({
+      model: 'gemini-2.5-flash',
+      apiKey: this.configService.googleChatConfig.apiKey,
+      temperature,
+      platformType: 'gcp',
+      thinkingBudget: 0,
+    });
+
+    const agent = createAgent({
+      model,
+      tools: this.tools,
+      systemPrompt: this.systemPrompt,
+    });
+
     const convertedMessages = await toBaseMessages(messages);
     let accumulatedContent = '';
-    const stream = await this.agent.stream(
+    const stream = await agent.stream(
       {
         messages: convertedMessages,
       },

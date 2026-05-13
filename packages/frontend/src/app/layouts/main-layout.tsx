@@ -4,6 +4,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { TypewriterTitle } from '@/components/typewriter-title';
 import { useLayoutStore } from '@/hooks/stores/use-layout-store';
 import { Outlet } from 'react-router';
 
@@ -17,7 +18,9 @@ export default function MainLayout() {
           <div>
             <SidebarTrigger className="-ml-1" />
           </div>
-          <div className="text-sm font-medium truncate">{headerTitle}</div>
+          <div className="text-sm font-medium truncate">
+            <TypewriterTitle title={headerTitle} />
+          </div>
         </header>
         <Outlet />
       </SidebarInset>

@@ -12,33 +12,30 @@ import { Textarea } from '@/components/ui/textarea';
 import useMessaging, { type ChatMessageMetadata } from '@/hooks/use-messaging';
 import { cn } from '@/lib/utils';
 import {
-  AlertTriangleIcon,
   ArrowUpIcon,
-  GaugeCircleIcon,
+  BoxIcon,
+  CodeIcon,
   ImageUpIcon,
-  ScrollTextIcon,
+  LayersIcon,
   Zap,
 } from 'lucide-react';
 import { useRef, useState } from 'react';
 
 const PROMPTS = [
   {
-    icon: ScrollTextIcon,
-    text: 'Write documentation',
-    prompt:
-      'Write comprehensive documentation for this codebase, including setup instructions, API references, and usage examples.',
+    icon: BoxIcon,
+    text: 'How do I use Rigidbody?',
+    prompt: 'How do I use Rigidbody in Unity?',
   },
   {
-    icon: GaugeCircleIcon,
-    text: 'Optimize performance',
-    prompt:
-      'Analyze the codebase for performance bottlenecks and suggest optimizations to improve loading times and runtime efficiency.',
+    icon: CodeIcon,
+    text: 'Coroutine vs async/await',
+    prompt: 'What is the difference between coroutines and async/await in Unity?',
   },
   {
-    icon: AlertTriangleIcon,
-    text: 'Find and fix 3 bugs',
-    prompt:
-      'Scan through the codebase to identify and fix 3 critical bugs, providing detailed explanations for each fix.',
+    icon: LayersIcon,
+    text: 'Physics layers setup',
+    prompt: 'How do I set up physics layers and layer masks in Unity?',
   },
 ];
 
@@ -46,16 +43,19 @@ const TEMPERATURES = [
   {
     value: 'high',
     name: 'High',
+    temperature: 1.0,
     description: 'Creative and diverse responses',
   },
   {
     value: 'medium',
     name: 'Medium',
+    temperature: 0.5,
     description: 'Balanced responses',
   },
   {
     value: 'low',
     name: 'Low',
+    temperature: 0.1,
     description: 'Focused and deterministic responses',
   },
 ];
@@ -65,12 +65,13 @@ interface ChatFormProps {
     message: string,
     metadata: ChatMessageMetadata,
   ) => Promise<void>;
+  showPrompts?: boolean;
 }
 
-export default function ChatForm({ handleSendMessage }: ChatFormProps) {
+export default function ChatForm({ handleSendMessage, showPrompts = true }: ChatFormProps) {
   const [inputValue, setInputValue] = useState('');
   const [selectedTemperature, setSelectedTemperature] = useState(
-    TEMPERATURES[0],
+    TEMPERATURES[1],
   );
   const { sessionId, mutateSession } = useMessaging();
 
@@ -99,7 +100,10 @@ export default function ChatForm({ handleSendMessage }: ChatFormProps) {
       _sessionId = result.id;
     }
     console.log('Sending message with session ID:', _sessionId);
-    handleSendMessage(inputValue, { sessionId: _sessionId });
+    handleSendMessage(inputValue, {
+      sessionId: _sessionId,
+      temperature: selectedTemperature.temperature,
+    });
     setInputValue('');
   };
 
@@ -158,14 +162,14 @@ export default function ChatForm({ handleSendMessage }: ChatFormProps) {
             <Button
               variant="ghost"
               size="icon-sm"
-              className="text-muted-foreground hover:text-foreground transition-colors duration-100 ease-out"
+              className="hidden"
               title="Attach images"
               aria-label="Attach images"
             >
               <ImageUpIcon className="h-5 w-5" />
             </Button>
 
-            <Button
+<Button
               variant="ghost"
               size="icon-sm"
               className={cn(
@@ -182,22 +186,24 @@ export default function ChatForm({ handleSendMessage }: ChatFormProps) {
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-2">
-        {PROMPTS.map((button) => {
-          const IconComponent = button.icon;
-          return (
-            <Button
-              key={button.text}
-              variant="ghost"
-              className="group flex items-center gap-2 rounded-full border px-3 py-2 text-sm text-foreground transition-colors duration-200 ease-out hover:bg-muted/30 h-auto bg-transparent dark:bg-muted"
-              onClick={() => handlePromptClick(button.prompt)}
-            >
-              <IconComponent className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-foreground" />
-              <span>{button.text}</span>
-            </Button>
-          );
-        })}
-      </div>
+      {showPrompts && (
+        <div className="flex flex-wrap justify-center gap-2">
+          {PROMPTS.map((button) => {
+            const IconComponent = button.icon;
+            return (
+              <Button
+                key={button.text}
+                variant="ghost"
+                className="group flex items-center gap-2 rounded-full border px-3 py-2 text-sm text-foreground transition-colors duration-200 ease-out hover:bg-muted/30 h-auto bg-transparent dark:bg-muted"
+                onClick={() => handlePromptClick(button.prompt)}
+              >
+                <IconComponent className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-foreground" />
+                <span>{button.text}</span>
+              </Button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

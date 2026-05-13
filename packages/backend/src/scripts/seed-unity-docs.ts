@@ -54,7 +54,8 @@ class SeedService {
       filePaths = JSON.parse(fs.readFileSync(resolved, 'utf-8')) as string[];
       console.log(`Found ${filePaths.length} files in eval dataset`);
     } else {
-      if (!docsDir) throw new Error('--dir is required when --eval-files is not provided');
+      if (!docsDir)
+        throw new Error('--dir is required when --eval-files is not provided');
       const resolvedDir = path.resolve(docsDir);
       console.log(`Scanning ${resolvedDir}...`);
       filePaths = this.findHtmlFiles(resolvedDir);
@@ -173,7 +174,7 @@ async function bootstrap() {
   if (!docsDir && !evalFiles) {
     console.error(
       'Usage: pnpm ts src/scripts/seed-unity-docs.ts --dir <path> [--limit <n>] [--batch-size <n>]\n' +
-      '       pnpm ts src/scripts/seed-unity-docs.ts --eval-files <path-to-unity_dataset-files.json> [--batch-size <n>]',
+        '       pnpm ts src/scripts/seed-unity-docs.ts --eval-files <path-to-unity_dataset-files.json> [--batch-size <n>]',
     );
     process.exit(1);
   }

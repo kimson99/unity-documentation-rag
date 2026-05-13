@@ -2,9 +2,20 @@ import * as cheerio from 'cheerio';
 import TurndownService from 'turndown';
 
 const NOISE_PATTERNS = [
-  'nav', 'footer', 'header', 'sidebar', 'breadcrumb',
-  'toolbar', 'toc', 'menu', 'cookie', 'banner',
-  'modal', 'overlay', 'popup', 'advertisement',
+  'nav',
+  'footer',
+  'header',
+  'sidebar',
+  'breadcrumb',
+  'toolbar',
+  'toc',
+  'menu',
+  'cookie',
+  'banner',
+  'modal',
+  'overlay',
+  'popup',
+  'advertisement',
 ];
 
 const MAIN_SELECTORS = [

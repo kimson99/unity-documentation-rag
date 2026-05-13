@@ -92,6 +92,7 @@ export interface GetMessagesBySessionIdResponseDto {
 export interface ChatSessionDto {
   id: string;
   title: string;
+  temperature: number;
   /** @format date-time */
   createdAt: string;
 }

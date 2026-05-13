@@ -8,6 +8,9 @@ export class ChatSessionDto {
   title: string;
 
   @ApiProperty()
+  temperature: number;
+
+  @ApiProperty()
   createdAt: Date;
 }
 

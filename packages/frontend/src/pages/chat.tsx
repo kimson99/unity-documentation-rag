@@ -1,15 +1,17 @@
 import { client } from '@/api/client';
 import ChatForm from '@/components/chat-form';
+import ThinkingIndicator from '@/components/thinking-indicator';
 import { BASE_CHAT_API } from '@/config/constant';
 import { useLayoutStore } from '@/hooks/stores/use-layout-store';
 import { useMessaging, type ChatMessageMetadata } from '@/hooks/use-messaging';
 import { useChat } from '@ai-sdk/react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { DefaultChatTransport, type UIMessage } from 'ai';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useSearchParams } from 'react-router';
 import remarkGfm from 'remark-gfm';
+
 
 
 const TypewriterText = ({
@@ -69,13 +71,21 @@ export default function Chat() {
     });
   };
 
-  const { data: chatSession, refetch: refetchChatSession } = useQuery({
+  const queryClient = useQueryClient();
+  const [pollForTitle, setPollForTitle] = useState(false);
+
+  const { data: chatSession } = useQuery({
     queryKey: ['chatSessionId', sessionId],
     queryFn: async () => {
       if (!sessionId) return null;
       return await client.api.chatSessionControllerGetSessionById(sessionId);
     },
     enabled: !!sessionId,
+    refetchInterval: (query) => {
+      if (!pollForTitle) return false;
+      const title = query.state.data?.data?.title;
+      return !title || title === 'New Chat' ? 600 : false;
+    },
   });
 
   const { data: historicalMessages, isLoading: isLoadingHistory } = useQuery({
@@ -117,7 +127,6 @@ export default function Chat() {
   const isNearBottom = () => {
     const el = scrollContainerRef.current;
     if (!el) return true;
-    // flex-col-reverse: scrollTop=0 is visual bottom, increases as user scrolls up
     return el.scrollTop < 150;
   };
 
@@ -145,26 +154,24 @@ export default function Chat() {
   }, [messages]);
 
   useEffect(() => {
-    if (chatSession?.data?.title) {
-      setHeaderTitle(chatSession.data.title);
-    } else {
-      setHeaderTitle('Chat');
+    const title = chatSession?.data?.title;
+    setHeaderTitle(title ?? 'Chat');
+
+    if (title && title !== 'New Chat') {
+      setPollForTitle(false);
+      queryClient.invalidateQueries({ queryKey: ['chatSessions'] });
     }
 
     return () => setHeaderTitle(null);
-  }, [chatSession?.data?.title, setHeaderTitle]);
+  }, [chatSession?.data?.title, setHeaderTitle, queryClient]);
 
   const prevStatusRef = useRef(status);
   useEffect(() => {
-    if (
-      prevStatusRef.current === 'streaming' &&
-      status === 'ready' &&
-      sessionId
-    ) {
-      refetchChatSession();
+    if (prevStatusRef.current === 'streaming' && status === 'ready' && sessionId) {
+      setPollForTitle(true);
     }
     prevStatusRef.current = status;
-  }, [status, sessionId, refetchChatSession]);
+  }, [status, sessionId]);
 
   const handleSendMessage = async (
     message: string,
@@ -241,16 +248,14 @@ export default function Chat() {
         })}
       </div>
 
-      {status === 'submitted' && (
-        <div className="flex px-4">
-          <div className="font-semibold max-w-[72%] bg-muted/40 border border-border/20 px-4 py-2 rounded-2xl rounded-bl-sm text-sm leading-relaxed text-muted-foreground animate-pulse">
-            Thinking...
-          </div>
-        </div>
+      {(status === 'submitted' || (status === 'streaming' && !messages.some(
+        (m) => m.role === 'assistant' && !historicalMessageIds.has(m.id) && m.parts.some((p) => p.type === 'text' && p.text.length > 0),
+      ))) && (
+        <ThinkingIndicator />
       )}
 
       <div className="flex flex-col px-4 py-3 border-t border-border/20 justify-center items-center">
-        <ChatForm handleSendMessage={handleSendMessage} />
+        <ChatForm handleSendMessage={handleSendMessage} showPrompts={false} />
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import useChatSession from './stores/use-chat-session';
 
 export interface ChatMessageMetadata {
   sessionId: string;
+  temperature?: number;
 }
 
 export const useMessaging = () => {

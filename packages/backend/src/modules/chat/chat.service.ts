@@ -23,8 +23,10 @@ export class ChatService {
 
   public async streamChat({ messages }: { messages: UIMessage[] }) {
     const latestUserMessage = messages[messages.length - 1];
-    const sessionId = (latestUserMessage.metadata as ChatMessageMetadata)
-      ?.sessionId;
+    const metadata = latestUserMessage.metadata as ChatMessageMetadata;
+    const sessionId = metadata?.sessionId;
+    const temperature = metadata?.temperature ?? 0.5;
+    const isFirstMessage = messages.length === 1;
 
     await this.saveMessage({
       parts: latestUserMessage.parts,
@@ -32,34 +34,40 @@ export class ChatService {
       sessionId,
     });
 
-    const isFirstMessage = messages.length === 1;
+    return this.agentService.streamChat(
+      messages,
+      async (finalParts: any[]) => {
+        await this.saveMessage({
+          parts: finalParts,
+          role: 'assistant',
+          sessionId,
+        });
 
-    return this.agentService.streamChat(messages, async (finalParts: any[]) => {
-      await this.saveMessage({
-        parts: finalParts,
-        role: 'assistant',
-        sessionId,
-      });
+        if (isFirstMessage) {
+          const userText = latestUserMessage.parts
+            .filter((p) => p.type === 'text')
+            .map((p) => (p as { type: 'text'; text: string }).text)
+            .join(' ');
 
-      if (isFirstMessage) {
-        const userText = latestUserMessage.parts
-          .filter((p) => p.type === 'text')
-          .map((p) => (p as { type: 'text'; text: string }).text)
-          .join(' ');
-        this.agentService
-          .generateTitle(userText)
-          .then((title) =>
-            this.chatSessionRepo.update({ id: sessionId }, { title }),
-          )
-          .catch((error) =>
-            this.logger.error(
-              'Failed to update session %s title: %o',
-              sessionId,
-              error,
-            ),
-          );
-      }
-    });
+          this.agentService
+            .generateTitle(userText)
+            .then((title) =>
+              this.chatSessionRepo.update(
+                { id: sessionId },
+                { title, temperature },
+              ),
+            )
+            .catch((error) =>
+              this.logger.error(
+                'Failed to update session %s title: %o',
+                sessionId,
+                error,
+              ),
+            );
+        }
+      },
+      temperature,
+    );
   }
 
   public async evaluateChat(question: string) {

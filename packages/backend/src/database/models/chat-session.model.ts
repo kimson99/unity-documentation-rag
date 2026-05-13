@@ -23,6 +23,9 @@ export class ChatSession extends BaseModel {
   @Column({ default: 'New Chat' })
   title: string;
 
+  @Column({ type: 'float', default: 0.5 })
+  temperature: number;
+
   @OneToMany(() => Message, (message) => message.session)
   messages: Message[];
 }

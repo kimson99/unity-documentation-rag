@@ -82,8 +82,18 @@ export class IndexingService {
 
   public async getAllDocuments(): Promise<Document[]> {
     const store = await this.initVectorStore();
-    const pool = (store as unknown as { pool: { query: (sql: string) => Promise<{ rows: Array<{ text: string; metadata: Record<string, unknown> }> }> } }).pool;
-    const result = await pool.query('SELECT text, metadata FROM knowledge_base');
+    const pool = (
+      store as unknown as {
+        pool: {
+          query: (sql: string) => Promise<{
+            rows: Array<{ text: string; metadata: Record<string, unknown> }>;
+          }>;
+        };
+      }
+    ).pool;
+    const result = await pool.query(
+      'SELECT text, metadata FROM knowledge_base',
+    );
     return result.rows.map(
       (row) => new Document({ pageContent: row.text, metadata: row.metadata }),
     );
