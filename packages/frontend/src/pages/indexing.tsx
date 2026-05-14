@@ -227,7 +227,7 @@ export default function IndexingPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Indexing</h1>
+          <div className="text-3xl font-bold">Indexing</div>
           <p className="text-muted-foreground mt-1">
             Manage indexing jobs for Unity documentation files
           </p>

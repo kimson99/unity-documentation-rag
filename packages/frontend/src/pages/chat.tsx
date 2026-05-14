@@ -227,7 +227,7 @@ export default function Chat() {
           const createdAt = m.createdAt ? new Date(m.createdAt) : null;
           const timestamp = createdAt ? format(createdAt, 'HH:mm') : null;
           const fullTimestamp = createdAt ? format(createdAt, 'MMM d, yyyy HH:mm:ss') : null;
-
+    
           return (
             <div key={m.id} className="flex flex-col gap-1">
               {m.parts.map((part, i) => {

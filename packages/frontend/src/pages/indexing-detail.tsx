@@ -62,7 +62,7 @@ export default function IndexingDetailPage() {
             Back to Indexing
           </Link>
         </Button>
-        <h1 className="text-3xl font-bold">Indexing Job</h1>
+        <div className="text-3xl font-bold">Indexing Job</div>
         <p className="text-muted-foreground font-mono text-sm mt-1">
           {documentIndexingId}
         </p>

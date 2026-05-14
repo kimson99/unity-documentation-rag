@@ -9,10 +9,11 @@ export const markdownComponents = {
         language={match[1]}
         style={oneDark}
         PreTag="div"
-        className="!rounded-lg !text-xs !my-2"
+        className="rounded-lg! text-xs! my-2!"
         customStyle={{ overflowX: 'auto', maxWidth: '100%' }}
+        codeTagProps={{ style: { display: 'block' } }}
       >
-        {String(children).replace(/\n$/, '')}
+        {String(children)}
       </SyntaxHighlighter>
     ) : (
       <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono" {...rest}>

@@ -32,9 +32,9 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-6 p-6">
       <div>
-        <h1 className="text-3xl font-bold">
+        <div className="text-3xl font-bold">
           Welcome back, {user?.displayName || 'User'}!
-        </h1>
+        </div>
         <p className="text-muted-foreground">Unity Documentation RAG System</p>
       </div>
 
