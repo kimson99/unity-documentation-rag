@@ -15,6 +15,11 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { ChevronRightIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
@@ -57,11 +62,16 @@ export function NavMain({
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.id}>
-                        <SidebarMenuSubButton asChild>
-                          <Link to={subItem.url}>
-                            <span>{subItem.title}</span>
-                          </Link>
-                        </SidebarMenuSubButton>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <SidebarMenuSubButton asChild>
+                              <Link to={subItem.url}>
+                                <span>{subItem.title}</span>
+                              </Link>
+                            </SidebarMenuSubButton>
+                          </TooltipTrigger>
+                          <TooltipContent side="right">{subItem.title}</TooltipContent>
+                        </Tooltip>
                       </SidebarMenuSubItem>
                     ))}
                   </SidebarMenuSub>

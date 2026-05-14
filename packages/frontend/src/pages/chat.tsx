@@ -1,18 +1,19 @@
 import { client } from '@/api/client';
 import ChatForm from '@/components/chat-form';
+import { markdownComponents } from '@/components/markdown-renderer';
 import ThinkingIndicator from '@/components/thinking-indicator';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { BASE_CHAT_API } from '@/config/constant';
 import { useLayoutStore } from '@/hooks/stores/use-layout-store';
 import { useMessaging, type ChatMessageMetadata } from '@/hooks/use-messaging';
 import { useChat } from '@ai-sdk/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { DefaultChatTransport, type UIMessage } from 'ai';
+import { format } from 'date-fns';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useSearchParams } from 'react-router';
 import remarkGfm from 'remark-gfm';
-
-
 
 const TypewriterText = ({
   text,
@@ -53,7 +54,12 @@ const TypewriterText = ({
 
   return (
     <div className="prose dark:prose-invert max-w-none w-full">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{displayedText}</ReactMarkdown>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={markdownComponents}
+      >
+        {displayedText}
+      </ReactMarkdown>
     </div>
   );
 };
@@ -167,7 +173,11 @@ export default function Chat() {
 
   const prevStatusRef = useRef(status);
   useEffect(() => {
-    if (prevStatusRef.current === 'streaming' && status === 'ready' && sessionId) {
+    if (
+      prevStatusRef.current === 'streaming' &&
+      status === 'ready' &&
+      sessionId
+    ) {
       setPollForTitle(true);
     }
     prevStatusRef.current = status;
@@ -206,10 +216,17 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col h-full bg-background">
-      <div ref={scrollContainerRef} className="flex flex-col-reverse flex-1 overflow-y-auto p-4 gap-4">
+      <div
+        ref={scrollContainerRef}
+        className="flex flex-col-reverse flex-1 overflow-y-auto overflow-x-hidden p-4 gap-4"
+      >
         <div ref={messagesEndRef} />
         {sortedMessages.map((m) => {
           const isHistory = historicalMessageIds.has(m.id);
+
+          const createdAt = m.createdAt ? new Date(m.createdAt) : null;
+          const timestamp = createdAt ? format(createdAt, 'HH:mm') : null;
+          const fullTimestamp = createdAt ? format(createdAt, 'MMM d, yyyy HH:mm:ss') : null;
 
           return (
             <div key={m.id} className="flex flex-col gap-1">
@@ -223,7 +240,10 @@ export default function Chat() {
                       className="flex flex-row-reverse items-end gap-2"
                     >
                       <div className="max-w-[72%] bg-blue-100 text-blue-900 dark:bg-blue-950 dark:text-blue-100 px-4 py-2.5 rounded-2xl rounded-br-sm text-sm leading-relaxed">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={markdownComponents}
+                        >
                           {part.text}
                         </ReactMarkdown>
                       </div>
@@ -233,7 +253,7 @@ export default function Chat() {
 
                 return (
                   <div key={i} className="flex items-end gap-2">
-                    <div className="max-w-[72%] bg-muted/60 border border-border/20 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm leading-relaxed">
+                    <div className="max-w-[72%] min-w-0 overflow-hidden bg-muted/60 border border-border/20 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm leading-relaxed">
                       <TypewriterText
                         text={part.text}
                         speed={15}
@@ -243,16 +263,29 @@ export default function Chat() {
                   </div>
                 );
               })}
+              {timestamp && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className={`text-[11px] text-muted-foreground/60 px-1 cursor-default w-fit ${m.role === 'user' ? 'self-end' : 'self-start'}`}>
+                      {timestamp}
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">{fullTimestamp}</TooltipContent>
+                </Tooltip>
+              )}
             </div>
           );
         })}
       </div>
 
-      {(status === 'submitted' || (status === 'streaming' && !messages.some(
-        (m) => m.role === 'assistant' && !historicalMessageIds.has(m.id) && m.parts.some((p) => p.type === 'text' && p.text.length > 0),
-      ))) && (
-        <ThinkingIndicator />
-      )}
+      {(status === 'submitted' ||
+        (status === 'streaming' &&
+          !messages.some(
+            (m) =>
+              m.role === 'assistant' &&
+              !historicalMessageIds.has(m.id) &&
+              m.parts.some((p) => p.type === 'text' && p.text.length > 0),
+          ))) && <ThinkingIndicator />}
 
       <div className="flex flex-col px-4 py-3 border-t border-border/20 justify-center items-center">
         <ChatForm handleSendMessage={handleSendMessage} showPrompts={false} />

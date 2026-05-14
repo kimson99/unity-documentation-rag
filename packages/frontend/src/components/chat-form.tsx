@@ -124,7 +124,7 @@ export default function ChatForm({ handleSendMessage, showPrompts = true }: Chat
             ref={inputRef}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask anything"
+            placeholder="Ask about C# scripting, Unity APIs, physics, coroutines..."
             className="w-full border-0 p-3 transition-[padding] duration-200 ease-in-out min-h-[48.4px] outline-none text-[16px] text-foreground resize-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent! whitespace-pre-wrap wrap-break-word"
             onKeyDown={handleInputKeyDown}
           />

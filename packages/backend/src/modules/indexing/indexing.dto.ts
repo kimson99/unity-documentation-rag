@@ -82,3 +82,8 @@ export class GetFileIndexingsResponseDto {
   @ApiProperty()
   total: number;
 }
+
+export class IndexingStatsDto {
+  @ApiProperty({ description: 'Total number of successfully indexed files' })
+  completedFiles: number;
+}

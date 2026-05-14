@@ -576,6 +576,32 @@
         ]
       }
     },
+    "/api/indexing/stats": {
+      "get": {
+        "operationId": "IndexingController_getStats",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexingStatsDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Indexing"
+        ]
+      }
+    },
     "/api/indexing/{documentIndexingId}": {
       "get": {
         "operationId": "IndexingController_getDocumentIndexing",
@@ -979,6 +1005,18 @@
         "required": [
           "documentIndexingId",
           "fileIds"
+        ]
+      },
+      "IndexingStatsDto": {
+        "type": "object",
+        "properties": {
+          "completedFiles": {
+            "type": "number",
+            "description": "Total number of successfully indexed files"
+          }
+        },
+        "required": [
+          "completedFiles"
         ]
       },
       "DocumentIndexingDto": {

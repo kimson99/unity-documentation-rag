@@ -8,6 +8,7 @@ import {
   GetFileIndexingsResponseDto,
   IndexDocumentResponseDto,
   IndexDocumentsDto,
+  IndexingStatsDto,
 } from './indexing.dto';
 import { IndexingService } from './indexing.service';
 
@@ -24,6 +25,12 @@ export class IndexingController {
   })
   public async index(@Body() dto: IndexDocumentsDto) {
     return this.indexingService.queueIndexDocuments(dto);
+  }
+
+  @Get('/stats')
+  @ApiResponse({ status: 200, type: IndexingStatsDto })
+  public async getStats(): Promise<IndexingStatsDto> {
+    return this.indexingService.getStats();
   }
 
   @Get('/')

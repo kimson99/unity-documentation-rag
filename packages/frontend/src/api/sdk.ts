@@ -123,6 +123,11 @@ export interface IndexDocumentResponseDto {
   fileIds: string[];
 }
 
+export interface IndexingStatsDto {
+  /** Total number of successfully indexed files */
+  completedFiles: number;
+}
+
 export interface DocumentIndexingDto {
   id: string;
   fileCount: number;
@@ -650,6 +655,23 @@ export class Api<
         path: `/api/indexing`,
         method: "GET",
         query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Indexing
+     * @name IndexingControllerGetStats
+     * @request GET:/api/indexing/stats
+     * @secure
+     */
+    indexingControllerGetStats: (params: RequestParams = {}) =>
+      this.request<IndexingStatsDto, any>({
+        path: `/api/indexing/stats`,
+        method: "GET",
         secure: true,
         format: "json",
         ...params,

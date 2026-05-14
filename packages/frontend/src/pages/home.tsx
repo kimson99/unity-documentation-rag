@@ -1,3 +1,4 @@
+import { client } from '@/api/client';
 import {
   Card,
   CardContent,
@@ -5,12 +6,28 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAuthContext } from '@/providers/auth-provider';
+import { useQuery } from '@tanstack/react-query';
 import { DatabaseIcon, MessageSquareIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
 export default function Home() {
   const { user } = useAuthContext();
+
+  const { data: sessionsData, isLoading: isLoadingSessions } = useQuery({
+    queryKey: ['chatSessionsTotal'],
+    queryFn: () =>
+      client.api.chatSessionControllerGetSessionsByUserId({ take: 1, skip: 0 }),
+  });
+
+  const { data: indexingsData, isLoading: isLoadingIndexings } = useQuery({
+    queryKey: ['indexingsTotal'],
+    queryFn: () => client.api.indexingControllerGetStats(),
+  });
+
+  const totalSessions = sessionsData?.data?.total ?? 0;
+  const completedFiles = indexingsData?.data?.completedFiles ?? 0;
 
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -19,6 +36,37 @@ export default function Home() {
           Welcome back, {user?.displayName || 'User'}!
         </h1>
         <p className="text-muted-foreground">Unity Documentation RAG System</p>
+      </div>
+
+      <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription className="flex items-center gap-1.5">
+              <DatabaseIcon className="w-4 h-4" /> Files Indexed
+            </CardDescription>
+            <CardTitle className="text-3xl">
+              {isLoadingIndexings ? (
+                <Skeleton className="h-9 w-12" />
+              ) : (
+                completedFiles
+              )}
+            </CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription className="flex items-center gap-1.5">
+              <MessageSquareIcon className="w-4 h-4" /> Chat Sessions
+            </CardDescription>
+            <CardTitle className="text-3xl">
+              {isLoadingSessions ? (
+                <Skeleton className="h-9 w-12" />
+              ) : (
+                totalSessions
+              )}
+            </CardTitle>
+          </CardHeader>
+        </Card>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">

@@ -184,6 +184,13 @@ export class IndexingService {
     );
   }
 
+  public async getStats() {
+    const completedFiles = await this.fileIndexingRepository.count({
+      where: { status: FileIndexingStatus.COMPLETED },
+    });
+    return { completedFiles };
+  }
+
   public async getDocumentIndexings(dto: GetDocumentIndexingsDto) {
     const [documentIndexings, total] =
       await this.documentIndexingRepository.findAndCount({
