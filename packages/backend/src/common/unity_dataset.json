@@ -1,124 +1,3752 @@
 [
   {
     "inputs": {
-      "question": "What is the base class for all entities in Unity scenes?"
-    },
-    "outputs": { "expected": "GameObject" }
-  },
-  {
-    "inputs": {
-      "question": "Which component determines the position, rotation, and scale of a GameObject?"
-    },
-    "outputs": { "expected": "Transform" }
-  },
-  {
-    "inputs": {
-      "question": "In a C# script, what method is called exactly once before the first frame update?"
-    },
-    "outputs": { "expected": "Start()" }
-  },
-  {
-    "inputs": {
-      "question": "What method is called immediately when a script instance is loaded, before the Start method?"
-    },
-    "outputs": { "expected": "Awake()" }
-  },
-  {
-    "inputs": {
-      "question": "How do you print a message to the Unity Console from a script?"
-    },
-    "outputs": { "expected": "Debug.Log()" }
-  },
-  {
-    "inputs": {
-      "question": "What component do you need to add to a GameObject to make it emit light?"
-    },
-    "outputs": { "expected": "Light component" }
-  },
-  {
-    "inputs": {
-      "question": "What component is required in a scene for the player to hear audio?"
-    },
-    "outputs": { "expected": "AudioListener" }
-  },
-  {
-    "inputs": {
-      "question": "What component is used to play back sound effects and music in a scene?"
-    },
-    "outputs": { "expected": "AudioSource" }
-  },
-  {
-    "inputs": {
-      "question": "What system is used to bake navigation data so AI characters can move around obstacles?"
-    },
-    "outputs": { "expected": "NavMesh" }
-  },
-  {
-    "inputs": {
-      "question": "What is the built-in 3D physics engine used by Unity?"
-    },
-    "outputs": { "expected": "PhysX" }
-  },
-  {
-    "inputs": {
-      "question": "What is the built-in 2D physics engine used by Unity?"
-    },
-    "outputs": { "expected": "Box2D" }
-  },
-  {
-    "inputs": {
-      "question": "What component applies a physical boundary to a GameObject to allow for collisions?"
-    },
-    "outputs": { "expected": "Collider (e.g., BoxCollider, SphereCollider)" }
-  },
-  {
-    "inputs": {
-      "question": "How do you access the Transform component of the GameObject your script is attached to?"
-    },
-    "outputs": { "expected": "By using the lowercase 'transform' property." }
-  },
-  {
-    "inputs": {
-      "question": "What type of asset is used to define the visual appearance and surface properties of a 3D model?"
-    },
-    "outputs": { "expected": "Material" }
-  },
-  {
-    "inputs": {
-      "question": "What UI component automatically arranges its child elements into a list or grid?"
+      "question": "What does the `navMeshLod` property represent?"
     },
     "outputs": {
-      "expected": "Layout Group (Vertical, Horizontal, or Grid Layout Group)"
-    }
+      "expected": "The `navMeshLod` property represents the LOD index of a Tree LODGroup that Unity uses to generate a NavMesh."
+    },
+    "topic": "navmesh",
+    "source": "TreePrototype-navMeshLod.html"
   },
   {
     "inputs": {
-      "question": "Which Unity class is primarily used to read input from the keyboard, mouse, or controller?"
+      "question": "For which type of Trees does Unity use the `navMeshLod` value?"
     },
-    "outputs": { "expected": "The Input class" }
-  },
-  {
-    "inputs": {
-      "question": "Which window in the Unity Editor displays a list of all GameObjects currently in the active scene?"
-    },
-    "outputs": { "expected": "Hierarchy window" }
-  },
-  {
-    "inputs": {
-      "question": "Which window in the Unity Editor allows you to view and edit the properties and components of a selected GameObject?"
-    },
-    "outputs": { "expected": "Inspector window" }
-  },
-  {
-    "inputs": { "question": "What is a 'Tag' used for in Unity?" },
     "outputs": {
-      "expected": "Tags are reference strings assigned to GameObjects to help identify them or group them together."
-    }
+      "expected": "Unity uses the `navMeshLod` value only for Trees that have a LODGroup."
+    },
+    "topic": "navmesh",
+    "source": "TreePrototype-navMeshLod.html"
   },
   {
-    "inputs": { "question": "What is the purpose of Time.deltaTime?" },
+    "inputs": {
+      "question": "When is the `navMeshLod` value ignored by Unity?"
+    },
     "outputs": {
-      "expected": "It represents the time elapsed since the last frame, used to make movement and changes frame-rate independent."
-    }
+      "expected": "Unity ignores the `navMeshLod` value for regular Trees that do not have an associated LODGroup."
+    },
+    "topic": "navmesh",
+    "source": "TreePrototype-navMeshLod.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary purpose of the `LowLevelPhysics2D` API as described in the documentation?"
+    },
+    "outputs": {
+      "expected": "The `LowLevelPhysics2D` API is designed for writing C# scripts to create and manage 2D physics worlds within 3D space. It allows developers to define the orientation of these 2D worlds, such as lying flat or standing upright, rather than being limited to the traditional XY plane facing the camera."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-3d-planes.html"
+  },
+  {
+    "inputs": {
+      "question": "Which `transformPlane` settings can be used to create a 2D physics world that is not aligned with the traditional XY plane facing the camera?"
+    },
+    "outputs": {
+      "expected": "To create a 2D physics world not aligned with the traditional XY plane, the `transformPlane` property of the physics world can be set to either `XZ` or `ZY`. `XZ` results in a world that lies flat in 3D space, while `ZY` creates a world that stands upright."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-3d-planes.html"
+  },
+  {
+    "inputs": {
+      "question": "How are 2D `Vector2` coordinates handled by the physics system when a 2D physics world is created in 3D space using the `LowLevelPhysics2D` API?"
+    },
+    "outputs": {
+      "expected": "The physics system continues to use 2D `Vector2` coordinates and vectors internally. Unity then converts these final 2D positions to 3D space according to the specified `transformPlane` property."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-3d-planes.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a Sprite Renderer component be added to a GameObject for a LowLevelPhysics2D API object?"
+    },
+    "outputs": {
+      "expected": "After creating a physics object, select the GameObject in the Hierarchy window. Then, choose \"Add Component\" and navigate to \"Rendering > Sprite Renderer.\""
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-add-sprite.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the outcome when a sprite asset is dragged from the Project window to a GameObject in the Hierarchy window?"
+    },
+    "outputs": {
+      "expected": "Dragging a sprite asset to a GameObject in the Hierarchy creates a new GameObject. This new GameObject is a child of the physics body GameObject."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-add-sprite.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of a Sprite Renderer component?"
+    },
+    "outputs": {
+      "expected": "A Sprite Renderer is a component that enables the display of images as Sprites. It is utilized for rendering in both 2D and 3D scenes."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-add-sprite.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the necessary steps to enable collision callback methods for a LowLevelPhysics2D API object?"
+    },
+    "outputs": {
+      "expected": "To enable collision callbacks, first set the `autoContactCallbacks` property of the physics world to `true`. Then, add `PhysicsCallbacks.IContactCallback` to your script's implemented interfaces and implement its `OnContactBegin2D` and `OnContactEnd2D` methods. Finally, activate the callbacks by setting the shape's `contactEvents` property to `true` and its `callbackTarget` to `this`."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-collision-handle.html"
+  },
+  {
+    "inputs": {
+      "question": "How does detecting a trigger overlap differ from detecting a regular collision using the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "A trigger shape detects an overlap without generating a physical collision, while a regular collision involves contact between colliders, often with one having a Rigidbody component and being in motion. Trigger detection uses `ITriggerCallback` and the `isTrigger` property, whereas collision detection uses `IContactCallback`."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-collision-handle.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a developer obtain information about contacts between LowLevelPhysics2D objects without implementing callback methods?"
+    },
+    "outputs": {
+      "expected": "Information about contacts can be obtained without callbacks by using the event APIs of the world instance, such as `PhysicsWorld.contactBeginEvents`. This approach returns a `ReadOnlySpan` type that points directly to memory, making it less safe than using callbacks."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-collision-handle.html"
+  },
+  {
+    "inputs": {
+      "question": "What condition defines a collision within the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "A collision occurs when the physics engine detects contact or overlap between the colliders of two GameObjects, provided at least one of them has a Rigidbody component and is in motion."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-collisions-enable.html"
+  },
+  {
+    "inputs": {
+      "question": "What steps are required to enable the LowLevelPhysics2D API to use its own distinct set of layers?"
+    },
+    "outputs": {
+      "expected": "To enable the LowLevelPhysics2D API to use its own layers, a developer must first create a Physics Low Level Settings 2D asset. Within the Layers section of this asset, they then need to enable the \"Use Full Layers\" option."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-collisions-enable.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a developer specify which layers an object belongs to and which layers it interacts with using a script in the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "In a script, a developer creates two `PhysicsMask` objects: one representing the layers the object is on (categories) and another for the layers it should collide with (contacts). These masks are then combined into a `ContactFilter` object, which is assigned to the `contactFilter` property of the `PhysicsShapeDefinition`."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-collisions-enable.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary object used to combine physics shapes into a compound shape with the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "The primary object used to combine physics shapes into a compound shape with the LowLevelPhysics2D API is the PhysicsComposer."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-connect-combine-shapes.html"
+  },
+  {
+    "inputs": {
+      "question": "What three pieces of information must be provided when adding an object as a layer to a PhysicsComposer?"
+    },
+    "outputs": {
+      "expected": "When adding an object as a layer to a PhysicsComposer, you must specify its geometry, its position, and how to combine the shape with existing layers using a PhysicsComposer.Operation."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-connect-combine-shapes.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the available types of operations for combining shapes with PhysicsComposer.Operation?"
+    },
+    "outputs": {
+      "expected": "The available PhysicsComposer.Operation types are OR, AND, NOT, and XOR. These operations define how new shapes are integrated with existing shapes in the composer."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-connect-combine-shapes.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of the `PhysicsUserData` type in the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "The `PhysicsUserData` type is used to attach custom data to objects created using the `LowLevelPhysics2D` API."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-custom-data.html"
+  },
+  {
+    "inputs": {
+      "question": "Which types of LowLevelPhysics2D API objects can have custom data attached to them?"
+    },
+    "outputs": {
+      "expected": "Custom data can be attached to `World`, `Body`, `Shape`, `Chain`, and `Joint` types within the `LowLevelPhysics2D` API."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-custom-data.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the steps to assign custom data to a LowLevelPhysics2D API object?"
+    },
+    "outputs": {
+      "expected": "First, create a `PhysicsUserData` instance and populate it with custom fields. Then, assign this `PhysicsUserData` instance to the `userData` property of the physics object."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-custom-data.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a developer enable debug drawing for LowLevelPhysics2D API objects in a development build?"
+    },
+    "outputs": {
+      "expected": "To enable debug drawing in a development build, ensure the target platform supports compute shaders. Then, create a Physics Low Level Settings 2D asset and enable the \"Draw In Build\" option in its Inspector window."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-debug-drawing.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the default display duration for shapes drawn using the `Draw` methods of the physics world object, and how can this duration be extended?"
+    },
+    "outputs": {
+      "expected": "Shapes drawn using the `Draw` methods of the world object only last for one frame by default. To display them for a longer period, developers should use the `lifetime` property."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-debug-drawing.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a specific LowLevelPhysics2D shape be configured with a custom color?"
+    },
+    "outputs": {
+      "expected": "A specific shape's color can be customized by selecting a GameObject with a public `PhysicsShapeDefinition` component and setting 'Custom Color' in the Inspector. Alternatively, properties can be adjusted in C# scripts using the similarly named properties of `PhysicsWorldDefinition`, `PhysicsBodyDefinition`, or `PhysicsShapeDefinition` objects."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-debug-drawing.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of definitions in the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "Definitions are objects that store physics properties and values. They are used to configure the properties of a physics world and its objects, such as gravity, friction, position, and shape."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-definitions.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the recommended best practice when passing definition `struct` objects into other methods?"
+    },
+    "outputs": {
+      "expected": "When passing definition `struct` objects into other methods, the recommended best practice is to use the `ref` or `in` keyword. This passes them by reference and avoids using extra memory to copy the structure."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-definitions.html"
+  },
+  {
+    "inputs": {
+      "question": "How can the default values for new definition objects be changed?"
+    },
+    "outputs": {
+      "expected": "To change the default values, create a Physics Low Level Settings 2D asset. Then, select the asset in the Project window and configure the properties in the \"Default Definitions\" section within the Inspector window."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-definitions.html"
+  },
+  {
+    "inputs": {
+      "question": "How are individual physics objects like worlds, bodies, or shapes destroyed in the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "To destroy a world, body, or shape, you must call the `Destroy` method of that specific object. For example, `myBody.Destroy()` would destroy a physics body."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-destroy.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the recommended practice for managing memory when the LowLevelPhysics2D API returns physics objects or query results as a `NativeArray` or `ReadOnlySpan`?"
+    },
+    "outputs": {
+      "expected": "When the API returns physics objects or query results as a `NativeArray` or `ReadOnlySpan`, the recommended best practice is to dispose of the native memory using the `Dispose` method when it is no longer needed. This prevents memory leaks."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-destroy.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a developer prevent the unintentional deletion of a `PhysicsBody` object?"
+    },
+    "outputs": {
+      "expected": "A developer can protect a `PhysicsBody` object from deletion by calling its `SetOwner` method, which returns a unique key integer. This key must be passed in if an attempt is made to destroy the body; otherwise, the destruction will fail."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-destroy.html"
+  },
+  {
+    "inputs": {
+      "question": "How are global settings configured for the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "Global settings for the LowLevelPhysics2D API are configured by creating and assigning a Physics Low Level Settings 2D asset."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-global-settings.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the initial step to create a Physics Low Level Settings 2D asset?"
+    },
+    "outputs": {
+      "expected": "The initial step to create a Physics Low Level Settings 2D asset is to select Assets > Create > 2D > Physics LowLevel Settings in the Project window."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-global-settings.html"
+  },
+  {
+    "inputs": {
+      "question": "Which setting is used to configure collisions between LowLevelPhysics2D API objects?"
+    },
+    "outputs": {
+      "expected": "The Layers setting is used to configure collisions between LowLevelPhysics2D API objects."
+    },
+    "topic": "physics",
+    "source": "2d-physics-api-global-settings.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of the `animateOnlyIfVisible` property?"
+    },
+    "outputs": {
+      "expected": "When `animateOnlyIfVisible` is turned on, Unity might stop animating if it determines that the animation's results would not be visible to the user."
+    },
+    "topic": "animation",
+    "source": "Animation-animateOnlyIfVisible.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the benefit of using `animateOnlyIfVisible`?"
+    },
+    "outputs": {
+      "expected": "Using `animateOnlyIfVisible` can save performance, especially for objects animating outside the viewport whose animation is only important when they are visible."
+    },
+    "topic": "animation",
+    "source": "Animation-animateOnlyIfVisible.html"
+  },
+  {
+    "inputs": {
+      "question": "What Unity property should be used instead of `animateOnlyIfVisible`?"
+    },
+    "outputs": {
+      "expected": "The `cullingType` property should be used instead of the obsolete `animateOnlyIfVisible`."
+    },
+    "topic": "animation",
+    "source": "Animation-animateOnlyIfVisible.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of the `animatePhysics` property?"
+    },
+    "outputs": {
+      "expected": "When `animatePhysics` is enabled, the physics system utilizes animated transforms from GameObjects that have kinematic Rigidbody components to influence other GameObjects."
+    },
+    "topic": "animation",
+    "source": "Animation-animatePhysics.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what conditions can `animatePhysics` apply velocity and friction from an animated platform to other GameObjects?"
+    },
+    "outputs": {
+      "expected": "For velocity and friction to be applied from an animated platform to other GameObjects, the platform GameObject must be equipped with a kinematic Rigidbody. This means the 'Is Kinematic' property in the Rigidbody component must be enabled."
+    },
+    "topic": "animation",
+    "source": "Animation-animatePhysics.html"
+  },
+  {
+    "inputs": {
+      "question": "How does one configure a Rigidbody to be kinematic?"
+    },
+    "outputs": {
+      "expected": "To make a Rigidbody kinematic, its 'Is Kinematic' property must be enabled within the Rigidbody component."
+    },
+    "topic": "animation",
+    "source": "Animation-animatePhysics.html"
+  },
+  {
+    "inputs": {
+      "question": "What does Animation.clip represent?"
+    },
+    "outputs": {
+      "expected": "Animation.clip represents the default animation."
+    },
+    "topic": "animation",
+    "source": "Animation-clip.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the access modifier for the clip property?"
+    },
+    "outputs": {
+      "expected": "The clip property has a public access modifier."
+    },
+    "topic": "animation",
+    "source": "Animation-clip.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of the clip property?"
+    },
+    "outputs": {
+      "expected": "The clip property is of the AnimationClip data type."
+    },
+    "topic": "animation",
+    "source": "Animation-clip.html"
+  },
+  {
+    "inputs": {
+      "question": "What specific aspect of an Animation component does its cullingType control?"
+    },
+    "outputs": {
+      "expected": "The cullingType controls the culling of that Animation component."
+    },
+    "topic": "animation",
+    "source": "Animation-cullingType.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the designated type for the cullingType variable?"
+    },
+    "outputs": {
+      "expected": "The cullingType variable is designated with the type AnimationCullingType."
+    },
+    "topic": "animation",
+    "source": "Animation-cullingType.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the accessibility of the cullingType variable?"
+    },
+    "outputs": {
+      "expected": "The cullingType variable is publicly accessible."
+    },
+    "topic": "animation",
+    "source": "Animation-cullingType.html"
+  },
+  {
+    "inputs": {
+      "question": "What information does the `isPlaying` property provide?"
+    },
+    "outputs": {
+      "expected": "The `isPlaying` property indicates whether an animation is currently being played."
+    },
+    "topic": "animation",
+    "source": "Animation-isPlaying.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the access modifier and data type of the `isPlaying` property?"
+    },
+    "outputs": {
+      "expected": "The `isPlaying` property has a `public` access modifier and a `bool` data type."
+    },
+    "topic": "animation",
+    "source": "Animation-isPlaying.html"
+  },
+  {
+    "inputs": {
+      "question": "What kind of value does `isPlaying` represent?"
+    },
+    "outputs": {
+      "expected": "`isPlaying` represents a boolean value that signifies if an animation is currently playing."
+    },
+    "topic": "animation",
+    "source": "Animation-isPlaying.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `localBounds` property represent for an Animation component?"
+    },
+    "outputs": {
+      "expected": "The `localBounds` property represents the Axis-Aligned Bounding Box (AABB) of an Animation animation component in its local space."
+    },
+    "topic": "animation",
+    "source": "Animation-localBounds.html"
+  },
+  {
+    "inputs": {
+      "question": "How is the `localBounds` property computed by default?"
+    },
+    "outputs": {
+      "expected": "By default, the `localBounds` property is computed based on animation states, which means it uses the attached animation clips."
+    },
+    "topic": "animation",
+    "source": "Animation-localBounds.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a user override the default computation of `localBounds`?"
+    },
+    "outputs": {
+      "expected": "A user can override the default computation of `localBounds` by explicitly setting a value to the `localBounds` property."
+    },
+    "topic": "animation",
+    "source": "Animation-localBounds.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of the `playAutomatically` property?"
+    },
+    "outputs": {
+      "expected": "The `playAutomatically` property is a public boolean."
+    },
+    "topic": "animation",
+    "source": "Animation-playAutomatically.html"
+  },
+  {
+    "inputs": {
+      "question": "What behavior does the `playAutomatically` property control?"
+    },
+    "outputs": {
+      "expected": "It controls whether the default animation clip, specified by the `Animation.clip` property, automatically starts playing on startup."
+    },
+    "topic": "animation",
+    "source": "Animation-playAutomatically.html"
+  },
+  {
+    "inputs": {
+      "question": "Which animation clip is affected by the `playAutomatically` property?"
+    },
+    "outputs": {
+      "expected": "The `playAutomatically` property affects the default animation clip, which is defined by the `Animation.clip` property."
+    },
+    "topic": "animation",
+    "source": "Animation-playAutomatically.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of the `updateMode` property?"
+    },
+    "outputs": {
+      "expected": "The `updateMode` property is used to specify how an Animation updates."
+    },
+    "topic": "animation",
+    "source": "Animation-updateMode.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of the `updateMode` property?"
+    },
+    "outputs": {
+      "expected": "The `updateMode` property is of type `AnimationUpdateMode`."
+    },
+    "topic": "animation",
+    "source": "Animation-updateMode.html"
+  },
+  {
+    "inputs": {
+      "question": "What access modifier is used for the `updateMode` property?"
+    },
+    "outputs": {
+      "expected": "The `updateMode` property uses the `public` access modifier."
+    },
+    "topic": "animation",
+    "source": "Animation-updateMode.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of the `wrapMode` variable?"
+    },
+    "outputs": {
+      "expected": "The `wrapMode` variable describes how time beyond the playback range of an animation clip should be treated."
+    },
+    "topic": "animation",
+    "source": "Animation-wrapMode.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of the `wrapMode` variable?"
+    },
+    "outputs": {
+      "expected": "The `wrapMode` variable is of type `WrapMode`."
+    },
+    "topic": "animation",
+    "source": "Animation-wrapMode.html"
+  },
+  {
+    "inputs": {
+      "question": "What kind of variable is `wrapMode`?"
+    },
+    "outputs": {
+      "expected": "`wrapMode` is a public variable."
+    },
+    "topic": "animation",
+    "source": "Animation-wrapMode.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of the Animation component in Unity?"
+    },
+    "outputs": {
+      "expected": "The Animation component in Unity is used to play back animations. It allows developers to assign animation clips to it and control their playback from scripts."
+    },
+    "topic": "animation",
+    "source": "Animation.html"
+  },
+  {
+    "inputs": {
+      "question": "What capabilities does an AnimationState offer for controlling animations?"
+    },
+    "outputs": {
+      "expected": "An AnimationState can be used to change the layer of an animation, modify its playback speed, and provides direct control over blending and mixing."
+    },
+    "topic": "animation",
+    "source": "Animation.html"
+  },
+  {
+    "inputs": {
+      "question": "Which property allows the physics system to use animated transforms from kinematic Rigidbody components?"
+    },
+    "outputs": {
+      "expected": "The `animatePhysics` property, when enabled, allows the physics system to use animated transforms from GameObjects with kinematic Rigidbody components to influence other GameObjects."
+    },
+    "topic": "animation",
+    "source": "Animation.html"
+  },
+  {
+    "inputs": {
+      "question": "How do you enable a GameObject to cast shadows from 2D lights in the Universal Render Pipeline?"
+    },
+    "outputs": {
+      "expected": "To enable a GameObject to cast shadows, select the GameObject, then in the Inspector window, search for and select the Shadow Caster 2D component to add it."
+    },
+    "topic": "lighting",
+    "source": "2DShadows.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the default source for a shadow's shape, and how is it visualized?"
+    },
+    "outputs": {
+      "expected": "By default, the shadow's shape is defined in the Custom Outline window of the Sprite Editor. Unity displays this shape as a white outline in the Scene view."
+    },
+    "topic": "lighting",
+    "source": "2DShadows.html"
+  },
+  {
+    "inputs": {
+      "question": "What component is used to combine shadows from multiple GameObjects into a single merged shadow?"
+    },
+    "outputs": {
+      "expected": "To merge shadows from multiple GameObjects into a single shadow, add a Composite Shadow Caster 2D component to a parent GameObject. The shadows of child GameObjects with Shadow Caster 2D components will then be merged."
+    },
+    "topic": "lighting",
+    "source": "2DShadows.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a user open the Light Batching Debugger in Unity?"
+    },
+    "outputs": {
+      "expected": "To open the debugger window, users should navigate to Window > 2D > Light Batching Debugger within Unity."
+    },
+    "topic": "lighting",
+    "source": "2d-light-batching-debugger.html"
+  },
+  {
+    "inputs": {
+      "question": "What does it signify when Sorting Layers in the Light Batching Debugger are color-coded differently?"
+    },
+    "outputs": {
+      "expected": "Differently color-coded Sorting Layers indicate that they are in different batches with different Batch IDs and are not batched together."
+    },
+    "topic": "lighting",
+    "source": "2d-light-batching-debugger.html"
+  },
+  {
+    "inputs": {
+      "question": "What information does the debugger display when comparing adjacent batches?"
+    },
+    "outputs": {
+      "expected": "When comparing adjacent batches, the debugger window displays the Lights and Shadow Casters included in each selected batch in separate panels."
+    },
+    "topic": "lighting",
+    "source": "2d-light-batching-debugger.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of the Light Batching Debugger?"
+    },
+    "outputs": {
+      "expected": "The Light Batching Debugger visualizes how Unity batches 2D Lights and Shadow Casters according to the Sorting Layers they target. It also highlights and displays which Lights or Shadow Casters need to be adjusted for Unity to batch the Sorting Layers."
+    },
+    "topic": "lighting",
+    "source": "2d-light-batching-intro.html"
+  },
+  {
+    "inputs": {
+      "question": "What two conditions must Sorting Layers meet for Unity to batch them?"
+    },
+    "outputs": {
+      "expected": "For Unity to batch Sorting Layers, they must share the same sets of Lights, meaning the 2D Lights target the same Sorting Layers. Additionally, the layers must share the same sets of Shadow Casters, with Shadow Casters targeting the same Sorting Layers."
+    },
+    "topic": "lighting",
+    "source": "2d-light-batching-intro.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what specific condition will Unity *not* batch layers, even if lights target the same layers, when shadows are enabled?"
+    },
+    "outputs": {
+      "expected": "Unity will not batch layers if the Shadow Casters do not target all the same layers that the Lights do. If a Shadow Caster targets one layer but not another, the light textures of those layers will differ, preventing batching."
+    },
+    "topic": "lighting",
+    "source": "2d-light-batching-intro.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of Blend Modes in Unity's 2D lighting?"
+    },
+    "outputs": {
+      "expected": "Blend Modes determine how Unity blends the lighting with the colors of a sprite."
+    },
+    "topic": "lighting",
+    "source": "2d-light-blend-modes.html"
+  },
+  {
+    "inputs": {
+      "question": "How does Unity define a sprite?"
+    },
+    "outputs": {
+      "expected": "A sprite is a 2D graphic object, essentially a standard texture. Unity employs special techniques for combining and managing sprite textures for efficiency and convenience during development."
+    },
+    "topic": "lighting",
+    "source": "2d-light-blend-modes.html"
+  },
+  {
+    "inputs": {
+      "question": "Which blend modes are mentioned for 2D lighting?"
+    },
+    "outputs": {
+      "expected": "Some mentioned blend modes for 2D lighting include Multiply, Additive, and Subtractive."
+    },
+    "topic": "lighting",
+    "source": "2d-light-blend-modes.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of understanding Blend Modes in 2D lighting?"
+    },
+    "outputs": {
+      "expected": "Understanding Blend Modes helps users visually understand how different blend modes affect the way a sprite is lit."
+    },
+    "topic": "lighting",
+    "source": "2d-light-blending.html"
+  },
+  {
+    "inputs": {
+      "question": "When is HDR emulation scale used with 2D Lights?"
+    },
+    "outputs": {
+      "expected": "HDR emulation scale is used with 2D Lights if a platform does not natively support High Dynamic Range (HDR)."
+    },
+    "topic": "lighting",
+    "source": "2d-light-blending.html"
+  },
+  {
+    "inputs": {
+      "question": "What is involved in understanding masking in 2D lighting?"
+    },
+    "outputs": {
+      "expected": "Understanding masking in 2D lighting involves comprehending how masks interact with different Blend Modes."
+    },
+    "topic": "lighting",
+    "source": "2d-light-blending.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the Masking property determine in Unity?"
+    },
+    "outputs": {
+      "expected": "The Masking property determines how Unity blends the lighting with the colors of a sprite."
+    },
+    "topic": "lighting",
+    "source": "2d-light-masking.html"
+  },
+  {
+    "inputs": {
+      "question": "How does Unity define a sprite?"
+    },
+    "outputs": {
+      "expected": "A sprite is a 2D graphic object. For those used to working in 3D, sprites are essentially standard textures but with special techniques for combining and managing them."
+    },
+    "topic": "lighting",
+    "source": "2d-light-masking.html"
+  },
+  {
+    "inputs": {
+      "question": "What two concepts are mentioned alongside Masking?"
+    },
+    "outputs": {
+      "expected": "Blend Modes and HDR emulation scale are two concepts mentioned alongside Masking."
+    },
+    "topic": "lighting",
+    "source": "2d-light-masking.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary goal of the section on optimizing 2D lights?"
+    },
+    "outputs": {
+      "expected": "The primary goal is to understand the different approaches and strategies available for optimizing 2D lighting within a project."
+    },
+    "topic": "lighting",
+    "source": "2d-light-optimize.html"
+  },
+  {
+    "inputs": {
+      "question": "What tool can be used to observe how Unity batches lights?"
+    },
+    "outputs": {
+      "expected": "The Light Batching Debugger can be used to check how Unity batches lights."
+    },
+    "topic": "lighting",
+    "source": "2d-light-optimize.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a key concept introduced regarding 2D lighting optimization?"
+    },
+    "outputs": {
+      "expected": "A key concept introduced is 2D light batching, which helps to understand how lights are processed in groups."
+    },
+    "topic": "lighting",
+    "source": "2d-light-optimize.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of the Light Order value in a 2D Light component?"
+    },
+    "outputs": {
+      "expected": "The Light Order value determines a Light's position in the Render queue relative to other Lights targeting the same sorting layers. Lower numbered Lights are rendered first, affecting how blended Lights appear when Overlap Operation is set to Alpha Blend."
+    },
+    "topic": "lighting",
+    "source": "2d-light-properties-explained.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the two modes for Overlap Operation and how do they blend lights differently?"
+    },
+    "outputs": {
+      "expected": "The two modes are Additive and Alpha Blend. When set to Additive, the Light is blended additively with other Lights. When set to Alpha Blend, Lights are blended together based on their alpha values, potentially overwriting one Light with another where they intersect, also considering Light Order."
+    },
+    "topic": "lighting",
+    "source": "2d-light-properties-explained.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the Shadow Intensity property control and what is its range?"
+    },
+    "outputs": {
+      "expected": "Shadow Intensity controls the amount of light that Shadow Caster 2Ds block from the Light source, which affects the intensity of their shadows. The slider ranges from 0, where no light is blocked, to 1, where all light is blocked and shadows are at full intensity."
+    },
+    "topic": "lighting",
+    "source": "2d-light-properties-explained.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of the 2D Renderer Data Asset properties and settings?"
+    },
+    "outputs": {
+      "expected": "The properties and settings of the 2D Renderer Data Asset are used to customize the 2D lighting features."
+    },
+    "topic": "lighting",
+    "source": "2d-lighting-reference.html"
+  },
+  {
+    "inputs": {
+      "question": "Where are the Light Blend Styles settings found, and what do they customize?"
+    },
+    "outputs": {
+      "expected": "The Light Blend Styles settings are located in the 2D Renderer Data asset and customize the way light interacts with sprites."
+    },
+    "topic": "lighting",
+    "source": "2d-lighting-reference.html"
+  },
+  {
+    "inputs": {
+      "question": "What component's properties and settings allow customization of shadows from 2D lights?"
+    },
+    "outputs": {
+      "expected": "The properties and settings of the Shadow Caster 2D component allow customization of shadows from 2D lights."
+    },
+    "topic": "lighting",
+    "source": "2d-lighting-reference.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `clearStencilAfterLightingPass` property control?"
+    },
+    "outputs": {
+      "expected": "The `clearStencilAfterLightingPass` property controls whether the camera clears the stencil buffer after the deferred light pass."
+    },
+    "topic": "lighting",
+    "source": "Camera-clearStencilAfterLightingPass.html"
+  },
+  {
+    "inputs": {
+      "question": "What happens to the stencil buffer when `clearStencilAfterLightingPass` is set to `true`?"
+    },
+    "outputs": {
+      "expected": "When `clearStencilAfterLightingPass` is set to `true`, the stencil buffer is cleared to zero after the deferred light pass is completed."
+    },
+    "topic": "lighting",
+    "source": "Camera-clearStencilAfterLightingPass.html"
+  },
+  {
+    "inputs": {
+      "question": "In what scenario is it typically desirable to clear the stencil buffer after the deferred light pass?"
+    },
+    "outputs": {
+      "expected": "It is typically desirable to clear the stencil buffer after the deferred light pass when using a deferred shading camera and UI elements with Masks, such as UI.Mask."
+    },
+    "topic": "lighting",
+    "source": "Camera-clearStencilAfterLightingPass.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary characteristic of Ambisonics audio?"
+    },
+    "outputs": {
+      "expected": "Ambisonics are a type of audio that provide a representation of sound which can completely surround a listener. They are stored in a multi-channel format and allow for rotation of the soundfield based on listener orientation."
+    },
+    "topic": "audio",
+    "source": "AmbisonicAudio.html"
+  },
+  {
+    "inputs": {
+      "question": "How does one select an ambisonic audio decoder in a Unity project?"
+    },
+    "outputs": {
+      "expected": "To select an ambisonic audio decoder, open the project's Audio settings by navigating to Edit > Project Settings > Audio. From there, choose an Ambisonic Decoder Plugin from the list of available decoders."
+    },
+    "topic": "audio",
+    "source": "AmbisonicAudio.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the recommended setting for the Spatialize option when playing an ambisonic audio clip through an Audio Source, and why?"
+    },
+    "outputs": {
+      "expected": "The Spatialize option should be disabled when playing an ambisonic audio clip through an Audio Source. This is because the decoding process for ambisonic clips automatically handles spatialization based on the orientation of the audio source and audio listener."
+    },
+    "topic": "audio",
+    "source": "AmbisonicAudio.html"
+  },
+  {
+    "inputs": {
+      "question": "What key audio features does Unity provide?"
+    },
+    "outputs": {
+      "expected": "Unity's audio features include full 3D spatial sound, real-time mixing and mastering, hierarchies of mixers, snapshots, and predefined effects."
+    },
+    "topic": "audio",
+    "source": "Audio.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of the Audio Profiler module?"
+    },
+    "outputs": {
+      "expected": "The Audio Profiler module is used to analyze the audio performance of an application."
+    },
+    "topic": "audio",
+    "source": "Audio.html"
+  },
+  {
+    "inputs": {
+      "question": "What information does the 'Audio files' section cover?"
+    },
+    "outputs": {
+      "expected": "The 'Audio files' section provides reference information regarding audio files and their supported formats."
+    },
+    "topic": "audio",
+    "source": "Audio.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `delay` property of an `AudioChorusFilter` control?"
+    },
+    "outputs": {
+      "expected": "The `delay` property controls the chorus delay in milliseconds."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-delay.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the permissible range for the `AudioChorusFilter.delay` property?"
+    },
+    "outputs": {
+      "expected": "The `AudioChorusFilter.delay` property has a permissible range from 0.1 to 100.0."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-delay.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the default setting for the `delay` property on an `AudioChorusFilter`?"
+    },
+    "outputs": {
+      "expected": "The default setting for the `delay` property is 40.0 milliseconds."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-delay.html"
+  },
+  {
+    "inputs": {
+      "question": "What concept does `AudioChorusFilter.depth` control?"
+    },
+    "outputs": {
+      "expected": "`AudioChorusFilter.depth` controls the chorus modulation depth."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-depth.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the acceptable numerical range for the `depth` property?"
+    },
+    "outputs": {
+      "expected": "The `depth` property has an acceptable numerical range from 0.0 to 1.0."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-depth.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the default value for `AudioChorusFilter.depth`?"
+    },
+    "outputs": {
+      "expected": "The default value for `AudioChorusFilter.depth` is 0.03."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-depth.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of the dryMix property in an AudioChorusFilter?"
+    },
+    "outputs": {
+      "expected": "The dryMix property controls the volume of the original signal that is passed to the output."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-dryMix.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the acceptable range for the dryMix property?"
+    },
+    "outputs": {
+      "expected": "The acceptable range for the dryMix property is from 0.0 to 1.0."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-dryMix.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the default value for the dryMix property?"
+    },
+    "outputs": {
+      "expected": "The default value for the dryMix property is 0.5."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-dryMix.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the current status of the `feedback` property for `AudioChorusFilter`?"
+    },
+    "outputs": {
+      "expected": "The `AudioChorusFilter.feedback` property is obsolete and deprecated. It currently does nothing."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-feedback.html"
+  },
+  {
+    "inputs": {
+      "question": "What did the `feedback` property of an `AudioChorusFilter` control?"
+    },
+    "outputs": {
+      "expected": "The `feedback` property controlled how much of the wet signal was fed back into the chorus buffer."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-feedback.html"
+  },
+  {
+    "inputs": {
+      "question": "What was the specified range and default value for the `AudioChorusFilter.feedback` property?"
+    },
+    "outputs": {
+      "expected": "The `feedback` property had a range from 0.0 to 1.0, with a default value of 0.0."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-feedback.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `rate` property in an `AudioChorusFilter` represent?"
+    },
+    "outputs": {
+      "expected": "The `rate` property represents the chorus modulation rate in hertz."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-rate.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the default value for the `rate` property of an `AudioChorusFilter`?"
+    },
+    "outputs": {
+      "expected": "The default value for the `rate` property is 0.8 hz."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-rate.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the allowable range for the `rate` property of an `AudioChorusFilter`?"
+    },
+    "outputs": {
+      "expected": "The `rate` property can be set to any value between 0.0 and 20.0."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-rate.html"
+  },
+  {
+    "inputs": {
+      "question": "What does `wetMix1` control in an `AudioChorusFilter`?"
+    },
+    "outputs": {
+      "expected": "`wetMix1` controls the volume of the 1st chorus tap."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-wetMix1.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the acceptable range of values for `wetMix1`?"
+    },
+    "outputs": {
+      "expected": "The acceptable range of values for `wetMix1` is from 0.0 to 1.0."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-wetMix1.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the default value for the `wetMix1` property?"
+    },
+    "outputs": {
+      "expected": "The default value for the `wetMix1` property is 0.5."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-wetMix1.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of `AudioChorusFilter.wetMix2`?"
+    },
+    "outputs": {
+      "expected": "The `AudioChorusFilter.wetMix2` property controls the volume of the second chorus tap."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-wetMix2.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the phase relationship of the second chorus tap relative to the first tap?"
+    },
+    "outputs": {
+      "expected": "The second chorus tap is 90 degrees out of phase with the first tap."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-wetMix2.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the default value and valid range for `AudioChorusFilter.wetMix2`?"
+    },
+    "outputs": {
+      "expected": "The default value for `AudioChorusFilter.wetMix2` is 0.5, and its valid range is from 0.0 to 1.0."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-wetMix2.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `wetMix3` property control in an `AudioChorusFilter`?"
+    },
+    "outputs": {
+      "expected": "The `wetMix3` property controls the volume of the third chorus tap. This tap is 90 degrees out of phase with the second tap."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-wetMix3.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the valid range and default value for `wetMix3`?"
+    },
+    "outputs": {
+      "expected": "The valid range for `wetMix3` is from 0.0 to 1.0. Its default value is 0.5."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-wetMix3.html"
+  },
+  {
+    "inputs": {
+      "question": "How is the `wetMix3` property updated in the provided Unity example script?"
+    },
+    "outputs": {
+      "expected": "In the Unity example script, the `wetMix3` property is updated in the `Update` method by setting it to a random float value between 0.0 and 1.0 using `Random.Range(0.0f, 1.0f)`."
+    },
+    "topic": "audio",
+    "source": "AudioChorusFilter-wetMix3.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of AdditionalCanvasShaderChannels?"
+    },
+    "outputs": {
+      "expected": "AdditionalCanvasShaderChannels is an enumeration that serves as an enum mask of possible shader channel properties. These properties can be included when the Canvas mesh is created."
+    },
+    "topic": "ui",
+    "source": "AdditionalCanvasShaderChannels.html"
+  },
+  {
+    "inputs": {
+      "question": "Which property allows for including UV2 on the mesh vertices?"
+    },
+    "outputs": {
+      "expected": "The `TexCoord2` property allows for including UV2 on the mesh vertices."
+    },
+    "topic": "ui",
+    "source": "AdditionalCanvasShaderChannels.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what circumstance would the `None` property be utilized?"
+    },
+    "outputs": {
+      "expected": "The `None` property is utilized when no additional shader parameters are needed for the Canvas mesh."
+    },
+    "topic": "ui",
+    "source": "AdditionalCanvasShaderChannels.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of the `additionalShaderChannels` property on a Unity Canvas?"
+    },
+    "outputs": {
+      "expected": "The `additionalShaderChannels` property is used to get or set a mask of additional shader channels that should be included when the Canvas mesh is created."
+    },
+    "topic": "ui",
+    "source": "Canvas-additionalShaderChannels.html"
+  },
+  {
+    "inputs": {
+      "question": "Which shader channels are always included when an overlay Canvas generates its mesh?"
+    },
+    "outputs": {
+      "expected": "An overlay Canvas always includes Position, Color, and Uv0 shader channels when generating its mesh."
+    },
+    "topic": "ui",
+    "source": "Canvas-additionalShaderChannels.html"
+  },
+  {
+    "inputs": {
+      "question": "How can specific additional shader channels, like Normal or TexCoord1, be added to a Canvas programmatically?"
+    },
+    "outputs": {
+      "expected": "Specific additional shader channels can be added by using the bitwise OR assignment operator (`|=`) on the `canvas.additionalShaderChannels` property with desired `AdditionalCanvasShaderChannels` enum values, such as `AdditionalCanvasShaderChannels.Normal` or `AdditionalCanvasShaderChannels.TexCoord1`."
+    },
+    "topic": "ui",
+    "source": "Canvas-additionalShaderChannels.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of `cachedSortingLayerValue`?"
+    },
+    "outputs": {
+      "expected": "`cachedSortingLayerValue` is a public integer."
+    },
+    "topic": "ui",
+    "source": "Canvas-cachedSortingLayerValue.html"
+  },
+  {
+    "inputs": {
+      "question": "How is the value of `cachedSortingLayerValue` determined?"
+    },
+    "outputs": {
+      "expected": "The `cachedSortingLayerValue` is a cached calculated value. It is based upon the `SortingLayerID`."
+    },
+    "topic": "ui",
+    "source": "Canvas-cachedSortingLayerValue.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `cachedSortingLayerValue` represent?"
+    },
+    "outputs": {
+      "expected": "`cachedSortingLayerValue` represents a cached calculated value. This value is derived from the `SortingLayerID`."
+    },
+    "topic": "ui",
+    "source": "Canvas-cachedSortingLayerValue.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of the `isRootCanvas` property?"
+    },
+    "outputs": {
+      "expected": "The `isRootCanvas` property is of type `bool`."
+    },
+    "topic": "ui",
+    "source": "Canvas-isRootCanvas.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `isRootCanvas` property indicate about a Canvas?"
+    },
+    "outputs": {
+      "expected": "The `isRootCanvas` property indicates whether a Canvas is the root Canvas."
+    },
+    "topic": "ui",
+    "source": "Canvas-isRootCanvas.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the accessibility level of the `isRootCanvas` property?"
+    },
+    "outputs": {
+      "expected": "The `isRootCanvas` property has a `public` accessibility level."
+    },
+    "topic": "ui",
+    "source": "Canvas-isRootCanvas.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the canvas split into a grid during rendering?"
+    },
+    "outputs": {
+      "expected": "During rendering, the canvas splits the renderable area, which consists of the bounds of all UI elements, into a grid."
+    },
+    "topic": "ui",
+    "source": "Canvas-normalizedSortingGridSize.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of `normalizedSortingGridSize`?"
+    },
+    "outputs": {
+      "expected": "The `normalizedSortingGridSize` property defines the normalized size of the grid into which the canvas divides its renderable area."
+    },
+    "topic": "ui",
+    "source": "Canvas-normalizedSortingGridSize.html"
+  },
+  {
+    "inputs": {
+      "question": "What value does `normalizedSortingGridSize` default to if set to 0?"
+    },
+    "outputs": {
+      "expected": "If `normalizedSortingGridSize` is set to 0, it will default to a value of 0.1f."
+    },
+    "topic": "ui",
+    "source": "Canvas-normalizedSortingGridSize.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of the `overridePixelPerfect` property?"
+    },
+    "outputs": {
+      "expected": "The `overridePixelPerfect` property allows for nested canvases to override `pixelPerfect` settings that are inherited from parent canvases."
+    },
+    "topic": "ui",
+    "source": "Canvas-overridePixelPerfect.html"
+  },
+  {
+    "inputs": {
+      "question": "What type of data does `overridePixelPerfect` store?"
+    },
+    "outputs": {
+      "expected": "The `overridePixelPerfect` property stores a boolean value."
+    },
+    "topic": "ui",
+    "source": "Canvas-overridePixelPerfect.html"
+  },
+  {
+    "inputs": {
+      "question": "How do nested canvases manage `pixelPerfect` settings inherited from parent canvases?"
+    },
+    "outputs": {
+      "expected": "Nested canvases can override `pixelPerfect` settings inherited from parent canvases by utilizing the `overridePixelPerfect` property."
+    },
+    "topic": "ui",
+    "source": "Canvas-overridePixelPerfect.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of the `overrideSorting` property for a Canvas?"
+    },
+    "outputs": {
+      "expected": "The `overrideSorting` property allows for nested canvases to override the `Canvas.sortingOrder` from their parent canvases."
+    },
+    "topic": "ui",
+    "source": "Canvas-overrideSorting.html"
+  },
+  {
+    "inputs": {
+      "question": "What effect does enabling `overrideSorting` have on a nested canvas's draw order relative to its parent?"
+    },
+    "outputs": {
+      "expected": "If `overrideSorting` is set, a nested canvas can ignore the parent draw order and position itself to draw either on top of or below the parent draw order."
+    },
+    "topic": "ui",
+    "source": "Canvas-overrideSorting.html"
+  },
+  {
+    "inputs": {
+      "question": "Which specific property of parent canvases can be ignored by nested canvases when `overrideSorting` is active?"
+    },
+    "outputs": {
+      "expected": "When `overrideSorting` is active, nested canvases can ignore the `Canvas.sortingOrder` property of parent canvases."
+    },
+    "topic": "ui",
+    "source": "Canvas-overrideSorting.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of the `pixelPerfect` property in a Canvas?"
+    },
+    "outputs": {
+      "expected": "The `pixelPerfect` property forces pixel alignment for elements within the canvas, which can make them appear sharper and prevent blurriness."
+    },
+    "topic": "ui",
+    "source": "Canvas-pixelPerfect.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what condition does the `pixelPerfect` property take effect?"
+    },
+    "outputs": {
+      "expected": "The `pixelPerfect` property only applies when the `Canvas.renderMode` is set to Screen Space."
+    },
+    "topic": "ui",
+    "source": "Canvas-pixelPerfect.html"
+  },
+  {
+    "inputs": {
+      "question": "When might it be advantageous to disable the `pixelPerfect` property?"
+    },
+    "outputs": {
+      "expected": "It may be advantageous to disable `pixelPerfect` if many elements are scaled or rotated, or use subtle animated position or scaling, because the movement will be smoother without it."
+    },
+    "topic": "ui",
+    "source": "Canvas-pixelPerfect.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of `Canvas.pixelRect`?"
+    },
+    "outputs": {
+      "expected": "`Canvas.pixelRect` is used to retrieve the render rectangle for the Canvas."
+    },
+    "topic": "ui",
+    "source": "Canvas-pixelRect.html"
+  },
+  {
+    "inputs": {
+      "question": "What does `Canvas.pixelRect` represent when a Canvas is configured for overlay mode?"
+    },
+    "outputs": {
+      "expected": "When a Canvas is in overlay mode, `Canvas.pixelRect` will correspond to the screen dimensions."
+    },
+    "topic": "ui",
+    "source": "Canvas-pixelRect.html"
+  },
+  {
+    "inputs": {
+      "question": "How is `Canvas.pixelRect` defined when a Canvas is operating in world mode?"
+    },
+    "outputs": {
+      "expected": "If a Canvas is in world mode, `Canvas.pixelRect` will represent the camera's screen viewport rectangle."
+    },
+    "topic": "ui",
+    "source": "Canvas-pixelRect.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of the planeDistance property?"
+    },
+    "outputs": {
+      "expected": "The planeDistance property is a public float."
+    },
+    "topic": "ui",
+    "source": "Canvas-planeDistance.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the planeDistance property describe in relation to the Canvas?"
+    },
+    "outputs": {
+      "expected": "The planeDistance property describes how far away from the camera the Canvas is generated."
+    },
+    "topic": "ui",
+    "source": "Canvas-planeDistance.html"
+  },
+  {
+    "inputs": {
+      "question": "When is the planeDistance property applicable for a Canvas?"
+    },
+    "outputs": {
+      "expected": "The planeDistance property only applies when Canvas.renderMode is set to RenderMode.ScreenSpaceCamera."
+    },
+    "topic": "ui",
+    "source": "Canvas-planeDistance.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of Camera.activeTexture?"
+    },
+    "outputs": {
+      "expected": "Camera.activeTexture gets the temporary RenderTexture target for a Camera."
+    },
+    "topic": "camera",
+    "source": "Camera-activeTexture.html"
+  },
+  {
+    "inputs": {
+      "question": "When is a Camera's render target accessible?"
+    },
+    "outputs": {
+      "expected": "A Camera's render target is accessible in the Camera's OnPostRender method."
+    },
+    "topic": "camera",
+    "source": "Camera-activeTexture.html"
+  },
+  {
+    "inputs": {
+      "question": "What kind of object is Camera.activeTexture?"
+    },
+    "outputs": {
+      "expected": "Camera.activeTexture is a public RenderTexture."
+    },
+    "topic": "camera",
+    "source": "Camera-activeTexture.html"
+  },
+  {
+    "inputs": {
+      "question": "What information does the actualRenderingPath property provide?"
+    },
+    "outputs": {
+      "expected": "The actualRenderingPath property provides information about the rendering path that is currently being used by the camera. This property is read-only."
+    },
+    "topic": "camera",
+    "source": "Camera-actualRenderingPath.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what conditions might the actualRenderingPath differ from the renderingPath specified by a user?"
+    },
+    "outputs": {
+      "expected": "The actualRenderingPath might differ if the underlying GPU or platform does not support the requested renderingPath. It can also differ if another situation causes a fallback, for example, if deferred rendering is not supported with orthographic projection cameras."
+    },
+    "topic": "camera",
+    "source": "Camera-actualRenderingPath.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a key characteristic of the actualRenderingPath property regarding modification?"
+    },
+    "outputs": {
+      "expected": "A key characteristic of the actualRenderingPath property is that it is read-only. This means its value cannot be directly modified or set by a user."
+    },
+    "topic": "camera",
+    "source": "Camera-actualRenderingPath.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `Camera.allCameras` property provide?"
+    },
+    "outputs": {
+      "expected": "The `Camera.allCameras` property provides an array of all enabled cameras currently present in the Scene."
+    },
+    "topic": "camera",
+    "source": "Camera-allCameras.html"
+  },
+  {
+    "inputs": {
+      "question": "What value will `Camera.allCameras` return if all cameras in the scene are disabled?"
+    },
+    "outputs": {
+      "expected": "If all cameras in the scene are disabled, `Camera.allCameras` will return a value of zero."
+    },
+    "topic": "camera",
+    "source": "Camera-allCameras.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a script get the total count of enabled cameras in a Unity scene?"
+    },
+    "outputs": {
+      "expected": "A script can obtain the total count of enabled cameras by accessing the `Length` property of `Camera.allCameras`, for example, `Camera.allCameras.Length`."
+    },
+    "topic": "camera",
+    "source": "Camera-allCameras.html"
+  },
+  {
+    "inputs": {
+      "question": "What kind of information does Camera.allCamerasCount provide?"
+    },
+    "outputs": {
+      "expected": "Camera.allCamerasCount provides the total number of cameras present in the current Scene."
+    },
+    "topic": "camera",
+    "source": "Camera-allCamerasCount.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type and access modifier of the allCamerasCount property?"
+    },
+    "outputs": {
+      "expected": "The allCamerasCount property is a public static integer."
+    },
+    "topic": "camera",
+    "source": "Camera-allCamerasCount.html"
+  },
+  {
+    "inputs": {
+      "question": "How does Camera.allCamerasCount relate to the Camera.allCameras array or Camera.GetAllCameras method?"
+    },
+    "outputs": {
+      "expected": "Camera.allCamerasCount returns the size of the array that Camera.allCameras returns, and it indicates the amount of cameras that Camera.GetAllCameras will fill."
+    },
+    "topic": "camera",
+    "source": "Camera-allCamerasCount.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `allowDynamicResolution` property indicate for a camera?"
+    },
+    "outputs": {
+      "expected": "The `allowDynamicResolution` property indicates whether the camera is using Dynamic Resolution rendering. A value of true means it is using it, while false means it is not."
+    },
+    "topic": "camera",
+    "source": "Camera-allowDynamicResolution.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary benefit of Dynamic Resolution Scaling (DRS)?"
+    },
+    "outputs": {
+      "expected": "Dynamic resolution scaling (DRS) changes camera resolution on the fly. This process helps to reduce the GPU workload."
+    },
+    "topic": "camera",
+    "source": "Camera-allowDynamicResolution.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what condition is Dynamic Resolution actually used, even if the `allowDynamicResolution` property is true?"
+    },
+    "outputs": {
+      "expected": "Even if the `allowDynamicResolution` property is true, Dynamic Resolution is only used if it is also supported by the current Graphics Device."
+    },
+    "topic": "camera",
+    "source": "Camera-allowDynamicResolution.html"
+  },
+  {
+    "inputs": {
+      "question": "What functionality does the `allowHDR` property manage for a camera?"
+    },
+    "outputs": {
+      "expected": "The `allowHDR` property manages high dynamic range rendering for a camera. Its boolean value indicates whether the camera is currently using HDR rendering."
+    },
+    "topic": "camera",
+    "source": "Camera-allowHDR.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what condition can High Dynamic Range (HDR) be enabled for a camera?"
+    },
+    "outputs": {
+      "expected": "High Dynamic Range (HDR) can only be enabled for a camera if it is supported by the current GraphicsTier."
+    },
+    "topic": "camera",
+    "source": "Camera-allowHDR.html"
+  },
+  {
+    "inputs": {
+      "question": "In which specific rendering pipeline can a Graphics Tier be configured?"
+    },
+    "outputs": {
+      "expected": "A Graphics Tier can only be configured in the Built-in Render Pipeline."
+    },
+    "topic": "camera",
+    "source": "Camera-allowHDR.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of the `allowMSAA` property for a camera?"
+    },
+    "outputs": {
+      "expected": "The `allowMSAA` property determines whether a camera should use an MSAA render target for rendering."
+    },
+    "topic": "camera",
+    "source": "Camera-allowMSAA.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of the `allowMSAA` property?"
+    },
+    "outputs": {
+      "expected": "The `allowMSAA` property is a public boolean."
+    },
+    "topic": "camera",
+    "source": "Camera-allowMSAA.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a prerequisite for a camera to actually use MSAA rendering, even if `allowMSAA` is enabled?"
+    },
+    "outputs": {
+      "expected": "A camera will only use MSAA rendering if it is supported by the current quality settings MSAA level."
+    },
+    "topic": "camera",
+    "source": "Camera-allowMSAA.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of the `anamorphism` property for a Camera?"
+    },
+    "outputs": {
+      "expected": "The `anamorphism` property stretches the camera's sensor to simulate an anamorphic look."
+    },
+    "topic": "camera",
+    "source": "Camera-anamorphism.html"
+  },
+  {
+    "inputs": {
+      "question": "What must be enabled to use the `anamorphism` property?"
+    },
+    "outputs": {
+      "expected": "To use the `anamorphism` property, `UsePhysicalProperties` must be enabled."
+    },
+    "topic": "camera",
+    "source": "Camera-anamorphism.html"
+  },
+  {
+    "inputs": {
+      "question": "How do positive and negative values of `anamorphism` affect the camera's distortion?"
+    },
+    "outputs": {
+      "expected": "Positive `anamorphism` values distort the Camera vertically. Negative `anamorphism` values distort the Camera horizontally."
+    },
+    "topic": "camera",
+    "source": "Camera-anamorphism.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of the `aperture` property in a Unity camera?"
+    },
+    "outputs": {
+      "expected": "The `aperture` property represents the camera aperture."
+    },
+    "topic": "camera",
+    "source": "Camera-aperture.html"
+  },
+  {
+    "inputs": {
+      "question": "What unit is used to express the camera's aperture number?"
+    },
+    "outputs": {
+      "expected": "The aperture number is expressed in f-stop."
+    },
+    "topic": "camera",
+    "source": "Camera-aperture.html"
+  },
+  {
+    "inputs": {
+      "question": "What setting must be enabled to utilize the `aperture` property?"
+    },
+    "outputs": {
+      "expected": "To use the `aperture` property, `UsePhysicalProperties` must be enabled."
+    },
+    "topic": "camera",
+    "source": "Camera-aperture.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of `Camera.areVRStereoViewMatricesWithinSingleCullTolerance`?"
+    },
+    "outputs": {
+      "expected": "This boolean determines whether the stereo view matrices are suitable to allow for a single-pass cull, which can improve performance."
+    },
+    "topic": "camera",
+    "source": "Camera-areVRStereoViewMatricesWithinSingleCullTolerance.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what condition does the Camera utilize the `areVRStereoViewMatricesWithinSingleCullTolerance` check?"
+    },
+    "outputs": {
+      "expected": "The Camera uses this check when the stereo view matrices are set manually by calling `Camera.SetStereoViewMatrix`."
+    },
+    "topic": "camera",
+    "source": "Camera-areVRStereoViewMatricesWithinSingleCullTolerance.html"
+  },
+  {
+    "inputs": {
+      "question": "What happens if the `areVRStereoViewMatricesWithinSingleCullTolerance` check fails?"
+    },
+    "outputs": {
+      "expected": "If the check fails, the camera performs a separate cull for each eye, shadows cannot be shared between the eyes, and single-pass rendering cannot be used."
+    },
+    "topic": "camera",
+    "source": "Camera-areVRStereoViewMatricesWithinSingleCullTolerance.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of `extraScriptingDefines`?"
+    },
+    "outputs": {
+      "expected": "The `extraScriptingDefines` property specifies user-defined preprocessor defines that are utilized when compiling assemblies during an AssetBundle build. This setting is optional."
+    },
+    "topic": "scripting",
+    "source": "BuildAssetBundlesParameters-extraScriptingDefines.html"
+  },
+  {
+    "inputs": {
+      "question": "How can preprocessor defines from `extraScriptingDefines` affect the build process?"
+    },
+    "outputs": {
+      "expected": "Preprocessor defines can exclude serialized fields from class definitions. This exclusion directly influences how objects are serialized during the AssetBundle build process."
+    },
+    "topic": "scripting",
+    "source": "BuildAssetBundlesParameters-extraScriptingDefines.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a common recommendation regarding the values for `extraScriptingDefines`?"
+    },
+    "outputs": {
+      "expected": "Typically, the values supplied for `extraScriptingDefines` should correspond to any extra scripting defines that are also used during a player build."
+    },
+    "topic": "scripting",
+    "source": "BuildAssetBundlesParameters-extraScriptingDefines.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of `extraScriptingDefines`?"
+    },
+    "outputs": {
+      "expected": "The `extraScriptingDefines` property allows specifying additional preprocessor defines during the compilation of assemblies for the Player."
+    },
+    "topic": "scripting",
+    "source": "BuildPlayerOptions-extraScriptingDefines.html"
+  },
+  {
+    "inputs": {
+      "question": "How do `extraScriptingDefines` interact with the existing Scripting Define Symbols list?"
+    },
+    "outputs": {
+      "expected": "The defines provided by `extraScriptingDefines` are appended to the existing Scripting Define Symbols list, which is configured in the Player settings."
+    },
+    "topic": "scripting",
+    "source": "BuildPlayerOptions-extraScriptingDefines.html"
+  },
+  {
+    "inputs": {
+      "question": "When are the additional preprocessor defines from `extraScriptingDefines` applied?"
+    },
+    "outputs": {
+      "expected": "These additional preprocessor defines are applied while compiling assemblies for the Player."
+    },
+    "topic": "scripting",
+    "source": "BuildPlayerOptions-extraScriptingDefines.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary purpose of an instance of the Coroutine class?"
+    },
+    "outputs": {
+      "expected": "Instances of the Coroutine class are only used to reference these coroutines. They do not hold any exposed properties or functions."
+    },
+    "topic": "scripting",
+    "source": "Coroutine.html"
+  },
+  {
+    "inputs": {
+      "question": "How does a coroutine suspend its execution?"
+    },
+    "outputs": {
+      "expected": "A coroutine is a function that can suspend its execution (yield) until the given YieldInstruction finishes."
+    },
+    "topic": "scripting",
+    "source": "Coroutine.html"
+  },
+  {
+    "inputs": {
+      "question": "What kind of object is returned by MonoBehaviour.StartCoroutine?"
+    },
+    "outputs": {
+      "expected": "MonoBehaviour.StartCoroutine returns an instance of the Coroutine class."
+    },
+    "topic": "scripting",
+    "source": "Coroutine.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a coroutine in Unity and how does it differ from a regular method regarding execution?"
+    },
+    "outputs": {
+      "expected": "A coroutine is a method that can suspend execution and resume at a later time, allowing tasks to be spread across multiple frames. Unlike regular, non-coroutine methods which run to completion within a single frame update, coroutines enable gradual effects and handle long asynchronous operations over time."
+    },
+    "topic": "scripting",
+    "source": "Coroutines.html"
+  },
+  {
+    "inputs": {
+      "question": "How does a developer define a coroutine method in Unity?"
+    },
+    "outputs": {
+      "expected": "To define a coroutine, a method must have an IEnumerator return type and include a yield return statement somewhere in its body. The `yield return` statement indicates the point at which execution will be suspended, and the coroutine will resume later based on the yield instruction."
+    },
+    "topic": "scripting",
+    "source": "Coroutines.html"
+  },
+  {
+    "inputs": {
+      "question": "What is an important distinction to remember about coroutines concerning multi-threading?"
+    },
+    "outputs": {
+      "expected": "It is important not to confuse coroutines with threads, as synchronous operations running within a coroutine still execute on the main thread. For multi-threaded code in Unity, developers should utilize options like the job system or .NET async and await with Unity’s custom `Awaitable` support."
+    },
+    "topic": "scripting",
+    "source": "Coroutines.html"
+  },
+  {
+    "inputs": {
+      "question": "What information does EditorApplication.scriptingRuntimeVersion provide?"
+    },
+    "outputs": {
+      "expected": "EditorApplication.scriptingRuntimeVersion returns the scripting runtime version currently used by the Editor."
+    },
+    "topic": "scripting",
+    "source": "EditorApplication-scriptingRuntimeVersion.html"
+  },
+  {
+    "inputs": {
+      "question": "In which Unity version was ScriptingRuntimeVersion deprecated?"
+    },
+    "outputs": {
+      "expected": "ScriptingRuntimeVersion was deprecated in 2019.3."
+    },
+    "topic": "scripting",
+    "source": "EditorApplication-scriptingRuntimeVersion.html"
+  },
+  {
+    "inputs": {
+      "question": "What was the reason for the deprecation of ScriptingRuntimeVersion?"
+    },
+    "outputs": {
+      "expected": "ScriptingRuntimeVersion was deprecated due to the removal of legacy mono."
+    },
+    "topic": "scripting",
+    "source": "EditorApplication-scriptingRuntimeVersion.html"
+  },
+  {
+    "inputs": {
+      "question": "What is IMGUI?"
+    },
+    "outputs": {
+      "expected": "IMGUI (Immediate Mode GUI) is a code-driven GUI system in Unity, distinct from the main GameObject-based UI System. It is primarily intended as a tool for programmers."
+    },
+    "topic": "scripting",
+    "source": "GUIScriptingGuide.html"
+  },
+  {
+    "inputs": {
+      "question": "How are IMGUI elements driven or implemented in a script?"
+    },
+    "outputs": {
+      "expected": "IMGUI elements are driven by calls to the OnGUI function on any script that implements it. The code to display the interface within this function is executed every frame."
+    },
+    "topic": "scripting",
+    "source": "GUIScriptingGuide.html"
+  },
+  {
+    "inputs": {
+      "question": "For what common purposes is IMGUI used?"
+    },
+    "outputs": {
+      "expected": "IMGUI is commonly used for creating in-game debugging displays and tools, custom inspectors, and new editor windows and tools to extend Unity itself."
+    },
+    "topic": "scripting",
+    "source": "GUIScriptingGuide.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of Light Probes in a Unity scene?"
+    },
+    "outputs": {
+      "expected": "Light Probes store information about how light passes through space in a scene. A collection of light probes can improve lighting on moving objects and static LOD scenery within that space."
+    },
+    "topic": "scripting",
+    "source": "LightProbes-Placing-Scripting.html"
+  },
+  {
+    "inputs": {
+      "question": "What Unity component must be present on a GameObject for the `LightProbesTetrahedralGrid` script to function?"
+    },
+    "outputs": {
+      "expected": "The `LightProbesTetrahedralGrid` script requires a `LightProbeGroup` component on the GameObject to function."
+    },
+    "topic": "scripting",
+    "source": "LightProbes-Placing-Scripting.html"
+  },
+  {
+    "inputs": {
+      "question": "In what shapes can a script, such as the `LightProbesTetrahedralGrid` example, place Light Probes?"
+    },
+    "outputs": {
+      "expected": "A script can place Light Probes in a circle or a ring."
+    },
+    "topic": "scripting",
+    "source": "LightProbes-Placing-Scripting.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the difference between temporary and permanent modifications to assets when scripting in Unity?"
+    },
+    "outputs": {
+      "expected": "Temporary modifications to assets reset on exiting Play mode, whereas permanent modifications persist after exiting Play mode."
+    },
+    "topic": "scripting",
+    "source": "ModifyingSourceAssetsThroughScripting.html"
+  },
+  {
+    "inputs": {
+      "question": "Which Unity asset types are not automatically instantiated when modified through code?"
+    },
+    "outputs": {
+      "expected": "Texture2D and TerrainData are asset types that are not automatically instantiated when modified from code. Any modifications to these assets are always permanent and cannot be undone."
+    },
+    "topic": "scripting",
+    "source": "ModifyingSourceAssetsThroughScripting.html"
+  },
+  {
+    "inputs": {
+      "question": "What properties should be used for making temporary versus permanent changes to a Material asset?"
+    },
+    "outputs": {
+      "expected": "For temporary changes to a Material asset, `Renderer.material` should be used. For permanent changes to a Material asset, `Renderer.sharedMaterial` should be used."
+    },
+    "topic": "scripting",
+    "source": "ModifyingSourceAssetsThroughScripting.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of `MonoBehaviour.destroyCancellationToken`?"
+    },
+    "outputs": {
+      "expected": "The `destroyCancellationToken` is a read-only CancellationToken that is raised when the MonoBehaviour is destroyed."
+    },
+    "topic": "scripting",
+    "source": "MonoBehaviour-destroyCancellationToken.html"
+  },
+  {
+    "inputs": {
+      "question": "What is an important prerequisite when using the `destroyCancellationToken`?"
+    },
+    "outputs": {
+      "expected": "You must cache the `destroyCancellationToken` before you destroy the MonoBehaviour object."
+    },
+    "topic": "scripting",
+    "source": "MonoBehaviour-destroyCancellationToken.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the access level and type of `destroyCancellationToken`?"
+    },
+    "outputs": {
+      "expected": "The `destroyCancellationToken` is a public CancellationToken."
+    },
+    "topic": "scripting",
+    "source": "MonoBehaviour-destroyCancellationToken.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `didAwake` variable represent?"
+    },
+    "outputs": {
+      "expected": "The `didAwake` variable represents a boolean value indicating whether the `Awake` method was called."
+    },
+    "topic": "scripting",
+    "source": "MonoBehaviour-didAwake.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of the `didAwake` variable?"
+    },
+    "outputs": {
+      "expected": "The `didAwake` variable is a public boolean."
+    },
+    "topic": "scripting",
+    "source": "MonoBehaviour-didAwake.html"
+  },
+  {
+    "inputs": {
+      "question": "According to the example, what value does `didAwake` hold when accessed within the `Start` method?"
+    },
+    "outputs": {
+      "expected": "When accessed within the `Start` method, `didAwake` will hold the value `true`, as `Start` is called after `Awake`."
+    },
+    "topic": "scripting",
+    "source": "MonoBehaviour-didAwake.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the two main approaches to render 3D GameObjects in 2D scenes within Unity's Universal Render Pipeline?"
+    },
+    "outputs": {
+      "expected": "You can either create a 3D GameObject directly in a 2D URP project, or you can create a compatible custom shader."
+    },
+    "topic": "shader",
+    "source": "2d-renderer-urp-shader-compatibility.html"
+  },
+  {
+    "inputs": {
+      "question": "What material does Unity automatically assign to a 3D GameObject created in a 2D URP project, and what is its function?"
+    },
+    "outputs": {
+      "expected": "Unity automatically assigns the Mesh2D-Lit-Default material. This material makes the GameObject compatible with 2D Lights."
+    },
+    "topic": "shader",
+    "source": "2d-renderer-urp-shader-compatibility.html"
+  },
+  {
+    "inputs": {
+      "question": "Which specific setting must be enabled in Shader Graph to make a custom shader compatible for rendering 3D GameObjects in 2D scenes?"
+    },
+    "outputs": {
+      "expected": "To make a custom shader compatible, you must open the Graph Inspector, go to Graph Settings, and enable the 'Sort 3D As 2D Compatible' option."
+    },
+    "topic": "shader",
+    "source": "2d-renderer-urp-shader-compatibility.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the definition of a shader?"
+    },
+    "outputs": {
+      "expected": "A shader is a program that runs on the GPU."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-avoid-cyan-placeholder-shaders.html"
+  },
+  {
+    "inputs": {
+      "question": "What is one way to avoid the Editor using a placeholder shader?"
+    },
+    "outputs": {
+      "expected": "To avoid the Editor using a placeholder shader, you can disable asynchronous shader compilation."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-avoid-cyan-placeholder-shaders.html"
+  },
+  {
+    "inputs": {
+      "question": "How can custom tools prevent rendering in plain cyan while a shader variant compiles?"
+    },
+    "outputs": {
+      "expected": "Custom tools can be configured to draw something other than the placeholder shader for each material, thus avoiding plain cyan rendering during shader variant compilation."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-avoid-cyan-placeholder-shaders.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a shader?"
+    },
+    "outputs": {
+      "expected": "A shader is a program that runs on the GPU."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-detect.html"
+  },
+  {
+    "inputs": {
+      "question": "Which C# API allows checking the compilation status of a specific shader variant for a known material?"
+    },
+    "outputs": {
+      "expected": "You can use `ShaderUtil.IsPassCompiled` to check the compilation status of a specific shader variant. Compilation is complete when its status changes from _Uncompiled_ to _Compiled_."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-detect.html"
+  },
+  {
+    "inputs": {
+      "question": "How can one detect if Unity is compiling any shader variants asynchronously, without knowing specific materials?"
+    },
+    "outputs": {
+      "expected": "You can use `ShaderUtil.anythingCompiling` to detect if Unity is compiling any shader variants asynchronously. All current compilation is complete when this value changes from `true` to `false`."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-detect.html"
+  },
+  {
+    "inputs": {
+      "question": "How do you enable or disable asynchronous shader compilation globally in Unity?"
+    },
+    "outputs": {
+      "expected": "To enable or disable it globally, navigate to Edit > Project Settings > Editor. Under the Shader Compilation section, check or uncheck the Asynchronous Shader Compilation checkbox. This global setting exclusively affects the Scene View."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-enable-or-disable.html"
+  },
+  {
+    "inputs": {
+      "question": "What C# property is used to control asynchronous shader compilation for specific rendering calls within an immediate script scope?"
+    },
+    "outputs": {
+      "expected": "In an immediate C# script scope, the `ShaderUtil.allowAsyncCompilation` property is used. Developers should store its current state, set it to `false` before specific rendering commands, and then restore its original state afterwards."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-enable-or-disable.html"
+  },
+  {
+    "inputs": {
+      "question": "How can asynchronous shader compilation be disabled for an individual Shader object?"
+    },
+    "outputs": {
+      "expected": "To disable asynchronous shader compilation for a specific Shader object, add the `#pragma editor_sync_compilation` directive to the shader's source code. However, avoid doing this for complex Shader objects that generate new shader variants, as it can cause rendering stalls in the Editor."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-enable-or-disable.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a Shader object in Unity?"
+    },
+    "outputs": {
+      "expected": "A Shader object is an instance of the Shader class, serving as a container for shader programs, GPU instructions, and information guiding Unity on their usage. These objects are used with materials to define the appearance of a scene."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-introduction.html"
+  },
+  {
+    "inputs": {
+      "question": "How does the Unity Editor visually indicate that a shader variant is still compiling asynchronously?"
+    },
+    "outputs": {
+      "expected": "While a shader variant is loading and compiling, the Editor renders the geometry using a placeholder shader that appears as a plain cyan color. The progress bar in the bottom right corner of the Editor also displays the status of the compilation queue."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-introduction.html"
+  },
+  {
+    "inputs": {
+      "question": "When does the Unity Editor not use a placeholder shader during asynchronous compilation?"
+    },
+    "outputs": {
+      "expected": "The Editor does not use a placeholder shader if geometry is drawn using `DrawProcedural` or `CommandBuffer.DrawProcedural`. In these cases, it skips rendering the geometry entirely until the shader variant has completed compilation."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation-introduction.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a shader?"
+    },
+    "outputs": {
+      "expected": "A shader is a program that runs on the GPU."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a Shader object?"
+    },
+    "outputs": {
+      "expected": "A Shader object is an instance of the Shader class. It functions as a container for shader programs, GPU instructions, and information that tells Unity how to use them with materials to define the appearance of a scene."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation.html"
+  },
+  {
+    "inputs": {
+      "question": "How can asynchronous shader compilation be controlled or managed?"
+    },
+    "outputs": {
+      "expected": "Asynchronous shader compilation can be enabled or disabled in a project, for specific rendering calls, within a specific scope, or for particular Shader objects. Its state can also be monitored to perform operations when changes occur."
+    },
+    "topic": "shader",
+    "source": "AsynchronousShaderCompilation.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a shader?"
+    },
+    "outputs": {
+      "expected": "A shader is a program that runs on the GPU."
+    },
+    "topic": "shader",
+    "source": "Built-inShaderGuide.html"
+  },
+  {
+    "inputs": {
+      "question": "Why are legacy built-in shaders still included in Unity?"
+    },
+    "outputs": {
+      "expected": "Legacy built-in shaders are still included and available in Unity for backwards compatibility."
+    },
+    "topic": "shader",
+    "source": "Built-inShaderGuide.html"
+  },
+  {
+    "inputs": {
+      "question": "What shader does Unity recommend using instead of the legacy built-in shaders?"
+    },
+    "outputs": {
+      "expected": "Unity recommends using the Standard Shader."
+    },
+    "topic": "shader",
+    "source": "Built-inShaderGuide.html"
+  },
+  {
+    "inputs": {
+      "question": "What global shader variable refers to a camera's primary depth texture?"
+    },
+    "outputs": {
+      "expected": "The global shader variable `_CameraDepthTexture` always refers to the camera’s primary depth texture."
+    },
+    "topic": "shader",
+    "source": "CameraOutput-shader.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of `_LastCameraDepthTexture`?"
+    },
+    "outputs": {
+      "expected": "`_LastCameraDepthTexture` refers to the last depth texture rendered by any camera, which can be useful for making a half-resolution depth texture from a secondary camera available to a post-process shader."
+    },
+    "topic": "shader",
+    "source": "CameraOutput-shader.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a shader?"
+    },
+    "outputs": {
+      "expected": "A shader is a program that runs on the GPU."
+    },
+    "topic": "shader",
+    "source": "CameraOutput-shader.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `keywordSpace` property represent for a compute shader?"
+    },
+    "outputs": {
+      "expected": "The `keywordSpace` property represents the local keyword space of a compute shader. It includes all keywords declared in the source file for that compute shader."
+    },
+    "topic": "shader",
+    "source": "ComputeShader-keywordSpace.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the role of shader keywords in Unity?"
+    },
+    "outputs": {
+      "expected": "Shader keywords determine which shader variants Unity uses. They help control different versions of a shader based on specific conditions."
+    },
+    "topic": "shader",
+    "source": "ComputeShader-keywordSpace.html"
+  },
+  {
+    "inputs": {
+      "question": "How does Unity prioritize keyword states when both local and global keywords are present for a compute shader?"
+    },
+    "outputs": {
+      "expected": "If a local keyword is overridable and a global keyword with the same name exists and is enabled, Unity uses the global keyword's state. Otherwise, Unity uses the local keyword's state."
+    },
+    "topic": "shader",
+    "source": "ComputeShader-keywordSpace.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the effect of enabling the Sort as 2D property on 3D meshes with the same depth?"
+    },
+    "outputs": {
+      "expected": "When the Sort as 2D property is enabled, if 3D meshes have the same depth, Unity renders them like overlapping 2D sprites instead of intersecting meshes."
+    },
+    "topic": "rendering",
+    "source": "2d-renderer-urp-sorting-workflows.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the steps to configure a 3D GameObject for 2D sorting?"
+    },
+    "outputs": {
+      "expected": "To configure a 3D GameObject for 2D sorting, you must add a Sorting Group component, enable \"Sort as 2D\" in its property settings, and then assign Sorting Layers and Order in Layer values to determine its render queue position."
+    },
+    "topic": "rendering",
+    "source": "2d-renderer-urp-sorting-workflows.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a limitation when using the Sort as 2D setting?"
+    },
+    "outputs": {
+      "expected": "Enabling the Sort as 2D setting clears the object's depth information. This means that objects configured with Sort as 2D cannot be used with depth-based post-processing."
+    },
+    "topic": "rendering",
+    "source": "2d-renderer-urp-sorting-workflows.html"
+  },
+  {
+    "inputs": {
+      "question": "What project type is required for the '2D > Mask Interaction' property setting to appear in a Mesh Renderer component?"
+    },
+    "outputs": {
+      "expected": "The project must be a 2D URP Project for the '2D > Mask Interaction' property setting to be visible in the Mesh Renderer component."
+    },
+    "topic": "rendering",
+    "source": "2d-renderer-urp-sprite-mask-interaction.html"
+  },
+  {
+    "inputs": {
+      "question": "How do you enable Sprite mask interaction for a 3D GameObject?"
+    },
+    "outputs": {
+      "expected": "To enable Sprite mask interaction, select the 3D GameObject, then in the Inspector window, go to the '2D > Mask Interaction' section of the Mesh Renderer or Skinned Mesh Renderer component, and choose either 'Visible Inside Mask' or 'Visible Outside Mask'."
+    },
+    "topic": "rendering",
+    "source": "2d-renderer-urp-sprite-mask-interaction.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the visual effect when 'Visible Inside Mask' is selected for a mesh renderer interacting with a Sprite mask?"
+    },
+    "outputs": {
+      "expected": "When 'Visible Inside Mask' is selected, the mesh renderer renders only the parts of the mesh that overlap the Sprite mask."
+    },
+    "topic": "rendering",
+    "source": "2d-renderer-urp-sprite-mask-interaction.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of the URP Config Package?"
+    },
+    "outputs": {
+      "expected": "The URP Config Package currently changes the maximum number of visible lights that URP renders when the Forward+ Rendering Path is in use."
+    },
+    "topic": "rendering",
+    "source": "URP-Config-Package.html"
+  },
+  {
+    "inputs": {
+      "question": "How do you embed the URP Config package source code into a Unity project?"
+    },
+    "outputs": {
+      "expected": "To embed the URP Config package source code, copy the `com.unity.render-pipelines.universal-config` folder from `Library/PackageCache` to the `Packages` folder at the root of your project."
+    },
+    "topic": "rendering",
+    "source": "URP-Config-Package.html"
+  },
+  {
+    "inputs": {
+      "question": "Which files need to be synchronized when configuring URP properties with the URP Config package, and how can the Editor help with this?"
+    },
+    "outputs": {
+      "expected": "The `ShaderConfig.cs` file and the `ShaderConfig.cs.hlsl` header file must be synchronized. To use the Editor, edit the `ShaderConfig.cs` file, save it, and then select `Edit > Rendering > Generate Shader Includes`."
+    },
+    "topic": "rendering",
+    "source": "URP-Config-Package.html"
+  },
+  {
+    "inputs": {
+      "question": "What visual cue indicates a custom shader is not URP compatible after an upgrade?"
+    },
+    "outputs": {
+      "expected": "When upgrading to URP, materials that use incompatible custom shaders will turn magenta (bright pink) in the scene to indicate an error."
+    },
+    "topic": "rendering",
+    "source": "birp-urp-custom-shader-upgrade-guide.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the initial code block and include file changes required to make a Built-In Render Pipeline shader URP compatible?"
+    },
+    "outputs": {
+      "expected": "The `CGPROGRAM` and `ENDCG` blocks must be changed to `HLSLPROGRAM` and `ENDHLSL`. Additionally, the shader needs to update its include statement to reference `Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl`."
+    },
+    "topic": "rendering",
+    "source": "birp-urp-custom-shader-upgrade-guide.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of using `CBUFFER` code blocks for material properties in URP shaders?"
+    },
+    "outputs": {
+      "expected": "For a shader to be SRP Batcher compatible, all material properties must be declared within a `CBUFFER` code block. This ensures that all passes in the shader use the same `CBUFFER` block."
+    },
+    "topic": "rendering",
+    "source": "birp-urp-custom-shader-upgrade-guide.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary characteristic of Unity's Built-in Render Pipeline compared to other pipelines?"
+    },
+    "outputs": {
+      "expected": "Unity’s Built-in Render Pipeline is Unity’s older render pipeline."
+    },
+    "topic": "rendering",
+    "source": "built-in-render-pipeline.html"
+  },
+  {
+    "inputs": {
+      "question": "How can the Built-in Render Pipeline be configured?"
+    },
+    "outputs": {
+      "expected": "The Built-in Render Pipeline can be configured by choosing between different rendering paths."
+    },
+    "topic": "rendering",
+    "source": "built-in-render-pipeline.html"
+  },
+  {
+    "inputs": {
+      "question": "What API is used for custom rendering in the Built-in Render Pipeline?"
+    },
+    "outputs": {
+      "expected": "The `CommandBuffer` API is used for custom rendering to schedule and execute rendering commands at various points in the Built-in Render Pipeline."
+    },
+    "topic": "rendering",
+    "source": "built-in-render-pipeline.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a render pipeline in Unity?"
+    },
+    "outputs": {
+      "expected": "A render pipeline is a series of operations that take the contents of a Scene and display them on a screen. Unity allows developers to choose from pre-built render pipelines or create their own."
+    },
+    "topic": "rendering",
+    "source": "choose-a-render-pipeline.html"
+  },
+  {
+    "inputs": {
+      "question": "Why is it important to choose a Unity render pipeline early in a project's development?"
+    },
+    "outputs": {
+      "expected": "It is important to choose a render pipeline early because switching a project from one to another can be very time-consuming, especially if the project is far along in development. Different render pipelines also utilize different shaders."
+    },
+    "topic": "rendering",
+    "source": "choose-a-render-pipeline.html"
+  },
+  {
+    "inputs": {
+      "question": "Can the Universal Render Pipeline and the High Definition Render Pipeline be used simultaneously in a Unity project?"
+    },
+    "outputs": {
+      "expected": "No, you cannot use the Universal Render Pipeline (URP) and the High Definition Render Pipeline (HDRP) at the same time. Although they are both built with the Scriptable Render Pipeline (SRP), their render paths and light models are distinct."
+    },
+    "topic": "rendering",
+    "source": "choose-a-render-pipeline.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a Render Pipeline in Unity?"
+    },
+    "outputs": {
+      "expected": "A Render Pipeline is defined as a series of operations that take the contents of a Scene and displays them on a screen. Unity allows users to choose from pre-built render pipelines or create their own."
+    },
+    "topic": "rendering",
+    "source": "creating-a-urp-project.html"
+  },
+  {
+    "inputs": {
+      "question": "What are two methods for creating a new Unity project that uses URP?"
+    },
+    "outputs": {
+      "expected": "A new URP project can be created by starting from scratch using a template in the Unity Hub. Alternatively, URP can be installed into an existing project that currently uses the Built-In Render Pipeline."
+    },
+    "topic": "rendering",
+    "source": "creating-a-urp-project.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of importing a package sample?"
+    },
+    "outputs": {
+      "expected": "Importing a package sample allows a user to bring in a set of assets. These assets can be used as a base to build upon or to learn how to use a specific feature."
+    },
+    "topic": "rendering",
+    "source": "creating-a-urp-project.html"
+  },
+  {
+    "inputs": {
+      "question": "What kind of data do cookies in the Built-in Render Pipeline utilize?"
+    },
+    "outputs": {
+      "expected": "Cookies in the Built-in Render Pipeline only use data from the alpha channel. This means you can define a shape for a cookie, but not its color."
+    },
+    "topic": "rendering",
+    "source": "creating-cookies-built-in-render-pipeline.html"
+  },
+  {
+    "inputs": {
+      "question": "Which texture layout is necessary when creating a cookie for use with a Point Light?"
+    },
+    "outputs": {
+      "expected": "If you are creating a cookie to use with a Point Light, the texture must be laid out as a cubemap."
+    },
+    "topic": "rendering",
+    "source": "creating-cookies-built-in-render-pipeline.html"
+  },
+  {
+    "inputs": {
+      "question": "What Texture Type and Alpha Source settings are required for a cookie in Unity's Built-in Render Pipeline?"
+    },
+    "outputs": {
+      "expected": "For a cookie, the Texture Type must be set to 'Cookie' and the Alpha Source must be set to 'From Gray Scale'. The Light Type should also match the type of Light you are creating the cookie for."
+    },
+    "topic": "rendering",
+    "source": "creating-cookies-built-in-render-pipeline.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of a custom render pass in the Universal Render Pipeline?"
+    },
+    "outputs": {
+      "expected": "A custom render pass is a way to change how the Universal Render Pipeline displays a Scene on a screen. The Universal Render Pipeline is defined as a series of operations that take the contents of a Scene and display them."
+    },
+    "topic": "rendering",
+    "source": "custom-render-pass-workflow-urp-2d.html"
+  },
+  {
+    "inputs": {
+      "question": "Which classes and properties should be used when implementing a custom render pass in a 2D Universal Render Pipeline project?"
+    },
+    "outputs": {
+      "expected": "For a 2D project, developers should use the `ScriptableRenderPass2D` class for the render pass and the `ScriptableRendererFeature2D` class for injecting it. The `renderPassEvent2D` property, set to a `RenderPassEvent2D`, should be used for injection."
+    },
+    "topic": "rendering",
+    "source": "custom-render-pass-workflow-urp-2d.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a custom render pass in URP 2D access texture resources such as active 2D light and shadow textures?"
+    },
+    "outputs": {
+      "expected": "To access the texture resources used by the URP 2D renderer, including active 2D light and shadow textures, a custom render pass should use the `Universal2DResourceData` API."
+    },
+    "topic": "rendering",
+    "source": "custom-render-pass-workflow-urp-2d.html"
+  },
+  {
+    "inputs": {
+      "question": "How does reducing the number of blend styles affect rendering performance in 2D lights?"
+    },
+    "outputs": {
+      "expected": "Reducing the number of blend styles directly impacts and increases rendering performance, as each blend style is considered a Render Texture. For simple scenes, a single blend style might suffice."
+    },
+    "topic": "2d",
+    "source": "2d-lights-optimize-methods.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the default scale for the Light Render Texture in 2D lighting, and what are the implications of using a smaller scale?"
+    },
+    "outputs": {
+      "expected": "The default scale for the Light Render Texture is 0.5x of the screen resolution. A smaller Light Render Texture size will provide better performance but comes at the cost of visual artifacts."
+    },
+    "topic": "2d",
+    "source": "2d-lights-optimize-methods.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what condition can layers be batched together to reduce the number of Light Render Textures?"
+    },
+    "outputs": {
+      "expected": "Layers can be batched together if they share the same set of lights. This is crucial for making the Sorting Layer batchable and helps to reduce the overall number of Light Render Textures required."
+    },
+    "topic": "2d",
+    "source": "2d-lights-optimize-methods.html"
+  },
+  {
+    "inputs": {
+      "question": "How does the LowLevelPhysics2D API detect collisions between objects?"
+    },
+    "outputs": {
+      "expected": "The LowLevelPhysics2D API uses `PhysicsShape` objects attached to the `PhysicsBody` to detect collisions. The `PhysicsShape` defines the physics body for the purpose of physical collisions."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-interactions-introduction.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the two types of collision behavior for a shape in the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "The two collision types are Collider and Trigger. A Collider shape cannot enter other objects and reports a contact event upon contact, while a Trigger shape goes through other objects and reports a trigger event when it enters another shape."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-interactions-introduction.html"
+  },
+  {
+    "inputs": {
+      "question": "How many collision layers are available in the LowLevelPhysics2D API compared to standard GameObject layers?"
+    },
+    "outputs": {
+      "expected": "The LowLevelPhysics2D API offers a set of 64 layers for collision. This is different from the standard 32 GameObject layers."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-interactions-introduction.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary purpose of the LowLevelPhysics2D API in Unity?"
+    },
+    "outputs": {
+      "expected": "The LowLevelPhysics2D API allows developers to create and control 2D physics objects specifically within C# scripts. It operates independently of built-in Unity 2D physics components."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-introduction.html"
+  },
+  {
+    "inputs": {
+      "question": "What are some key advantages of using the LowLevelPhysics2D API compared to standard 2D physics components?"
+    },
+    "outputs": {
+      "expected": "Key advantages include better performance from contiguous memory storage and multi-core simulation, more deterministic results, support for 64 collision layers, and thread-safety for the job system. It also returns objects as structs, making it compatible with Unity’s Data-Oriented Technology Stack (DOTS)."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-introduction.html"
+  },
+  {
+    "inputs": {
+      "question": "How does the LowLevelPhysics2D API assist with visualizing physics objects during development?"
+    },
+    "outputs": {
+      "expected": "The LowLevelPhysics2D API automatically draws a debug visualization of physics objects directly in the Scene view."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-introduction.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a joint in the context of the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "A joint is a physics component that allows for a dynamic connection between Rigidbody components. It typically enables some degree of movement, similar to a hinge."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-joints.html"
+  },
+  {
+    "inputs": {
+      "question": "What common properties can be configured for all joints in the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "All joints allow you to set the anchor points on the bodies they connect. They also allow you to set limits on the force and torque they apply."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-joints.html"
+  },
+  {
+    "inputs": {
+      "question": "When creating a joint, what is the sequence of actions involving physics bodies, joint definitions, and the world object?"
+    },
+    "outputs": {
+      "expected": "First, create two `PhysicsBody` objects. Next, create a definition object for the specific type of joint desired, such as a `PhysicsDistanceJointDefinition`. Finally, use the `CreateJoint` method of the world object, passing in the joint definition."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-joints.html"
+  },
+  {
+    "inputs": {
+      "question": "How can developers improve the performance of the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "Developers can improve performance by using their available CPU cores to run the physics simulation and their own 2D physics code on multiple threads."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-multithreading.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the locking mechanism used within a physics world to manage read and write access for `LowLevelPhysics2D` API data?"
+    },
+    "outputs": {
+      "expected": "Within a physics world, the LowLevelPhysics2D API uses a Write Once, Read Many (WORM) locking mechanism. This allows any number of threads to read data simultaneously, but only one thread can write data at a time."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-multithreading.html"
+  },
+  {
+    "inputs": {
+      "question": "Which specific `LowLevelPhysics2D` API methods are not guaranteed to be thread-safe and thus cannot be used in the job system?"
+    },
+    "outputs": {
+      "expected": "The methods not guaranteed to be thread-safe and therefore unusable in the job system include `Create`, `CreateBatch`, `Destroy`, and `DestroyBatch`, such as `PhysicsBody.Create`."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-multithreading.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the two main components of a physics object when using the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "A physics object is made up of a physics body, which defines its position, rotation, and velocity, and one or more physics shapes attached to the body, which define its interactive area."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-physics-object.html"
+  },
+  {
+    "inputs": {
+      "question": "What types of geometries can be used to create physics shapes with the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "Physics shapes can be created with Circle, Capsule, Polygon, Segment, and Chain segment geometries."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-physics-object.html"
+  },
+  {
+    "inputs": {
+      "question": "How do you add a physics body to a physics world using the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "To add a physics body to a world, you use the `CreateBody` method of the world object, passing in a `PhysicsBodyDefinition`."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-physics-object.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary purpose of LowLevelPhysics2D API query methods?"
+    },
+    "outputs": {
+      "expected": "LowLevelPhysics2D API query methods are used to check whether 2D physics objects overlap or will collide, a process also known as intersections."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-raycasting.html"
+  },
+  {
+    "inputs": {
+      "question": "What are two different approaches to check for overlaps between geometry objects using the LowLevelPhysics2D API?"
+    },
+    "outputs": {
+      "expected": "Overlaps can be checked using the PhysicsQuery API, such as PhysicsQuery.CapsuleAndCircle, or by using the Intersect method of a geometry object, such as CapsuleGeometry.Intersect."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-raycasting.html"
+  },
+  {
+    "inputs": {
+      "question": "What crucial memory management step is required when LowLevelPhysics2D API methods return NativeArray types?"
+    },
+    "outputs": {
+      "expected": "When LowLevelPhysics2D API methods return NativeArray types, these must be disposed of to free the memory they use."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-raycasting.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the three types of body behavior in the physics simulation and how do they differ in terms of forces and gravity?"
+    },
+    "outputs": {
+      "expected": "The body types are Dynamic, Kinematic, and Static. Dynamic bodies are affected by forces and gravity. Kinematic and Static bodies are not affected by forces or gravity, but both allow collisions with Dynamic bodies."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-reference-body.html"
+  },
+  {
+    "inputs": {
+      "question": "How does Linear Damping affect a body's linear velocity?"
+    },
+    "outputs": {
+      "expected": "Linear Damping sets how quickly the linear velocity decreases to simulate drag, air resistance, or friction. Low values produce a slower decay rate, allowing the body to move faster for longer, whereas high values result in a faster decay rate, causing the body to slow down over a short period."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-reference-body.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of the 'Sleeping Allowed' property?"
+    },
+    "outputs": {
+      "expected": "The 'Sleeping Allowed' property removes a body from physics calculations when it is not moving or colliding. This action helps to save processor time, and enabling this property is considered a recommended best practice."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-reference-body.html"
+  },
+  {
+    "inputs": {
+      "question": "What does a bounciness value of 0 signify for a surface?"
+    },
+    "outputs": {
+      "expected": "A bounciness value of 0 means the surface is not at all bouncy, similar to soft clay."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-reference-chain.html"
+  },
+  {
+    "inputs": {
+      "question": "How does Unity determine which friction mixing mode to use when two shapes collide?"
+    },
+    "outputs": {
+      "expected": "Unity uses the Friction Mixing mode from the shape with the highest Friction Priority value. If both shapes have the same Friction Priority, Unity uses the highest `SurfaceMaterial.MixingMode` enumeration value from the two shapes."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-reference-chain.html"
+  },
+  {
+    "inputs": {
+      "question": "What effect does a negative Group Index value have on a shape's collisions?"
+    },
+    "outputs": {
+      "expected": "A negative Group Index value means the shape doesn’t collide with other shapes that have the same Group Index. This setting overrides the Categories and Contacts properties for collision determination within that group."
+    },
+    "topic": "2d",
+    "source": "2d-physics-api-reference-chain.html"
+  },
+  {
+    "inputs": {
+      "question": "What does `brokenPrefabParent` represent?"
+    },
+    "outputs": {
+      "expected": "`brokenPrefabParent` represents the broken parent Prefab file, provided that it has not been deleted."
+    },
+    "topic": "prefabs",
+    "source": "BrokenPrefabAsset-brokenPrefabParent.html"
+  },
+  {
+    "inputs": {
+      "question": "What happens after a user successfully submits a suggested change to Unity Documentation?"
+    },
+    "outputs": {
+      "expected": "Unity thanks the user for helping improve quality, reads each suggested change, and will make updates where applicable, though not all submissions can be accepted."
+    },
+    "topic": "prefabs",
+    "source": "BrokenPrefabAsset-brokenPrefabParent.html"
+  },
+  {
+    "inputs": {
+      "question": "What should a user do if their suggested change to Unity Documentation fails to submit?"
+    },
+    "outputs": {
+      "expected": "If a suggested change could not be submitted, the user should try again in a few minutes."
+    },
+    "topic": "prefabs",
+    "source": "BrokenPrefabAsset-brokenPrefabParent.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the return value of `isPrefabFileValid`?"
+    },
+    "outputs": {
+      "expected": "`isPrefabFileValid` returns `true` if the content of the file is valid."
+    },
+    "topic": "prefabs",
+    "source": "BrokenPrefabAsset-isPrefabFileValid.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what specific conditions can a prefab file with valid content still result in a `BrokenPrefabAsset`?"
+    },
+    "outputs": {
+      "expected": "A prefab file with valid content can still produce a `BrokenPrefabAsset` if it is a variant and its parent is missing or invalid."
+    },
+    "topic": "prefabs",
+    "source": "BrokenPrefabAsset-isPrefabFileValid.html"
+  },
+  {
+    "inputs": {
+      "question": "What data type is `isPrefabFileValid`?"
+    },
+    "outputs": {
+      "expected": "`isPrefabFileValid` is a public boolean."
+    },
+    "topic": "prefabs",
+    "source": "BrokenPrefabAsset-isPrefabFileValid.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `isVariant` property signify for a prefab?"
+    },
+    "outputs": {
+      "expected": "The `isVariant` property signifies whether a prefab is a variant, returning true if it is."
+    },
+    "topic": "prefabs",
+    "source": "BrokenPrefabAsset-isVariant.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of the `isVariant` property?"
+    },
+    "outputs": {
+      "expected": "The `isVariant` property is of type boolean."
+    },
+    "topic": "prefabs",
+    "source": "BrokenPrefabAsset-isVariant.html"
+  },
+  {
+    "inputs": {
+      "question": "What access level is specified for the `isVariant` property?"
+    },
+    "outputs": {
+      "expected": "The `isVariant` property is specified as public."
+    },
+    "topic": "prefabs",
+    "source": "BrokenPrefabAsset-isVariant.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of `changeRootNameToAssetName`?"
+    },
+    "outputs": {
+      "expected": "`changeRootNameToAssetName` changes the name of the root GameObject to match the name of the Prefab Asset that is used during conversion."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-changeRootNameToAssetName.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of `changeRootNameToAssetName`?"
+    },
+    "outputs": {
+      "expected": "The data type of `changeRootNameToAssetName` is boolean."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-changeRootNameToAssetName.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what condition does the root GameObject's name get changed by `changeRootNameToAssetName`?"
+    },
+    "outputs": {
+      "expected": "The root GameObject's name is changed by `changeRootNameToAssetName` to match the Prefab Asset's name when a conversion is taking place."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-changeRootNameToAssetName.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of the `logInfo` property?"
+    },
+    "outputs": {
+      "expected": "The `logInfo` property enables logging to the console with specific information."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-logInfo.html"
+  },
+  {
+    "inputs": {
+      "question": "What specific information does `logInfo` provide when enabled?"
+    },
+    "outputs": {
+      "expected": "When `logInfo` is enabled, it provides information about which objects were matched."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-logInfo.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what condition does `logInfo` log information about matched objects?"
+    },
+    "outputs": {
+      "expected": "`logInfo` logs information about matched objects when converting a plain GameObject to a Prefab instance."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-logInfo.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of the `objectMatchMode` property?"
+    },
+    "outputs": {
+      "expected": "The `objectMatchMode` property is used to control how GameObjects and Components are matched when a plain GameObject is converted to a Prefab instance."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-objectMatchMode.html"
+  },
+  {
+    "inputs": {
+      "question": "How does `ObjectMatchMode.ByHierarchy` determine if GameObjects and Components are matched?"
+    },
+    "outputs": {
+      "expected": "With `ObjectMatchMode.ByHierarchy`, GameObjects and Components are matched up using their full hierarchy path to retain references."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-objectMatchMode.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what conditions can `ObjectMatchMode.ByName` match a GameObject?"
+    },
+    "outputs": {
+      "expected": "A GameObject can be matched by `ObjectMatchMode.ByName` only if it has the same name and the same Transform type as in the used Prefab Asset. Additionally, the name must be unique in each GameObject hierarchy to allow for matching."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-objectMatchMode.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `recordPropertyOverridesOfMatches` property control?"
+    },
+    "outputs": {
+      "expected": "The `recordPropertyOverridesOfMatches` property controls whether existing values of a Component or GameObject, when matched with objects in a Prefab Asset, are recorded as overrides on the new Prefab instance."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-recordPropertyOverridesOfMatches.html"
+  },
+  {
+    "inputs": {
+      "question": "Under what condition should `recordPropertyOverridesOfMatches` be set to true?"
+    },
+    "outputs": {
+      "expected": "Set this property to true when you want existing values of a matched Component or GameObject to be recorded as overrides on the new Prefab instance."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-recordPropertyOverridesOfMatches.html"
+  },
+  {
+    "inputs": {
+      "question": "What happens if `recordPropertyOverridesOfMatches` is set to false?"
+    },
+    "outputs": {
+      "expected": "If `recordPropertyOverridesOfMatches` is set to false, then the values from the Prefab Asset will be used instead of recording existing values as overrides on the new Prefab instance."
+    },
+    "topic": "prefabs",
+    "source": "ConvertToPrefabInstanceSettings-recordPropertyOverridesOfMatches.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of the `AndroidInput.secondaryTouchEnabled` property?"
+    },
+    "outputs": {
+      "expected": "The `AndroidInput.secondaryTouchEnabled` property indicates whether the system provides secondary touch input."
+    },
+    "topic": "input",
+    "source": "AndroidInput-secondaryTouchEnabled.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the access modifiers and data type of the `secondaryTouchEnabled` property?"
+    },
+    "outputs": {
+      "expected": "It is a public static bool property."
+    },
+    "topic": "input",
+    "source": "AndroidInput-secondaryTouchEnabled.html"
+  },
+  {
+    "inputs": {
+      "question": "What specific system capability does `secondaryTouchEnabled` evaluate?"
+    },
+    "outputs": {
+      "expected": "`secondaryTouchEnabled` evaluates whether the system provides secondary touch input."
+    },
+    "topic": "input",
+    "source": "AndroidInput-secondaryTouchEnabled.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the purpose of the `secondaryTouchHeight` property?"
+    },
+    "outputs": {
+      "expected": "The `secondaryTouchHeight` property indicates the height of the secondary touchpad."
+    },
+    "topic": "input",
+    "source": "AndroidInput-secondaryTouchHeight.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of `secondaryTouchHeight`?"
+    },
+    "outputs": {
+      "expected": "The `secondaryTouchHeight` property is an integer (`int`)."
+    },
+    "topic": "input",
+    "source": "AndroidInput-secondaryTouchHeight.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the access modifiers for `secondaryTouchHeight`?"
+    },
+    "outputs": {
+      "expected": "The `secondaryTouchHeight` property is public and static."
+    },
+    "topic": "input",
+    "source": "AndroidInput-secondaryTouchHeight.html"
+  },
+  {
+    "inputs": {
+      "question": "What information does the `AndroidInput.secondaryTouchWidth` property provide?"
+    },
+    "outputs": {
+      "expected": "The `AndroidInput.secondaryTouchWidth` property indicates the width of the secondary touchpad."
+    },
+    "topic": "input",
+    "source": "AndroidInput-secondaryTouchWidth.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the data type of `AndroidInput.secondaryTouchWidth`?"
+    },
+    "outputs": {
+      "expected": "The `AndroidInput.secondaryTouchWidth` property is of type `int` (integer)."
+    },
+    "topic": "input",
+    "source": "AndroidInput-secondaryTouchWidth.html"
+  },
+  {
+    "inputs": {
+      "question": "What are the access modifiers for the `secondaryTouchWidth` property?"
+    },
+    "outputs": {
+      "expected": "The `secondaryTouchWidth` property is both `public` and `static`."
+    },
+    "topic": "input",
+    "source": "AndroidInput-secondaryTouchWidth.html"
+  },
+  {
+    "inputs": {
+      "question": "What kind of touches does `AndroidInput.touchCountSecondary` represent?"
+    },
+    "outputs": {
+      "expected": "`AndroidInput.touchCountSecondary` represents the number of secondary touches."
+    },
+    "topic": "input",
+    "source": "AndroidInput-touchCountSecondary.html"
+  },
+  {
+    "inputs": {
+      "question": "What is guaranteed about the value of `AndroidInput.touchCountSecondary` during a frame?"
+    },
+    "outputs": {
+      "expected": "The value of `AndroidInput.touchCountSecondary` is guaranteed not to change throughout the frame."
+    },
+    "topic": "input",
+    "source": "AndroidInput-touchCountSecondary.html"
+  },
+  {
+    "inputs": {
+      "question": "What access permission does `AndroidInput.touchCountSecondary` have?"
+    },
+    "outputs": {
+      "expected": "`AndroidInput.touchCountSecondary` is a Read Only property."
+    },
+    "topic": "input",
+    "source": "AndroidInput-touchCountSecondary.html"
+  },
+  {
+    "inputs": {
+      "question": "What does `Input.acceleration` represent in Unity?"
+    },
+    "outputs": {
+      "expected": "`Input.acceleration` represents the last measured linear acceleration of a device in three-dimensional space. This property is read-only."
+    },
+    "topic": "input",
+    "source": "Input-acceleration.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the recommended approach for handling input in new Unity projects, according to the documentation?"
+    },
+    "outputs": {
+      "expected": "For new Unity projects, the recommended best practice is to use the Input System package. `Input.acceleration` is part of the legacy Input Manager and is not recommended for new projects."
+    },
+    "topic": "input",
+    "source": "Input-acceleration.html"
+  },
+  {
+    "inputs": {
+      "question": "How are the device's acceleration axes remapped to game coordinates in the provided example script?"
+    },
+    "outputs": {
+      "expected": "In the example script, the device's XY plane is remapped onto the XZ plane. This remapping also includes a 90-degree rotation around the Y axis, with the game's x-direction derived from the negative y-acceleration and the z-direction from the x-acceleration."
+    },
+    "topic": "input",
+    "source": "Input-acceleration.html"
+  },
+  {
+    "inputs": {
+      "question": "What information does Input.accelerationEventCount provide?"
+    },
+    "outputs": {
+      "expected": "Input.accelerationEventCount provides the number of acceleration measurements that occurred during the last frame."
+    },
+    "topic": "input",
+    "source": "Input-accelerationEventCount.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the recommended approach for handling input in new Unity projects instead of using legacy APIs like Input.accelerationEventCount?"
+    },
+    "outputs": {
+      "expected": "For new projects, the recommended best practice is to use the Input System package instead of legacy APIs like Input.accelerationEventCount."
+    },
+    "topic": "input",
+    "source": "Input-accelerationEventCount.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a script determine if any new acceleration measurements were recorded in the most recent frame?"
+    },
+    "outputs": {
+      "expected": "A script can determine if new acceleration measurements were recorded by checking if the value of Input.accelerationEventCount is greater than zero."
+    },
+    "topic": "input",
+    "source": "Input-accelerationEventCount.html"
+  },
+  {
+    "inputs": {
+      "question": "What does `Input.accelerationEvents` provide to a Unity application?"
+    },
+    "outputs": {
+      "expected": "`Input.accelerationEvents` provides a read-only list of acceleration measurements that occurred during the last frame. This property also allocates temporary variables."
+    },
+    "topic": "input",
+    "source": "Input-accelerationEvents.html"
+  },
+  {
+    "inputs": {
+      "question": "Why is `Input.accelerationEvents` not recommended for use in new Unity projects?"
+    },
+    "outputs": {
+      "expected": "`Input.accelerationEvents` is not recommended for new Unity projects because it is part of the legacy Input Manager. The recommended best practice is to use the Input System package instead."
+    },
+    "topic": "input",
+    "source": "Input-accelerationEvents.html"
+  },
+  {
+    "inputs": {
+      "question": "How can a developer calculate a weighted sum of acceleration measurements from the last frame?"
+    },
+    "outputs": {
+      "expected": "A developer can calculate a weighted sum by iterating through each `AccelerationEvent` in `Input.accelerationEvents` and adding `accEvent.acceleration * accEvent.deltaTime` to an accumulator variable."
+    },
+    "topic": "input",
+    "source": "Input-accelerationEvents.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `Input.anyKey` property detect?"
+    },
+    "outputs": {
+      "expected": "`Input.anyKey` detects if any key or mouse button is currently held down. It is a read-only property."
+    },
+    "topic": "input",
+    "source": "Input-anyKey.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the recommended approach for handling input in new Unity projects, instead of using `Input.anyKey`?"
+    },
+    "outputs": {
+      "expected": "For new projects, the recommended best practice is to use the Input System package. `Input.anyKey` is part of the legacy Input Manager and should not be used in new projects."
+    },
+    "topic": "input",
+    "source": "Input-anyKey.html"
+  },
+  {
+    "inputs": {
+      "question": "What type of property is `Input.anyKey` and what does its declaration indicate?"
+    },
+    "outputs": {
+      "expected": "`Input.anyKey` is a public static boolean property. Its declaration indicates it is accessible directly from the `Input` class and holds a true/false value."
+    },
+    "topic": "input",
+    "source": "Input-anyKey.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of `Input.anyKeyDown`?"
+    },
+    "outputs": {
+      "expected": "Input.anyKeyDown returns true on the first frame a user hits any key or mouse button. This variable is read-only."
+    },
+    "topic": "input",
+    "source": "Input-anyKeyDown.html"
+  },
+  {
+    "inputs": {
+      "question": "Where should `Input.anyKeyDown` typically be polled within a Unity script, and why?"
+    },
+    "outputs": {
+      "expected": "`Input.anyKeyDown` should be polled from the MonoBehaviour.Update function. This is necessary because its state gets reset each frame."
+    },
+    "topic": "input",
+    "source": "Input-anyKeyDown.html"
+  },
+  {
+    "inputs": {
+      "question": "Does `Input.anyKeyDown` detect touch input, and what alternative is available for touches?"
+    },
+    "outputs": {
+      "expected": "`Input.anyKeyDown` does not detect touches. For detecting touches, `Input.touchCount` should be used instead."
+    },
+    "topic": "input",
+    "source": "Input-anyKeyDown.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the function of Input.backButtonLeavesApp?"
+    },
+    "outputs": {
+      "expected": "Input.backButtonLeavesApp determines whether the Back button should quit the application."
+    },
+    "topic": "input",
+    "source": "Input-backButtonLeavesApp.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the recommended approach for handling input in new Unity projects instead of using Input.backButtonLeavesApp?"
+    },
+    "outputs": {
+      "expected": "For new projects, the recommended best practice is to use the Input System package instead of the Input.backButtonLeavesApp API."
+    },
+    "topic": "input",
+    "source": "Input-backButtonLeavesApp.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the default state of Input.backButtonLeavesApp and how should developers respond to the Back button when it's in this state?"
+    },
+    "outputs": {
+      "expected": "By default, Input.backButtonLeavesApp is set to false, meaning developers are responsible for responding to the Back button, typically by calling Input.GetKey and passing KeyCode.Escape."
+    },
+    "topic": "input",
+    "source": "Input-backButtonLeavesApp.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the definition of a particle in the context of Unity particle systems?"
+    },
+    "outputs": {
+      "expected": "A particle is a small, simple image or mesh that is emitted by a particle system. These systems display and move particles in large numbers to represent a fluid or amorphous entity, creating the impression of a complete entity such as smoke."
+    },
+    "topic": "particles",
+    "source": "ChoosingYourParticleSystem.html"
+  },
+  {
+    "inputs": {
+      "question": "What is a major difference in the feasible number of particles between the Built-in Particle System and the Visual Effect Graph?"
+    },
+    "outputs": {
+      "expected": "The Built-in Particle System is designed to handle thousands of particles, whereas the Visual Effect Graph can simulate millions of particles."
+    },
+    "topic": "particles",
+    "source": "ChoosingYourParticleSystem.html"
+  },
+  {
+    "inputs": {
+      "question": "How can users interact with the Visual Effect Graph using C# scripts?"
+    },
+    "outputs": {
+      "expected": "Users can expose graph properties for access through C# scripts and utilize an Event Interface to send custom events with attached data. The Visual Effect component also provides a playback control API, allowing scripts to play, pause, and simulate effects with custom step sizes."
+    },
+    "topic": "particles",
+    "source": "ChoosingYourParticleSystem.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary purpose of adding virtual particles to cloth?"
+    },
+    "outputs": {
+      "expected": "Adding one virtual particle per triangle is done to improve collision stability for the cloth."
+    },
+    "topic": "particles",
+    "source": "Cloth-useVirtualParticles.html"
+  },
+  {
+    "inputs": {
+      "question": "How do virtual particles assist in improving cloth collision without increasing cloth resolution?"
+    },
+    "outputs": {
+      "expected": "Virtual particles provide additional samples on the collision surface, which helps improve cloth collision without needing to increase the overall cloth resolution."
+    },
+    "topic": "particles",
+    "source": "Cloth-useVirtualParticles.html"
+  },
+  {
+    "inputs": {
+      "question": "When do virtual particles exist, and what information is not explicitly stored for them?"
+    },
+    "outputs": {
+      "expected": "Virtual particles only exist during the collision processing stage. Their position, velocity, or mass are not explicitly stored like regular particles."
+    },
+    "topic": "particles",
+    "source": "Cloth-useVirtualParticles.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the obsolete `particleSystem` property represent?"
+    },
+    "outputs": {
+      "expected": "The obsolete `particleSystem` property represents the `ParticleSystem` component attached to the GameObject."
+    },
+    "topic": "particles",
+    "source": "Component-particleSystem.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the recommended way to access a `ParticleSystem` component from a `GameObject`?"
+    },
+    "outputs": {
+      "expected": "The recommended way to access a `ParticleSystem` component from a `GameObject` is to use `GetComponent<ParticleSystem>()`."
+    },
+    "topic": "particles",
+    "source": "Component-particleSystem.html"
+  },
+  {
+    "inputs": {
+      "question": "What value does the `particleSystem` property return if no `ParticleSystem` is attached to the `GameObject`?"
+    },
+    "outputs": {
+      "expected": "The `particleSystem` property returns null if there is no `ParticleSystem` attached to the `GameObject`."
+    },
+    "topic": "particles",
+    "source": "Component-particleSystem.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the current status of the `GameObject.particleSystem` property?"
+    },
+    "outputs": {
+      "expected": "The `GameObject.particleSystem` property is obsolete and has been deprecated."
+    },
+    "topic": "particles",
+    "source": "GameObject-particleSystem.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the recommended alternative to using the `GameObject.particleSystem` property?"
+    },
+    "outputs": {
+      "expected": "Developers should use `GetComponent<ParticleSystem>()` instead of the `GameObject.particleSystem` property."
+    },
+    "topic": "particles",
+    "source": "GameObject-particleSystem.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `particleSystem` property return if a ParticleSystem is not attached to the GameObject?"
+    },
+    "outputs": {
+      "expected": "If there is no ParticleSystem attached to the GameObject, the `particleSystem` property would return Null."
+    },
+    "topic": "particles",
+    "source": "GameObject-particleSystem.html"
+  },
+  {
+    "inputs": {
+      "question": "Which property should be used instead of the deprecated `collider` property?"
+    },
+    "outputs": {
+      "expected": "The `colliderComponent` property should be used instead of the deprecated `collider` property."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-collider.html"
+  },
+  {
+    "inputs": {
+      "question": "What types of components are supported by the `colliderComponent` property?"
+    },
+    "outputs": {
+      "expected": "The `colliderComponent` property supports both `Collider` and `Collider2D` components."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-collider.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `collider` property (or its replacement `colliderComponent`) represent in the context of particle collisions?"
+    },
+    "outputs": {
+      "expected": "The `collider` property represents the Collider for the GameObject that was struck by the particles."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-collider.html"
+  },
+  {
+    "inputs": {
+      "question": "What does ParticleCollisionEvent.colliderComponent represent?"
+    },
+    "outputs": {
+      "expected": "ParticleCollisionEvent.colliderComponent represents the Collider or Collider2D for the GameObject struck by the particles."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-colliderComponent.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the recommended approach when working with ParticleCollisionEvent.colliderComponent if both Collider and Collider2D components are expected?"
+    },
+    "outputs": {
+      "expected": "If both Collider and Collider2D components are expected, one should cast the return value of ParticleCollisionEvent.colliderComponent and test for null."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-colliderComponent.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the access modifier and type of colliderComponent within ParticleCollisionEvent?"
+    },
+    "outputs": {
+      "expected": "The colliderComponent is a public Component."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-colliderComponent.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `intersection` variable within `ParticleCollisionEvent` represent?"
+    },
+    "outputs": {
+      "expected": "The `intersection` variable represents the intersection point of the collision."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-intersection.html"
+  },
+  {
+    "inputs": {
+      "question": "In what coordinate system is the collision's intersection point reported?"
+    },
+    "outputs": {
+      "expected": "The intersection point of the collision is reported in world coordinates."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-intersection.html"
+  },
+  {
+    "inputs": {
+      "question": "Does a Particle System's simulation space affect the coordinate system of the reported intersection point?"
+    },
+    "outputs": {
+      "expected": "The intersection point is reported in world coordinates, regardless of whether the Particle System is simulated in local coordinates."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-intersection.html"
+  },
+  {
+    "inputs": {
+      "question": "What information does `ParticleCollisionEvent.normal` provide?"
+    },
+    "outputs": {
+      "expected": "`ParticleCollisionEvent.normal` provides the geometry normal at the intersection point of a collision."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-normal.html"
+  },
+  {
+    "inputs": {
+      "question": "In what coordinate system is the `normal` reported for a `ParticleCollisionEvent`?"
+    },
+    "outputs": {
+      "expected": "The normal is reported in world coordinates."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-normal.html"
+  },
+  {
+    "inputs": {
+      "question": "How are the coordinates for `ParticleCollisionEvent.normal` reported if the Particle System is simulated in local coordinates?"
+    },
+    "outputs": {
+      "expected": "The normal is reported in world coordinates, regardless of whether the Particle System is simulated in local coordinates."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-normal.html"
+  },
+  {
+    "inputs": {
+      "question": "What information does `ParticleCollisionEvent.velocity` provide?"
+    },
+    "outputs": {
+      "expected": "`ParticleCollisionEvent.velocity` provides the incident velocity at the intersection point of a collision."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-velocity.html"
+  },
+  {
+    "inputs": {
+      "question": "In what coordinate system is the velocity for a `ParticleCollisionEvent` reported?"
+    },
+    "outputs": {
+      "expected": "The velocity for a `ParticleCollisionEvent` is reported in world coordinates."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-velocity.html"
+  },
+  {
+    "inputs": {
+      "question": "How does a Particle System's simulation space affect the coordinate system of `ParticleCollisionEvent.velocity`?"
+    },
+    "outputs": {
+      "expected": "The velocity is reported in world coordinates regardless of whether the Particle System is simulated in local coordinates."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent-velocity.html"
+  },
+  {
+    "inputs": {
+      "question": "What is the primary function of the ParticleCollisionEvent struct?"
+    },
+    "outputs": {
+      "expected": "The ParticleCollisionEvent struct is found in UnityEngine and provides information about a particle collision."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent.html"
+  },
+  {
+    "inputs": {
+      "question": "What does the `colliderComponent` property of a ParticleCollisionEvent represent?"
+    },
+    "outputs": {
+      "expected": "The `colliderComponent` property indicates the Collider or Collider2D associated with the GameObject that was struck by the particles."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent.html"
+  },
+  {
+    "inputs": {
+      "question": "What information does the `intersection` property provide within a ParticleCollisionEvent?"
+    },
+    "outputs": {
+      "expected": "The `intersection` property provides the intersection point of the collision in world coordinates."
+    },
+    "topic": "particles",
+    "source": "ParticleCollisionEvent.html"
   }
 ]
