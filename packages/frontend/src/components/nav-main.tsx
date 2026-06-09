@@ -6,9 +6,16 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -20,11 +27,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { ChevronRightIcon } from 'lucide-react';
+import { ChevronRightIcon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
 import { Link } from 'react-router';
 
 export function NavMain({
   items,
+  onDeleteItem,
 }: {
   items: {
     title: string;
@@ -37,6 +45,7 @@ export function NavMain({
       url: string;
     }[];
   }[];
+  onDeleteItem?: (id: string) => void;
 }) {
   return (
     <SidebarGroup>
@@ -61,7 +70,10 @@ export function NavMain({
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => (
-                      <SidebarMenuSubItem key={subItem.id}>
+                      <SidebarMenuSubItem
+                        key={subItem.id}
+                        className="group/menu-item relative"
+                      >
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <SidebarMenuSubButton asChild>
@@ -72,6 +84,29 @@ export function NavMain({
                           </TooltipTrigger>
                           <TooltipContent side="right">{subItem.title}</TooltipContent>
                         </Tooltip>
+                        {onDeleteItem && (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <SidebarMenuAction showOnHover>
+                                <MoreHorizontalIcon />
+                                <span className="sr-only">More</span>
+                              </SidebarMenuAction>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent
+                              side="right"
+                              align="start"
+                              className="w-40"
+                            >
+                              <DropdownMenuItem
+                                variant="destructive"
+                                onClick={() => onDeleteItem(subItem.id)}
+                              >
+                                <Trash2Icon className="text-destructive" />
+                                <span>Delete</span>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        )}
                       </SidebarMenuSubItem>
                     ))}
                   </SidebarMenuSub>

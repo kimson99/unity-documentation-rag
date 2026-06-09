@@ -452,6 +452,27 @@
         "tags": [
           "ChatSession"
         ]
+      },
+      "delete": {
+        "operationId": "ChatSessionController_deleteSession",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The chat session has been successfully deleted."
+          }
+        },
+        "tags": [
+          "ChatSession"
+        ]
       }
     },
     "/api/files/upload": {

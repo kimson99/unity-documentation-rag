@@ -14,7 +14,7 @@
 1. Tại root project, chạy `pnpm install`
 2. Vào evaluator bằng `cd packages/evaluator`
 3. Tạo môi trường ảo cho python `python -m venv .venv`
-4. Kích hoạt `source .venv/bin/active`
+4. Kích hoạt `source .venv/bin/activate`
 5. Cài packages `pip install -r requirements.txt`
 6. Tại các module con, như module backend `cd packages/backend`.
 7. Tạo file chứa biến môi trường `cp .env.example .env` Điền các thông tin cần thiết như API Key
@@ -32,4 +32,3 @@
 
 ## Evalutator
 - Chạy thử nghiệm: `python evaluate.py --experiment <tên định danh> --per-topic <số lượng chủ đề>`
-

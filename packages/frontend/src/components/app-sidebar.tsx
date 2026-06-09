@@ -13,8 +13,9 @@ import {
   SidebarRail,
   useSidebar,
 } from '@/components/ui/sidebar';
+import useChatSession from '@/hooks/stores/use-chat-session';
 import { useAuthContext } from '@/providers/auth-provider';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   BrainCogIcon,
   DatabaseIcon,
@@ -22,13 +23,17 @@ import {
   MessageCircleIcon,
   SquarePenIcon,
 } from 'lucide-react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import { Separator } from './ui/separator';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuthContext();
   const location = useLocation();
   const { open } = useSidebar();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { setChatSession } = useChatSession();
 
   const { data: chatSessions } = useQuery({
     queryKey: ['chatSessions'],
@@ -40,6 +45,27 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       return data;
     },
   });
+
+  const deleteSession = useMutation({
+    mutationFn: async (sessionId: string) => {
+      await client.api.chatSessionControllerDeleteSession(sessionId);
+      return sessionId;
+    },
+    onSuccess: (sessionId) => {
+      queryClient.invalidateQueries({ queryKey: ['chatSessions'] });
+      // If the deleted session is the one currently open, leave it.
+      if (searchParams.get('sessionId') === sessionId) {
+        setChatSession(null);
+        navigate('/chat');
+      }
+    },
+  });
+
+  const handleDeleteSession = (sessionId: string) => {
+    if (deleteSession.isPending) return;
+    if (!window.confirm('Delete this chat? This cannot be undone.')) return;
+    deleteSession.mutate(sessionId);
+  };
 
   const navItems = React.useMemo(() => {
     const pathname = location.pathname;
@@ -92,7 +118,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <Separator orientation="horizontal" />
       <SidebarContent>
-        <NavMain items={navItems} />
+        <NavMain items={navItems} onDeleteItem={handleDeleteSession} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser

@@ -1,4 +1,13 @@
-import { Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { type Request } from 'express';
 import {
@@ -57,5 +66,18 @@ export class ChatSessionController {
       sessionId,
     );
     return session;
+  }
+
+  @Delete('/:sessionId')
+  @HttpCode(204)
+  @ApiResponse({
+    status: 204,
+    description: 'The chat session has been successfully deleted.',
+  })
+  public async deleteSession(
+    @Param('sessionId') sessionId: string,
+    @Req() req: Request,
+  ): Promise<void> {
+    await this.chatSessionService.deleteSession(req.user.id, sessionId);
   }
 }

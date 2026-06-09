@@ -44,4 +44,14 @@ export class ChatSessionService {
 
     return session;
   }
+
+  public async deleteSession(userId: string, sessionId: string): Promise<void> {
+    const result = await this.chatSessionRepo.delete({
+      id: sessionId,
+      userId,
+    });
+    if (!result.affected) {
+      throw new NotFoundException('Session not found');
+    }
+  }
 }

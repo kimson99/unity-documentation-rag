@@ -593,6 +593,23 @@ export class Api<
     /**
      * No description
      *
+     * @tags ChatSession
+     * @name ChatSessionControllerDeleteSession
+     * @request DELETE:/api/chat-session/{sessionId}
+     */
+    chatSessionControllerDeleteSession: (
+      sessionId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/chat-session/${sessionId}`,
+        method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags File
      * @name FileControllerUploadFile
      * @request POST:/api/files/upload

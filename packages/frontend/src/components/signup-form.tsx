@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import useAuth from '@/hooks/use-auth';
-import { emailRegex } from '@/utils/regex';
+import { emailRegex, strongPasswordRegex } from '@/utils/regex';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
@@ -45,6 +45,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const onSubmit = (data: RegisterFormData) => {
     mutateRegister.mutate(data);
   };
+
+  console.log(errors)
 
   useEffect(() => {
     if (mutateRegister.isSuccess) {
@@ -111,6 +113,10 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                     value: 8,
                     message: 'Password must be at least 8 characters',
                   },
+                  pattern: {
+                    value: strongPasswordRegex,
+                    message: "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 special character and 1 digit"
+                  }
                 })}
               />
               {errors.password && (

@@ -73,10 +73,10 @@ export function NavUser({ user }: { user: UserDto }) {
                 <BadgeCheckIcon />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              {/* <DropdownMenuItem>
                 <BellIcon />
                 Notifications
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={logout}>
