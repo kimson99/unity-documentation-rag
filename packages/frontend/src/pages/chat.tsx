@@ -208,7 +208,7 @@ export default function Chat() {
           <div className="text-4xl font-semibold text-foreground">
             What do you want to know about Unity?
           </div>
-          <ChatForm handleSendMessage={handleSendMessage} />
+          <ChatForm handleSendMessage={handleSendMessage} sessionTemp={chatSession?.data?.temperature} />
         </div>
       </div>
     );
@@ -288,7 +288,7 @@ export default function Chat() {
           ))) && <ThinkingIndicator />}
 
       <div className="flex flex-col px-4 py-3 border-t border-border/20 justify-center items-center">
-        <ChatForm handleSendMessage={handleSendMessage} showPrompts={false} />
+        <ChatForm handleSendMessage={handleSendMessage} showPrompts={false} sessionTemp={chatSession?.data?.temperature}/>
       </div>
     </div>
   );

@@ -120,7 +120,7 @@ function NewIndexDialog({ onSuccess }: { onSuccess: () => void }) {
 
       <DialogContent className="max-w-xl">
         <DialogHeader>
-          <DialogTitle>New Indexing Job</DialogTitle>
+          <div className='text-lg'>New Indexing Job</div>
           <DialogDescription>
             Upload files and select which ones to add to the knowledge base.
           </DialogDescription>

@@ -19,7 +19,7 @@ import {
   LayersIcon,
   Zap,
 } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const PROMPTS = [
   {
@@ -66,12 +66,13 @@ interface ChatFormProps {
     metadata: ChatMessageMetadata,
   ) => Promise<void>;
   showPrompts?: boolean;
+  sessionTemp?: number;
 }
 
-export default function ChatForm({ handleSendMessage, showPrompts = true }: ChatFormProps) {
+export default function ChatForm({ handleSendMessage, showPrompts = true, sessionTemp }: ChatFormProps) {
   const [inputValue, setInputValue] = useState('');
   const [selectedTemperature, setSelectedTemperature] = useState(
-    TEMPERATURES[1],
+     TEMPERATURES[1],
   );
   const { sessionId, mutateSession } = useMessaging();
 
@@ -91,6 +92,20 @@ export default function ChatForm({ handleSendMessage, showPrompts = true }: Chat
       setSelectedTemperature(temperature);
     }
   };
+
+  const handleTemperatureChangeByTemp = (value: number) => {
+     const temperature = TEMPERATURES.find((m) => m.temperature === value);
+    if (temperature) {
+      setSelectedTemperature(temperature);
+    }
+  }
+
+  useEffect(() => {
+    if (!sessionTemp) {
+      return
+    }
+    handleTemperatureChangeByTemp(sessionTemp)
+  }, [sessionTemp]);
 
   const handleSend = async () => {
     if (inputValue.trim() === '') return;
